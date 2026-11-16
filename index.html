@@ -632,6 +632,9 @@ fieldset.dc-types legend{font-size:13px;color:var(--muted);font-weight:500;paddi
   .topbar .proj-sel select{max-width:100%;width:100%}
   .id-chip bdi{display:none}
 }
+/* panels the app scrolls to (novelty verdict, salvage, designs) start below the sticky top bar, not under it */
+html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
+@media (max-width:520px){html{scroll-padding-top:calc(112px + env(safe-area-inset-top,0px))}}
 @media (max-width:520px){.fields{grid-template-columns:1fr 1fr;gap:8px}.field-c{padding:12px}.field-c h3{font-size:14px}}
 /* novelty after global discovery */
 .nv-panel{border-color:var(--line2)}
