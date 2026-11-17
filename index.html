@@ -657,7 +657,89 @@ html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
 .nv-kpis small{color:var(--muted);font-size:11.5px}
 .nv-done{display:flex;gap:8px;align-items:center;flex-wrap:wrap;color:var(--ok);font-size:13.5px}
 .nv-done .ic{width:16px;height:16px}
-.nv-sub{margin:16px 0 0;font-size:15px}
+.nv-sub{display:flex;align-items:center;gap:8px;margin:16px 0 6px;font-size:15px}
+.nv-sub .ic{width:17px;height:17px;color:var(--cyan)}
+.nv-ai-block{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:14px 0 6px;background:var(--panel2);min-width:0}
+.nv-ai-block>.nv-sub{margin-top:0}
+.nv-ai-block .nv-list{margin-top:10px}
+.nv-ai-status{margin:10px 0 4px}
+.nv-check{display:flex;gap:8px;align-items:flex-start;background:var(--cyan-bg);border-radius:10px;padding:8px 10px;margin:8px 0;min-width:0}
+.nv-check .ic{width:16px;height:16px;flex:none;margin-top:3px;color:var(--cyan)}
+.nv-check p{margin:2px 0;overflow-wrap:anywhere}
+.nv-src a{color:var(--cyan);font-weight:600;text-decoration:none}
+.nv-src a:hover,.nv-src a:focus-visible{text-decoration:underline}
+/* students' portal: the only page a student limited to ideas sees */
+.auth-lede{color:var(--muted);margin:-8px 0 16px;font-size:14.5px}
+.st-app{min-height:100vh;display:flex;flex-direction:column}
+.st-top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;align-items:center;gap:10px;padding:10px 18px;background:var(--panel);border-bottom:1px solid var(--line)}
+.st-who{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-size:13.5px;max-width:30vw;min-width:0;white-space:nowrap}
+.st-who bdi{overflow:hidden;text-overflow:ellipsis}
+.st-main{width:100%;max-width:780px;margin:0 auto;padding:28px 16px 56px;box-sizing:border-box}
+.st-kicker{color:var(--cyan);font-weight:600;font-size:13px;margin:0}
+.st-intro{margin-bottom:18px}
+.st-intro h1{font-size:clamp(24px,4.4vw,32px);margin:4px 0 6px}
+.st-note{background:var(--cyan-bg);border:1px solid var(--cyan);border-radius:14px;padding:14px 18px;margin:0 0 16px}
+.st-note h2{font-size:13.5px;margin:0 0 4px;color:var(--muted)}
+.st-note p{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.st-preview{display:flex;gap:8px;align-items:center;background:var(--risk-bg);border:1px solid var(--risk);border-radius:10px;padding:9px 14px;font-size:14px;margin:0 0 16px}
+#st-form{display:grid;gap:14px}
+#st-form .field input,#st-form .field textarea{width:100%;box-sizing:border-box;font-size:15px}
+#st-form .field textarea{min-height:190px}
+.st-meta{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-top:-6px}
+.st-count{font-variant-numeric:tabular-nums;color:var(--faint);font-size:12.5px;white-space:nowrap}
+.st-count.near{color:var(--risk)}
+#st-form .form-err:empty{display:none}
+.st-flash{display:flex;gap:8px;align-items:center;color:var(--ok);background:var(--ok-bg);border:1px solid var(--ok);border-radius:10px;padding:9px 14px;font-size:14px;margin:0 0 14px}
+.st-list-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+.st-list-head h2{margin:0}
+.st-list{display:grid;gap:12px}
+.st-idea{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--panel2);min-width:0}
+.st-idea header{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.st-idea h3{margin:0;font-size:16px;overflow-wrap:anywhere}
+.st-date{margin:4px 0 0;color:var(--faint);font-size:12.5px}
+.st-idea details{margin-top:8px}
+.st-idea summary{cursor:pointer;color:var(--muted);font-size:13.5px}
+.st-desc{white-space:pre-wrap;overflow-wrap:anywhere;margin:8px 0 0;font-size:14.5px}
+.st-reply{margin-top:10px;border-inline-start:3px solid var(--cyan);padding:7px 12px;background:var(--panel);border-radius:8px}
+.st-reply b{display:block;font-size:12.5px;color:var(--muted);font-weight:600}
+.st-reply p{margin:2px 0 0;white-space:pre-wrap;overflow-wrap:anywhere}
+.st-hint{margin:8px 0 0;font-size:13px;color:var(--risk)}
+.st-modal{width:min(440px,100%)}
+.st-pw{display:grid;gap:12px}
+.st-pw .field input{width:100%;box-sizing:border-box}
+@media (max-width:520px){
+  .st-top{padding:8px 12px;gap:6px}
+  .st-top .brand span,.st-who{display:none}
+  .st-top .btn.small span{display:none}
+  .st-main{padding:20px 14px 44px}
+  .st-meta{flex-direction:column;gap:2px}
+}
+/* students' ideas, for administrators and supervisors */
+.nav-badge{margin-inline-start:auto;min-width:20px;padding:0 6px;border-radius:999px;background:var(--cyan);color:var(--on-cyan);font-size:11.5px;font-weight:700;line-height:20px;text-align:center;font-variant-numeric:tabular-nums}
+.id-page-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.id-page-head h2{margin:0}
+.id-link{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.id-link code{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:5px 10px;font:500 13.5px var(--font-m);overflow-wrap:anywhere;min-width:0}
+.id-form{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px 16px;align-items:end}
+.id-form .id-msg{grid-column:1/-1}
+.id-form .id-open{align-self:center}
+.id-form select,.id-form textarea{width:100%;box-sizing:border-box}
+.id-list-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+.id-list-head h2{margin:0}
+.id-tabs{margin:0 0 14px;padding-inline:0}
+.id-tabs .cnt{display:inline-block;min-width:18px;padding:0 5px;margin-inline-start:4px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);font-size:11.5px;line-height:17px;text-align:center;font-variant-numeric:tabular-nums}
+.id-list{display:grid;gap:14px}
+.id-card{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--panel);min-width:0}
+.id-card[data-status="new"]{border-inline-start:4px solid var(--cyan)}
+.id-card header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.id-h{min-width:0}
+.id-card h3{margin:0;font-size:16.5px;overflow-wrap:anywhere}
+.id-who{margin:4px 0 0;font-size:13.5px;color:var(--muted);overflow-wrap:anywhere}
+.id-when{margin:2px 0 0;font-size:12.5px;color:var(--faint)}
+.id-desc{white-space:pre-wrap;overflow-wrap:anywhere;margin:10px 0 4px;font-size:14.5px}
+.id-review{display:grid;grid-template-columns:minmax(150px,220px) minmax(0,1fr);gap:10px 14px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.id-review select,.id-review textarea{width:100%;box-sizing:border-box}
+@media (max-width:640px){.id-form,.id-review{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -676,7 +758,8 @@ html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
   const WEB_TOOL = { type: 'web_search_20250305', name: 'web_search', max_uses: 6 };
   const WEB_RULES = {
     discovery: '\nCheck each item with the web search tool before listing it, and add the field "url" with the address of the page you relied on. Prefer official pages: the university, the publisher, the patent office or the project repository.',
-    parts: '\nUse the web search tool to check current listings at mainstream distributors, and add the fields "url" (the page you used) and "supplier" for each item. Prices are still estimates for a single unit.'
+    parts: '\nUse the web search tool to check current listings at mainstream distributors, and add the fields "url" (the page you used) and "supplier" for each item. Prices are still estimates for a single unit.',
+    novelty: '\nUse the web search tool to look for projects and products like this one that already offer each feature before you propose it. Propose only features you did not find in them, and list in "sources" the pages you checked.'
   };
   const KNOWLEDGE_ONLY = /Using only your own knowledge \((?:you have )?no web access in this task\),\s*/;
   const ls = {
@@ -755,8 +838,8 @@ html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
     }
     async function stream(input, opts) {
       let prompt = typeof input === 'string' ? input : JSON.stringify(input);
-      const purpose = /Global Discovery module/.test(prompt) ? 'discovery' : /purchasable components/.test(prompt) ? 'parts' : /Inspiration finder/.test(prompt) ? 'inspire' : /Sustainability Studio/.test(prompt) ? 'sustain' : 'generic';
-      const web = L.config.webSearch && (purpose === 'discovery' || purpose === 'parts' || purpose === 'inspire');
+      const purpose = /Global Discovery module/.test(prompt) ? 'discovery' : /purchasable components/.test(prompt) ? 'parts' : /Inspiration finder/.test(prompt) ? 'inspire' : /Sustainability Studio/.test(prompt) ? 'sustain' : /Novelty module/.test(prompt) ? 'novelty' : 'generic';
+      const web = L.config.webSearch && (purpose === 'discovery' || purpose === 'parts' || purpose === 'inspire' || purpose === 'novelty');
       const m = models();
       const body = { model: opts.modelTier === 'quick' ? m.quick : opts.modelTier === 'complex' ? m.complex : m.default, max_tokens: web || purpose === 'sustain' ? 8000 : 4000, stream: true };
       if (web) { prompt = prompt.replace(KNOWLEDGE_ONLY, 'Using the web search tool to find and check real sources, ') + (WEB_RULES[purpose] || ''); body.tools = [WEB_TOOL]; }
@@ -1530,7 +1613,7 @@ nv_unused:['Not used in any of the {n} works found','لم يستخدمها أي�
 nv_used:['Used in {k} of the {n} works','مستخدمة في {k} من الأعمال الـ{n}'],
 nv_best:['Best choice','الخيار الأفضل'],
 nv_src_lib:['Platform suggestion','اقتراح المنصة'],
-nv_src_ai:['AI suggestion: check it','اقتراح الذكاء الاصطناعي: تحقّق منه'],
+nv_src_ai:['Claude’s suggestion from its own knowledge: check it','اقتراح Claude من معرفته: تحقّق منه'],nv_src_ai_web:['Found by Claude with web search','وجدها Claude بالبحث في الويب'],
 nv_closest_ai:['Closest work','أقرب عمل'],
 nv_adds:['Adds','تضيف'],
 nv_reuses:['(and uses what you have: {x})','(وتستفيد مما لديك: {x})'],
@@ -1548,12 +1631,12 @@ nv_view_graph:['See it in the graph','اعرضها في المخطط'],
 nv_added_toast:['“{f}” added. The project now costs {c}.','أُضيفت «{f}»، وأصبحت تكلفة المشروع {c}.'],
 nv_more:['Show {n} more','عرض {n} أخرى'],
 nv_less:['Show fewer','عرض أقل'],
-nv_ai:['Suggest more features with AI','اقترح ميزات أخرى بالذكاء الاصطناعي'],
-nv_ai_busy:['Thinking…','جارٍ التفكير…'],
-nv_ai_h:['Suggested by AI and checked by the engine','اقترحها الذكاء الاصطناعي وتحقّق منها المحرك'],
+nv_ai_start:['Ask Claude for a new feature','اطلب من Claude ميزة جديدة'],nv_ai_more:['Look for other features','ابحث عن ميزات أخرى'],
+nv_ai_busy_web:['Claude is searching the web for features that similar projects and products do not offer…','يبحث Claude في الويب عن ميزات لا تقدمها المشاريع والمنتجات المشابهة…'],nv_ai_busy_k:['Claude is looking for features that the works found do not offer…','يبحث Claude عن ميزات لا تقدمها الأعمال المكتشفة…'],nv_ai_wait:['This can take a minute or two. You can keep reading meanwhile.','قد يستغرق ذلك دقيقة أو دقيقتين، ويمكنك متابعة القراءة في أثناء ذلك.'],
+nv_ai_h:['New features Claude looked for, checked by the engine','ميزات جديدة بحث عنها Claude وتحقّق منها المحرك'],nv_ai_intro_web:['When your idea already exists, Claude searches the web for features that similar projects and products do not offer, and the FGAR engine checks each one on your project.','عندما تكون فكرتك موجودة، يبحث Claude في الويب عن ميزات لا تقدمها المشاريع والمنتجات المشابهة، ويتحقق محرك FGAR من كل ميزة على مشروعك.'],nv_ai_intro_k:['Claude proposes features that the works found do not offer, from its own knowledge, and the FGAR engine checks each one on your project.','يقترح Claude من معرفته ميزات لا تقدمها الأعمال المكتشفة، ويتحقق محرك FGAR من كل ميزة على مشروعك.'],nv_ai_nofit:['The features Claude found need parts that the catalog does not have yet. Look for other features.','تحتاج الميزات التي وجدها Claude قطعًا غير موجودة في الكتالوج بعد، فابحث عن ميزات أخرى.'],nv_ai_need_key:['Add your Claude API key so Claude can search for a new feature for your project.','أضف مفتاح Claude API ليبحث Claude عن ميزة جديدة لمشروعك.'],nv_checked:['What Claude checked','ما تحقّق منه Claude'],nv_find_none:['Not found in the similar work checked','لم يجدها في الأعمال المشابهة التي بحث فيها'],nv_find_rare:['Rare in similar work','نادرة في الأعمال المشابهة'],nv_sources:['Pages checked','الصفحات التي راجعها'],nv_lib_h:['From the platform’s feature library','ميزات من مكتبة المنصة'],act_nvsearch_web:['{p}: Claude searched the web and found {n} new features.','{p}: بحث Claude في الويب ووجد {n} من الميزات الجديدة.'],act_nvsearch:['{p}: Claude proposed {n} new features.','{p}: اقترح Claude {n} من الميزات الجديدة.'],rp_h_nvsearch_web:['Claude searched the web for new features and found {n}.','بحث Claude في الويب عن ميزات جديدة ووجد {n}.'],rp_h_nvsearch:['Claude proposed {n} new features from its own knowledge.','اقترح Claude من معرفته {n} من الميزات الجديدة.'],rp_nv_web:['Found by Claude with web search; pages checked: {x}','وجدها Claude بالبحث في الويب؛ الصفحات التي راجعها: {x}'],rp_nv_nosrc:['not listed','لم تُذكر'],rp_nv_k:['Suggested by Claude from its own knowledge','اقترحها Claude من معرفته'],
 n_day:['{n} day','{n} يوم'],
-nv_ai_done:['{n} AI features suggested and checked by the engine.','اقترح الذكاء الاصطناعي {n} من الميزات وتحقّق منها المحرك.'],
-nv_none:['The features in the library are already in your project or used by the works found. Try the AI suggestions.','ميزات المكتبة موجودة في مشروعك أو مستخدمة في الأعمال المكتشفة. جرّب اقتراحات الذكاء الاصطناعي.'],
+nv_ai_done:['Claude found {n} new features, and the engine checked them on your project.','وجد Claude {n} من الميزات الجديدة، وتحقّق منها المحرك على مشروعك.'],
+nv_none:['The features in the library are already in your project or used by the works found.','ميزات المكتبة موجودة في مشروعك أو مستخدمة في الأعمال المكتشفة.'],
 nv_note:['This compares your project only with the works found in this search. It does not prove that nobody has built it, and it is not a novelty or patentability opinion.','تقارن هذه النتيجة مشروعك بالأعمال التي وجدها هذا البحث فقط، ولا تثبت أن أحدًا لم يبنِ هذه الميزة، وليست رأيًا في الجِدّة أو قابلية الحصول على براءة اختراع.'],
 rp_nv_h:['Features added to set the project apart','ميزات أُضيفت لتمييز المشروع'],
 rp_nv_p:['Proposed after global discovery and checked by the FGAR engine. The comparison covers only the works found in that search.','اقتُرحت بعد الاكتشاف الدولي وتحقّق منها محرك FGAR، والمقارنة تشمل الأعمال التي وجدها ذلك البحث فقط.'],
@@ -4167,7 +4250,7 @@ rp_h_novelty:['New feature added after discovery: “{f}” (project cost {c}).'
 }(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
 
-  const VERSION = '1.0.0';
+  const VERSION = '1.1.0';
   const FOUND = 0.6, CLOSE = 0.3;                     // share of the project's capabilities covered by the closest work
   const COMPUTE = 10;                                 // features checked with the engine per request
   const T = (en, ar) => ({ en, ar });
@@ -4406,29 +4489,41 @@ rp_h_novelty:['New feature added after discovery: “{f}” (project cost {c}).'
     return { verdict: v, works, list, candidates: cands.length, items: (items || []).length };
   }
 
-  /* ---------------- optional AI suggestions, held to the same checks ---------------- */
-  function aiPrompt(project, items, tags) {
+  /* ---------------- AI features: Claude looks for features that similar work does not offer ----------------
+     The prompt starts with the "own knowledge" sentence that the server and the visitor's key replace with
+     "Using the web search tool ..." when live search is on, so one prompt serves both. Every answer is held to
+     the same checks as the library: the engine's vocabulary, then the FGAR engine on the student's project. */
+  function aiPrompt(project, items, tags, opts) {
+    opts = opts || {};
     const capIds = Object.keys(tags).filter(k => tags[k].kind === 'cap');
     const pc = projectCaps(project);
     const works = (items || []).slice(0, 12).map((it, i) => (i + 1) + '. ' + it.title + ' (' + it.type + (it.year ? ', ' + it.year : '') + '): ' +
       ((it.summary && it.summary.en) || '') + (it.capabilities && it.capabilities.length ? ' [capabilities: ' + it.capabilities.join(', ') + ']' : '')).join('\n');
-    return ['You are the Novelty module of CampusForge AI. A university student\'s project idea already exists in similar work found worldwide (listed below). Propose 3 new features that would make the project different from every listed work.',
+    const avoid = uniq((opts.avoid || []).map(x => String(x || '').replace(/\s+/g, ' ').trim()).filter(Boolean)).slice(0, 30);
+    return ['You are the Novelty module of CampusForge AI. A university student\'s project idea already exists in similar work found worldwide (listed below).',
+      'Using only your own knowledge (no web access in this task), find 3 new features that would make the project different from the listed works and from other similar projects and products.',
       'Rules:',
-      '- Judge only from the listed works: each feature must be something none of them does. Name the closest listed work and what it lacks.',
+      '- Each feature must be something none of the listed works does. Name the closest listed work and what it lacks.',
+      '- Before you propose a feature, look for similar projects and products that already offer it, and propose only features you did not find in them. Say in one sentence what you compared or searched ("checked_en", "checked_ar"). Set "finding" to "none_found" when none of the similar projects and products you checked offers it, or "rare" when only a few do.',
       '- Each feature must be buildable by a student team in one semester and described with 1 to 3 capability ids from the list below, preferring ids the project does not have yet.',
-      '- Do not claim that the feature is new to the world, novel or patentable; write "not seen in the listed works".',
+      '- Do not claim that the feature is new to the world, novel or patentable; write "not seen in the listed works" or "not found in the similar work checked".',
+      '- "sources" lists up to 3 pages you checked, each with its title and url. Leave it empty unless you checked those pages with web search in this task.',
+      avoid.length ? '- Do not propose these features again; they were already proposed or added: ' + avoid.join('; ') + '.' : null,
       '- Keep each sentence under 25 words. Write the Arabic in Modern Standard Arabic.',
       'Reply with only one JSON object:',
-      '{"features":[{"name_en":"short name","name_ar":"the same in Arabic","why_en":"one sentence on the value","why_ar":"the same in Arabic","capabilities":["capability ids"],"closest_en":"closest listed work and what it lacks","closest_ar":"the same in Arabic"}]}',
+      '{"features":[{"name_en":"short name","name_ar":"the same in Arabic","why_en":"one sentence on the value","why_ar":"the same in Arabic","capabilities":["capability ids"],"closest_en":"closest listed work and what it lacks","closest_ar":"the same in Arabic","checked_en":"what you compared or searched, one sentence","checked_ar":"the same in Arabic","finding":"none_found or rare","sources":[{"title":"page title","url":"https://..."}]}]}',
       '', 'Capability ids:', capIds.map(c => '- ' + c + ': ' + tags[c].en).join('\n'),
       '', 'Project: ' + ((project.title && project.title.en) || '') + (project.domain ? ' (field: ' + project.domain + ')' : ''),
       'Description: ' + String((project.description && (project.description.en || project.description.ar)) || '').slice(0, 1500),
       'Functions: ' + (project.functions || []).map(f => (f.name && (f.name.en || f.name.ar)) || f.id).join('; '),
       'Capabilities it already has: ' + pc.join(', '),
-      '', 'Similar work found:', works].join('\n');
+      '', 'Similar work found:', works].filter(x => x !== null).join('\n');
   }
   const str = (s, n) => (typeof s === 'string' ? s.replace(/\s+/g, ' ').trim().slice(0, n) : '');
-  function fromAI(raw, capIds) {
+  const webUrl = u => { u = typeof u === 'string' ? u.trim().slice(0, 600) : ''; return /^https?:\/\/[^\s"'<>]+$/i.test(u) ? u : ''; };
+  /* opts.web: the answer came with live web search. Without it any "sources" are dropped, since nothing was checked. */
+  function fromAI(raw, capIds, opts) {
+    opts = opts || {};
     const caps = new Set(capIds), seen = new Set(), out = [];
     for (const x of (raw && Array.isArray(raw.features) ? raw.features : []).slice(0, 6)) {
       if (!x || typeof x !== 'object') continue;
@@ -4436,8 +4531,18 @@ rp_h_novelty:['New feature added after discovery: “{f}” (project cost {c}).'
       const cs = uniq((Array.isArray(x.capabilities) ? x.capabilities : []).filter(c => typeof c === 'string' && caps.has(c))).slice(0, 4);
       if ((!en && !ar) || !cs.length || seen.has((en || ar).toLowerCase())) continue;
       seen.add((en || ar).toLowerCase());
+      const urls = new Set(), sources = [];
+      if (opts.web && Array.isArray(x.sources)) {
+        for (const s of x.sources) {
+          const url = s && typeof s === 'object' ? webUrl(s.url) : '';
+          if (!url || urls.has(url)) continue;
+          urls.add(url); sources.push({ title: str(s.title, 120), url });
+          if (sources.length === 3) break;
+        }
+      }
       out.push({ name: { en: en || ar, ar: ar || en }, why: { en: str(x.why_en, 300), ar: str(x.why_ar, 300) }, caps: cs,
-        closest: { en: str(x.closest_en, 240), ar: str(x.closest_ar, 240) } });
+        closest: { en: str(x.closest_en, 240), ar: str(x.closest_ar, 240) }, checked: { en: str(x.checked_en, 240), ar: str(x.checked_ar, 240) },
+        finding: x.finding === 'none_found' || x.finding === 'rare' ? x.finding : '', sources, web: !!opts.web });
     }
     return out.slice(0, 5);
   }
@@ -4449,8 +4554,9 @@ rp_h_novelty:['New feature added after discovery: “{f}” (project cost {c}).'
     const out = [];
     features.forEach((f, i) => {
       const fresh = f.caps.filter(c => pc.indexOf(c) < 0), key = fresh.length ? fresh : f.caps;
-      const c = { id: 'ai' + (i + 1), source: 'ai', key, caps: f.caps, name: f.name, why: f.why, closest: f.closest, fit: 2, w: 2, reuse: f.caps.length - fresh.length,
-        used: usedBy(key, works, true) };
+      const c = { id: 'ai' + (i + 1), source: 'ai', key, caps: f.caps, name: f.name, why: f.why, closest: f.closest,
+        checked: f.checked || { en: '', ar: '' }, finding: f.finding || '', sources: f.sources || [], web: !!f.web,
+        fit: 2, w: 2, reuse: f.caps.length - fresh.length, used: usedBy(key, works, true) };
       c.feas = feasibility(E, project, catalog, opts, c.caps, c.name);
       if (c.feas.status !== 'none') out.push(c);
     });
@@ -4864,6 +4970,10 @@ const NAV = [
   ['dashboard', 'grid'], ['new', 'plus'], ['graph', 'graph'], ['gaps', 'alert'], ['reconfig', 'shuffle'],
   ['planner', 'calendar'], ['report', 'file'], ['lab', 'flask'], ['engine', 'book'], ['admin', 'shield']
 ];
+/* optional gates and counters for rail items, set by later modules (the students' ideas page exists for staff on the server) */
+const NAV_GATE = {}, NAV_BADGE = {};
+const navShown = r => (r === 'admin' ? S.role === 'admin' : NAV_GATE[r] ? NAV_GATE[r]() : true);
+function navBadge(r) { const n = NAV_BADGE[r] ? NAV_BADGE[r]() : 0; return n ? `<span class="nav-badge">${num(n, 0)}</span>` : ''; }
 const freshG = () => ({ view: 'current', sel: null, focus: false, bounds: false, tab: 'resources', batch: false, pending: {}, vb: null, gref: null, anim: null });
 
 const S = {
@@ -5735,7 +5845,7 @@ function shellHTML(content) {
     <button class="icon-btn" data-act="theme" aria-label="${t('theme_toggle')}" title="${t('theme_toggle')}">${icon(isDark() ? 'sun' : 'moon')}</button>
     ${idChip()}
   </header>
-  <nav class="rail" aria-label="${t('main_nav')}">${NAV.filter(([r]) => r !== 'admin' || S.role === 'admin').map(([r, ic]) => `<a href="#${r}" class="${S.route === r ? 'on' : ''}"${S.route === r ? ' aria-current="page"' : ''}>${icon(ic)}<span>${t('nav_' + r)}</span></a>`).join('')}
+  <nav class="rail" aria-label="${t('main_nav')}">${NAV.filter(([r]) => navShown(r)).map(([r, ic]) => `<a href="#${r}" class="${S.route === r ? 'on' : ''}"${S.route === r ? ' aria-current="page"' : ''}>${icon(ic)}<span>${t('nav_' + r)}</span>${navBadge(r)}</a>`).join('')}
     <p class="rail-foot">${t('rail_note')}</p></nav>
   <div class="scrim" data-act="menu"></div>
   <main class="main" id="main">${content}</main>
@@ -5833,6 +5943,7 @@ function activityHTML(list, limit) {
     else if (h.kind === 'reset') txt = t('act_reset', { p: pn });
     else if (h.kind === 'discover') txt = t('act_discover', { p: pn, n: num(h.n, 0) });
     else if (h.kind === 'novelty') txt = t('act_novelty', { p: pn, f: esc(tx(h.name || {})) }) + `<small class="d-block muted">${t(h.unused ? 'nv_unused' : 'nv_used', { k: num(h.used || 0, 0), n: num(h.of || 0, 0) })} · ${nvDelta(h.dc || 0, 'cost')} · ${nvDelta(h.dd || 0, 'days')}</small>`;
+    else if (h.kind === 'novelty-search') txt = t(h.web ? 'act_nvsearch_web' : 'act_nvsearch', { p: pn, n: num(h.n || 0, 0) });
     else if (h.kind === 'salvage') txt = t('act_salvage', { p: pn, x: esc(h.item ? (S.lang === 'ar' ? h.item.ar : h.item.en) : ''), k: num(h.used || 0, 0) }) + (h.ref != null ? `<small class="d-block muted">${t('act_salvage_meta', { a: omr(h.ref), b: omr(h.cost) })}</small>` : '');
     else txt = t('act_edit', { p: pn });
     return `<li class="act-${h.kind}"><span class="dot"></span><div>${txt}<time class="d-block muted small">${fdate(h.ts, true)}</time></div></li>`;
@@ -6245,7 +6356,7 @@ function reportDocHTML(p) {
   const hist = (p.history || []).slice().reverse().slice(0, 25);
   const histTxt = h => h.kind === 'event' ? t('rp_h_event', { ch: listJoin((h.changes || []).map(c => resLabel(c.res) + ' → ' + stLabel(c.to))), e: num(h.evaluated, 0), n: num(h.total, 0), u: num(h.unresolved, 0), a: num(h.atRisk, 0) })
     : h.kind === 'apply' ? t('rp_h_apply', { ch: listJoin((h.changes || []).map(c => esc(compLabel(p, c.comp)) + ': ' + (c.from ? resLabel(c.from) : '–') + ' → ' + (c.to ? resLabel(c.to) : '–'))) || t('no_changes'), c: omr(h.cost) })
-      : h.kind === 'reset' ? t('rp_h_reset') : h.kind === 'salvage' ? t('rp_h_salvage', { x: esc(h.item ? (S.lang === 'ar' ? h.item.ar : h.item.en) : ''), k: num(h.used || 0, 0), a: h.ref != null ? omr(h.ref) : '–', b: omr(h.cost) }) : h.kind === 'discover' ? t('rp_h_discover', { n: num(h.n, 0) }) : h.kind === 'novelty' ? t('rp_h_novelty', { f: esc(tx(h.name || {})), c: omr(h.cost || 0) }) : h.kind === 'edit' ? t('act_edit', { p: esc(tx(p.title)) }) : t('rp_h_create');
+      : h.kind === 'reset' ? t('rp_h_reset') : h.kind === 'salvage' ? t('rp_h_salvage', { x: esc(h.item ? (S.lang === 'ar' ? h.item.ar : h.item.en) : ''), k: num(h.used || 0, 0), a: h.ref != null ? omr(h.ref) : '–', b: omr(h.cost) }) : h.kind === 'discover' ? t('rp_h_discover', { n: num(h.n, 0) }) : h.kind === 'novelty' ? t('rp_h_novelty', { f: esc(tx(h.name || {})), c: omr(h.cost || 0) }) : h.kind === 'novelty-search' ? t(h.web ? 'rp_h_nvsearch_web' : 'rp_h_nvsearch', { n: num(h.n || 0, 0) }) : h.kind === 'edit' ? t('act_edit', { p: esc(tx(p.title)) }) : t('rp_h_create');
   return `<article id="report-doc" class="paper" lang="${S.lang}" dir="${S.lang === 'ar' ? 'rtl' : 'ltr'}">
     <p class="rp-meta">CampusForge AI, ${t('rp_kind')}</p>
     <h1>${esc(tx(p.title))}</h1>
@@ -6788,6 +6899,8 @@ async function runDiscovery() {
   /* the verdict and the features that would set the idea apart come first after a search */
   const nv = st.phase !== 'error' && S.route === 'discover' && $('#nv-panel');
   if (nv) nv.scrollIntoView({ behavior: mm('(prefers-reduced-motion: reduce)') ? 'auto' : 'smooth', block: 'start' });
+  /* when the idea already exists, Claude starts looking for a feature that sets it apart */
+  if (st.phase === 'done') nvAfterDiscovery(p);
 }
 function dcCard(p, it, i, pc, live) {
   const shared = pc.filter(c => it.capabilities.indexOf(c) >= 0);
@@ -7225,7 +7338,10 @@ Object.assign(L.S, {
   acc_pw_note: ['Share the temporary password privately with the person.', 'شارك كلمة المرور المؤقتة مع صاحب الحساب بشكل خاص.'],
   acc_err_last: ['At least one active administrator is required.', 'يجب أن يبقى مسؤول نشط واحد على الأقل.'], acc_err_gen: ['The change could not be saved.', 'تعذّر حفظ التغيير.'],
   acc_err_form: ['Add a name, an email and a password of at least 8 characters.', 'أضف اسمًا وبريدًا إلكترونيًا وكلمة مرور من 8 أحرف على الأقل.'], acc_err_taken: ['An account with this email already exists.', 'يوجد حساب بهذا البريد مسبقًا.'],
-  acc_created: ['Account created.', 'أُنشئ الحساب.']
+  acc_created: ['Account created.', 'أُنشئ الحساب.'],
+  acc_reset: ['Set a new password', 'تعيين كلمة مرور جديدة'], acc_reset_for: ['New temporary password for {n}', 'كلمة مرور مؤقتة جديدة لـ{n}'],
+  acc_reset_note: ['The person is signed out everywhere and signs in with this password. Share it privately.', 'يُسجَّل خروج صاحب الحساب من كل الأجهزة، ثم يدخل بهذه الكلمة، فشاركها معه بشكل خاص.'],
+  acc_reset_done: ['New password set.', 'عُيّنت كلمة المرور الجديدة.'], acc_err_pw: ['Use at least 8 characters.', 'استخدم 8 أحرف على الأقل.']
 });
 const PLATFORM_TEXT = {
   llm_unavailable: ['Claude features are not set up on this server yet. Offline extraction still works.', 'لم تُفعَّل ميزات Claude على هذا الخادم بعد، ولا يزال الاستخراج دون اتصال يعمل.'],
@@ -7239,6 +7355,8 @@ const PLATFORM_TEXT = {
   adm_gate: ['The admin area is available to administrators and supervisors.', 'منطقة الإدارة متاحة للمسؤولين والمشرفين.'],
   hero_note: ['Sign in with your university account, describe your idea and work with real components and worldwide discovery.', 'ادخل بحساب جامعتك، وصف فكرتك، واعمل بمكونات حقيقية واكتشاف دولي.'],
   role_owner: ['Administrator', 'مسؤول'],
+  urole_ideas: ['Student: sends ideas only', 'طالب: يرسل الأفكار فقط'], urole_student: ['Student: whole platform', 'طالب: المنصة كاملة'],
+  acc_note: ['New students can only write and send ideas from the students’ page. Choose “Student: whole platform” to open everything to an account. Supervisors review ideas and submitted projects; administrators also manage the catalog, the students’ page and accounts.', 'لا يستطيع الطلاب الجدد إلا كتابة أفكارهم وإرسالها من صفحة الطلاب، واختر «طالب: المنصة كاملة» لتفتح المنصة لحساب معيّن. يراجع المشرفون الأفكار والمشاريع المرسلة، ويدير المسؤولون أيضًا الكتالوج وصفحة الطلاب والحسابات.'],
   store_cloud: ['Saved on the server', 'محفوظ على الخادم'], store_cloud_d: ['Your projects are saved on this platform’s server and stay private to your account.', 'تُحفظ مشاريعك على خادم المنصة وتبقى خاصة بحسابك.'],
   store_local_d: ['Changes stay in this tab until the server can be reached.', 'تبقى التغييرات في هذه النافذة حتى يتوفر الاتصال بالخادم.']
 };
@@ -7256,8 +7374,9 @@ function accountsTabHTML() {
   if (a.error) return `<p class="warnbox">${t('acc_err_gen')}</p>`;
   const sel = (u, field, opts) => `<select data-on="acc-${field}" data-id="${esc(u.id)}" aria-label="${t(field)}">${opts.map(o => `<option value="${o}" ${u[field] === o ? 'selected' : ''}>${t((field === 'role' ? 'urole_' : 'ustatus_') + o)}</option>`).join('')}</select>`;
   return `<p class="hint">${t('acc_note')}</p><div class="row-btns"><button class="btn small primary" data-act="acc-add">${icon('plus')}<span>${t('acc_add')}</span></button></div>
-    <div class="tbl-wrap"><table class="tbl"><thead><tr><th>${t('name')}</th><th>${t('acc_email')}</th><th>${t('role')}</th><th>${t('status')}</th><th>${t('acc_last')}</th></tr></thead><tbody>
-    ${a.users.map(u => `<tr><td><bdi>${esc(u.name)}</bdi>${u.institution ? `<small class="d-block muted">${esc(u.institution)}</small>` : ''}</td><td dir="ltr">${esc(u.email)}</td><td>${sel(u, 'role', ['student', 'supervisor', 'admin'])}</td><td>${sel(u, 'status', ['active', 'pending', 'suspended'])}</td><td>${u.lastLogin ? fdate(Date.parse(u.lastLogin), true) : '–'}</td></tr>`).join('')}
+    <div class="tbl-wrap"><table class="tbl"><thead><tr><th>${t('name')}</th><th>${t('acc_email')}</th><th>${t('role')}</th><th>${t('status')}</th><th>${t('acc_last')}</th><th></th></tr></thead><tbody>
+    ${a.users.map(u => `<tr><td><bdi>${esc(u.name)}</bdi>${u.institution ? `<small class="d-block muted">${esc(u.institution)}</small>` : ''}</td><td dir="ltr">${esc(u.email)}</td><td>${sel(u, 'role', ['ideas', 'student', 'supervisor', 'admin'])}</td><td>${sel(u, 'status', ['active', 'pending', 'suspended'])}</td><td>${u.lastLogin ? fdate(Date.parse(u.lastLogin), true) : '–'}</td>
+      <td class="act"><button class="icon-btn" data-act="acc-reset" data-id="${esc(u.id)}" aria-label="${t('acc_reset')}: ${esc(u.name)}" title="${t('acc_reset')}">${icon('key')}</button></td></tr>`).join('')}
     </tbody></table></div>`;
 }
 async function loadAccounts() {
@@ -7277,7 +7396,7 @@ ACT['acc-add'] = () => openModal(t('acc_add'), `<div class="form-grid" id="acc-f
     <label class="field"><span>${t('name')}</span><input name="name" maxlength="120"></label>
     <label class="field"><span>${t('acc_email')}</span><input name="email" type="email" dir="ltr"></label>
     <label class="field"><span>${t('acc_password')}</span><input name="password" type="text" dir="ltr" autocomplete="off"></label>
-    <label class="field"><span>${t('role')}</span><select name="role">${['student', 'supervisor', 'admin'].map(r => `<option value="${r}">${t('urole_' + r)}</option>`).join('')}</select></label>
+    <label class="field"><span>${t('role')}</span><select name="role">${['ideas', 'student', 'supervisor', 'admin'].map(r => `<option value="${r}">${t('urole_' + r)}</option>`).join('')}</select></label>
   </div><p class="hint">${t('acc_pw_note')}</p><p class="form-err" id="form-err" role="alert"></p>`,
   `<button class="btn ghost" data-act="modal-close">${t('cancel')}</button><button class="btn primary" data-act="acc-create">${t('save')}</button>`);
 ACT['acc-create'] = async () => {
@@ -7286,6 +7405,20 @@ ACT['acc-create'] = async () => {
   if (!body.name || !body.email || body.password.length < 8) { $('#form-err').textContent = t('acc_err_form'); return; }
   try { await window.CF_PLATFORM.api('POST', '/api/admin/users', body); closeModal(); toast(t('acc_created'), 'ok'); loadAccounts(); }
   catch (e) { $('#form-err').textContent = t(e.code === 'email_taken' ? 'acc_err_taken' : 'acc_err_gen'); }
+};
+ACT['acc-reset'] = el => {
+  const u = ((S.ui.accounts && S.ui.accounts.users) || []).find(x => x.id === el.dataset.id);
+  if (!u) return;
+  openModal(t('acc_reset_for', { n: '<bdi>' + esc(u.name) + '</bdi>' }), `<div class="form-grid" id="acc-pw-form"><label class="field span2"><span>${t('acc_password')}</span><input name="password" type="text" dir="ltr" autocomplete="off" maxlength="200"></label></div>
+    <p class="hint">${t('acc_reset_note')}</p><p class="form-err" id="form-err" role="alert"></p>`,
+  `<button class="btn ghost" data-act="modal-close">${t('cancel')}</button><button class="btn primary" data-act="acc-reset-ok" data-id="${esc(u.id)}">${t('save')}</button>`);
+};
+ACT['acc-reset-ok'] = async el => {
+  const pw = $('#acc-pw-form [name="password"]').value;
+  if (pw.length < 8) { $('#form-err').textContent = t('acc_err_pw'); return; }
+  el.disabled = true;
+  try { await window.CF_PLATFORM.api('POST', '/api/admin/users/' + encodeURIComponent(el.dataset.id) + '/password', { password: pw }); closeModal(); toast(t('acc_reset_done'), 'ok'); }
+  catch (e) { $('#form-err').textContent = t('acc_err_gen'); el.disabled = false; }
 };
 
 /* ---------------- Sustainability Studio: photos or video to a sustainability project ---------------- */
@@ -8306,7 +8439,10 @@ ON['sv-kit'] = el => { const sv = upState().sv; if (!sv) return; const s = new S
 
 /* ---------------- novelty after global discovery: a feature none of the found works uses ---------------- */
 const NV = window.CF_NOVELTY;
-const nvBox = () => S.ui.nv || (S.ui.nv = { pid: null, key: '', res: null, more: false, busy: false });
+const nvBox = () => S.ui.nv || (S.ui.nv = { pid: null, key: '', res: null, more: false, ai: {} });
+/* Claude's search for each project: whether it runs, its last error, and the discoveries it already followed */
+const nvAI = pid => { const b = nvBox(); return b.ai[pid] || (b.ai[pid] = { busy: false, err: '', auto: {}, ctrl: null }); };
+const nvAIOk = () => { const smp = S.caps.sample; return !(smp === null || S.caps.sampleHidden); };
 function nvKey(p) {
   return [p.discovery.ts, (p.discovery.ai && p.discovery.ai.ts) || 0, S.catStamp, E.configSignature(p, p.current.config), p.components.length,
     p.functions.length, JSON.stringify(p.current.overrides || {}), (p.features || []).length, JSON.stringify(S.ws.weights)].join('|');
@@ -8332,18 +8468,48 @@ function nvDelta(x, kind) {
   const v = '<bdi dir="ltr">' + (x > 0 ? '+' : '−') + num(Math.abs(x), kind === 'cost' ? 2 : 0) + '</bdi>';
   return kind === 'cost' ? t('omr', { v }) : t(S.lang !== 'ar' && Math.abs(x) === 1 ? 'n_day' : 'n_days', { n: v });
 }
-function nvCardHTML(p, c, i, n) {
+const nvLinks = sources => listJoin(sources.map(s => `<a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer" title="${esc(s.title || s.url)}">${esc(hostOf(s.url))}</a>`));
+/* what Claude compared or searched before proposing a feature, and the pages it read */
+function nvCheckHTML(c) {
+  const checked = tx(c.checked);
+  if (!checked && !c.finding && !(c.sources && c.sources.length)) return '';
+  return `<div class="nv-check">${icon(c.web ? 'globe' : 'spark')}<div>
+    ${c.finding ? `<p class="small">${chip(t(c.finding === 'rare' ? 'nv_find_rare' : 'nv_find_none'), c.finding === 'rare' ? 'info' : 'ok')}</p>` : ''}
+    ${checked ? `<p class="small"><b>${t('nv_checked')}:</b> ${esc(checked)}</p>` : ''}
+    ${c.sources && c.sources.length ? `<p class="small nv-src"><b>${t('nv_sources')}:</b> ${nvLinks(c.sources)}</p>` : ''}</div></div>`;
+}
+function nvCardHTML(p, c, best, n) {
   const pc = NV.projectCaps(p), fresh = c.caps.filter(x => pc.indexOf(x) < 0), reused = c.caps.filter(x => pc.indexOf(x) >= 0), f = c.feas;
   const status = f.status === 'ok' ? chip(t('nv_within'), 'ok')
     : chip(f.need && f.need.budget ? t('nv_need_budget', { b: omr(f.need.budget) }) : t('nv_need_deadline', { d: ndays(f.need.deadline) }), 'risk');
-  return `<article class="nv-card${i === 0 ? ' best' : ''}"><header><div><h3>${esc(tx(c.name))}</h3>
-      <p class="tags">${i === 0 && c.used.length === 0 && f.status === 'ok' ? chip(t('nv_best'), 'ok') + ' ' : ''}${c.used.length === 0 ? chip(t('nv_unused', { n: num(n, 0) }), 'cyan') : chip(t('nv_used', { k: num(c.used.length, 0), n: num(n, 0) }), 'risk')} ${chip(t(c.source === 'ai' ? 'nv_src_ai' : 'nv_src_lib'), 'info')}</p></div></header>
+  const src = c.source !== 'ai' ? chip(t('nv_src_lib'), 'info') : chip(t(c.web ? 'nv_src_ai_web' : 'nv_src_ai'), c.web ? 'cyan' : 'info');
+  return `<article class="nv-card${best ? ' best' : ''}"><header><div><h3>${esc(tx(c.name))}</h3>
+      <p class="tags">${best && c.used.length === 0 && f.status === 'ok' ? chip(t('nv_best'), 'ok') + ' ' : ''}${c.used.length === 0 ? chip(t('nv_unused', { n: num(n, 0) }), 'cyan') : chip(t('nv_used', { k: num(c.used.length, 0), n: num(n, 0) }), 'risk')} ${src}</p></div></header>
     ${tx(c.why) ? `<p class="small">${esc(tx(c.why))}</p>` : ''}
     ${c.source === 'ai' && tx(c.closest) ? `<p class="small muted"><b>${t('nv_closest_ai')}:</b> ${esc(tx(c.closest))}</p>` : ''}
+    ${c.source === 'ai' ? nvCheckHTML(c) : ''}
     <p class="small"><b>${t('nv_adds')}:</b> ${listJoin((fresh.length ? fresh : c.caps).map(x => esc(tagLabel(x))))}${reused.length && fresh.length ? ` <span class="muted">${t('nv_reuses', { x: listJoin(reused.map(x => esc(tagLabel(x)))) })}</span>` : ''}</p>
     <p class="small"><b>${t('nv_new_parts')}:</b> ${f.newRes && f.newRes.length ? listJoin(f.newRes.slice(0, 5).map(resLabel)) + (f.newRes.length > 5 ? '…' : '') : t('nv_no_parts')}</p>
     <div class="nv-kpis"><span><b class="nw">${nvDelta(f.delta.cost, 'cost')}</b><small>${t('cost')}</small></span><span><b class="nw">${nvDelta(f.delta.days, 'days')}</b><small>${t('nv_time')}</small></span><span>${status}</span></div>
     <footer><button class="btn small ${f.status === 'ok' ? 'primary' : 'ghost'}" data-act="nv-add" data-v="${esc(c.id)}" ${f.status === 'ok' ? '' : 'disabled'}>${icon('plus')}<span>${t('nv_add')}</span></button></footer></article>`;
+}
+/* Claude's part of the panel: it runs by itself after a discovery that finds the idea, or on request */
+function nvAIBlockHTML(p, res, n) {
+  const a = nvAI(p.id), web = liveSearch(), ok = nvAIOk(), ai = p.discovery.ai;
+  const asked = ai && ai.features ? ai.features.length : 0, added = new Set((p.features || []).map(f => f.key));
+  const waiting = ai && ai.features ? ai.features.filter(f => !added.has('ai:' + f.name.en)).length : 0;
+  let status = '';
+  if (a.busy) status = `<div class="dc-status busy nv-ai-status" role="status"><span class="spin" aria-hidden="true"></span><div><b>${t(web ? 'nv_ai_busy_web' : 'nv_ai_busy_k')}</b><small class="d-block">${t('nv_ai_wait')}</small></div><button class="btn small ghost" data-act="nv-ai-stop">${t('dc_cancel')}</button></div>`;
+  else if (a.err) status = `<div class="dc-status err nv-ai-status">${icon('alert')}<div><b>${a.err}</b></div>${ok ? `<button class="btn small ghost" data-act="nv-ai">${t('dc_retry')}</button>` : ''}</div>`;
+  const cards = res.ai.length ? `<div class="nv-list">${res.ai.map((c, i) => nvCardHTML(p, c, i === 0, n)).join('')}</div>` : '';
+  const nofit = !a.busy && asked && waiting && !res.ai.length ? `<p class="hint">${t('nv_ai_nofit')}</p>` : '';
+  let foot = '';
+  if (!a.busy) {
+    if (ok) foot = `<div class="row-btns"><button class="btn small ${res.ai.length ? 'ghost' : 'primary'}" data-act="nv-ai">${icon('spark')}<span>${t(asked ? 'nv_ai_more' : 'nv_ai_start')}</span></button></div>`;
+    else foot = window.CF_LOCAL ? `<p class="hint">${t('nv_ai_need_key')} <button class="linkish" data-act="claude-key">${t('lk_btn')}</button></p>` : `<p class="hint">${t(unavailableKey())}</p>`;
+  }
+  const intro = res.ai.length || a.busy ? '' : `<p class="small">${t(web ? 'nv_ai_intro_web' : 'nv_ai_intro_k')}</p>`;
+  return `<div class="nv-ai-block" id="nv-ai"><h3 class="nv-sub">${icon('spark')}<span>${t('nv_ai_h')}</span></h3>${intro}${status}${cards}${nofit}${foot}</div>`;
 }
 function nvPanelHTML(p) {
   const dc = p.discovery;
@@ -8353,16 +8519,57 @@ function nvPanelHTML(p) {
   const st = nvBox(), v = res.verdict, n = dc.items.length, b = v.best, it = b && dc.items[b.index];
   const head = v.level === 'found' ? 'nv_h_found' : v.level === 'close' ? 'nv_h_close' : 'nv_h_new';
   const closest = it ? t('nv_closest', { t: '<bdi>' + esc(it.title) + '</bdi>', s: num(b.shared, 0), n: num(b.total, 0), p: pct(b.ratio) }) : '';
-  const list = st.more ? res.list : res.list.slice(0, 4);
-  const smp = S.caps.sample, aiOk = !(smp === null || S.caps.sampleHidden);
+  const list = st.more ? res.list : res.list.slice(0, 4), aiFirst = res.ai.length > 0;
   return `<section class="panel nv-panel lvl-${v.level}" id="nv-panel"><div class="nv-head">${icon(v.level === 'found' ? 'alert' : 'spark')}<div><h2>${t(head)}</h2>${closest ? `<p class="small">${closest}</p>` : ''}</div></div>
     ${p.features && p.features.length ? `<p class="nv-done">${icon('check')}<span>${t('nv_added_list', { x: listJoin(p.features.map(f => '<b>' + esc(tx(f.name)) + '</b>')) })}</span> <a href="#graph">${t('nv_view_graph')}</a></p>` : ''}
+    ${nvAIBlockHTML(p, res, n)}
+    <h3 class="nv-sub">${t('nv_lib_h')}</h3>
     <p>${t(v.level === 'new' ? 'nv_p_new' : 'nv_p_found', { n: num(n, 0) })}</p>
-    ${res.list.length ? `<div class="nv-list">${list.map((c, i) => nvCardHTML(p, c, i, n)).join('')}</div>` : `<p class="hint">${t('nv_none')}</p>`}
-    ${res.ai.length ? `<h3 class="nv-sub">${t('nv_ai_h')}</h3><div class="nv-list">${res.ai.map(c => nvCardHTML(p, c, -1, n)).join('')}</div>` : ''}
-    <div class="row-btns">${res.list.length > 4 ? `<button class="btn small ghost" data-act="nv-more">${t(st.more ? 'nv_less' : 'nv_more', { n: num(res.list.length - 4, 0) })}</button>` : ''}
-      ${aiOk ? `<button class="btn small ghost" data-act="nv-ai" ${st.busy ? 'disabled' : ''}>${icon('spark')}<span>${t(st.busy ? 'nv_ai_busy' : 'nv_ai')}</span></button>` : ''}</div>
+    ${res.list.length ? `<div class="nv-list">${list.map((c, i) => nvCardHTML(p, c, !aiFirst && i === 0, n)).join('')}</div>` : `<p class="hint">${t('nv_none')}</p>`}
+    ${res.list.length > 4 ? `<div class="row-btns"><button class="btn small ghost" data-act="nv-more">${t(st.more ? 'nv_less' : 'nv_more', { n: num(res.list.length - 4, 0) })}</button></div>` : ''}
     <p class="note">${t('nv_note')}</p></section>`;
+}
+/* Claude looks for features that the found works and other similar projects do not offer; each round adds to the
+   earlier ones and never repeats a feature already proposed or added. */
+async function nvRunAI(p, auto) {
+  const a = nvAI(p.id);
+  if (!p.discovery || !p.discovery.items || a.busy) return;
+  a.busy = true; a.err = ''; a.ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+  if (S.route === 'discover' && activeP() === p) render();
+  try {
+    const prev = (p.discovery.ai && p.discovery.ai.features) || [], web = liveSearch();
+    let shown = [];
+    try { shown = nvResult(p).list.slice(0, 6).map(c => c.name.en); } catch (e) { shown = []; }
+    const avoid = shown.concat(prev.map(f => f.name.en), (p.features || []).map(f => tx(f.name) && f.name.en));
+    const r = await askJSON(NV.aiPrompt(p, p.discovery.items, D.TAGS, { avoid }), { tier: 'default', signal: a.ctrl ? a.ctrl.signal : null });
+    const seen = new Set(prev.map(f => f.name.en.toLowerCase()));
+    const fresh = NV.fromAI(r.value, capIds(), { web }).filter(f => !seen.has(f.name.en.toLowerCase()));
+    if (!fresh.length) throw { code: r.code === 'cancelled' ? 'cancelled' : 'empty_result' };
+    p.discovery.ai = { ts: Date.now(), web, rounds: ((p.discovery.ai && p.discovery.ai.rounds) || 0) + 1, features: fresh.concat(prev).slice(0, 9) };
+    p.history.push({ ts: Date.now(), kind: 'novelty-search', n: fresh.length, web });
+    saveProject(p);
+    const names = new Set(fresh.map(f => f.name.en));
+    const fit = nvResult(p).ai.filter(c => names.has(c.name.en)).length;
+    toast(fit ? t('nv_ai_done', { n: num(fit, 0) }) : t('nv_ai_nofit'), fit ? 'ok' : 'warn');
+  } catch (e) {
+    const code = e && e.code;
+    a.err = code === 'cancelled' ? '' : claudeErrText(code);
+    if (a.err && !auto) toast(a.err, 'warn');
+  }
+  a.busy = false; a.ctrl = null;
+  if (S.route === 'discover' && activeP() === p) render();
+}
+/* After a discovery that finds the idea (or something close), Claude starts looking for a new feature by itself,
+   once for that discovery. */
+function nvAfterDiscovery(p) {
+  if (!NV || !p || !p.discovery || !p.discovery.items || !p.discovery.items.length || !nvAIOk()) return;
+  const a = nvAI(p.id);
+  if (a.auto[p.discovery.ts] || a.busy) return;
+  let level = 'none';
+  try { level = nvResult(p).verdict.level; } catch (e) { return; }
+  if (level !== 'found' && level !== 'close') return;
+  a.auto[p.discovery.ts] = true;
+  nvRunAI(p, true);
 }
 ACT['nv-more'] = () => { const st = nvBox(); st.more = !st.more; render(); };
 ACT['nv-add'] = el => {
@@ -8380,35 +8587,203 @@ ACT['nv-add'] = el => {
   const before = clone(p.current.config);
   p.current.config = cfg;
   const n = p.discovery.items.length;
-  p.features = (p.features || []).concat([{ key: c.source + ':' + (c.source === 'ai' ? c.name.en : c.id), id: c.id, source: c.source, name: clone(c.name), caps: c.caps.slice(), fn: w.fnId,
-    unused: c.used.length === 0, used: c.used.length, of: n, dc: c.feas.delta.cost, dd: c.feas.delta.days, cost: c.feas.after.cost, days: c.feas.after.days, ts: Date.now() }]);
+  const proof = c.source === 'ai' ? { web: !!c.web, sources: (c.sources || []).slice(0, 3), checked: clone(c.checked || { en: '', ar: '' }), finding: c.finding || '' } : {};
+  p.features = (p.features || []).concat([Object.assign({ key: c.source + ':' + (c.source === 'ai' ? c.name.en : c.id), id: c.id, source: c.source, name: clone(c.name), caps: c.caps.slice(), fn: w.fnId,
+    unused: c.used.length === 0, used: c.used.length, of: n, dc: c.feas.delta.cost, dd: c.feas.delta.days, cost: c.feas.after.cost, days: c.feas.after.days, ts: Date.now() }, proof)]);
   p.history.push({ ts: Date.now(), kind: 'novelty', name: clone(c.name), unused: c.used.length === 0, of: n, dc: c.feas.delta.cost, dd: c.feas.delta.days, cost: c.feas.after.cost, days: c.feas.after.days, before, after: clone(cfg) });
   rebuildRt(p, false);
   saveProject(p);
-  toast(t('nv_added_toast', { f: tx(c.name), c: omr(c.feas.after.cost) }), 'ok');
+  toast(t('nv_added_toast', { f: esc(tx(c.name)), c: omr(c.feas.after.cost) }), 'ok');
   render();
 };
-ACT['nv-ai'] = async () => {
-  const p = activeP(), st = nvBox();
-  if (!p || !p.discovery || st.busy) return;
-  st.busy = true; render();
-  try {
-    const out = (await askJSON(NV.aiPrompt(p, p.discovery.items, D.TAGS), { tier: 'default' })).value;
-    const features = NV.fromAI(out, capIds());
-    if (!features.length) throw { code: 'empty_result' };
-    p.discovery.ai = { ts: Date.now(), features };
-    saveProject(p);
-    toast(t('nv_ai_done', { n: num(features.length, 0) }), 'ok');
-  } catch (e) {
-    toast(claudeErrText(e && e.code), 'warn');
-  }
-  st.busy = false; render();
-};
+ACT['nv-ai'] = () => { const p = activeP(); if (p && p.discovery) nvRunAI(p, false); };
+ACT['nv-ai-stop'] = () => { const p = activeP(), a = p && nvAI(p.id); if (a && a.ctrl) a.ctrl.abort(); };
 /* report section: features added to make the project different from the found work */
 function noveltyReportHTML(p) {
   if (!p.features || !p.features.length) return '';
-  return `<h3>${t('rp_nv_h')}</h3><p class="rp-meta">${t('rp_nv_p')}</p><table><thead><tr><th>${t('np_fn_name')}</th><th>${t('rp_nv_found')}</th><th>${t('cost')}</th><th>${t('nv_time')}</th></tr></thead><tbody>${p.features.map(f => `<tr><td>${esc(tx(f.name))}${f.source === 'ai' ? ` <span class="rp-meta">(${t('nv_src_ai')})</span>` : ''}</td><td>${f.unused ? t('nv_unused', { n: num(f.of, 0) }) : t('nv_used', { k: num(f.used, 0), n: num(f.of, 0) })}</td><td>${nvDelta(f.dc, 'cost')}</td><td>${nvDelta(f.dd, 'days')}</td></tr>`).join('')}</tbody></table>`;
+  const how = f => f.source !== 'ai' ? '' : `<br><span class="rp-meta">${f.web ? t('rp_nv_web', { x: f.sources && f.sources.length ? listJoin(f.sources.map(s => esc(hostOf(s.url)))) : t('rp_nv_nosrc') }) : t('rp_nv_k')}</span>`;
+  return `<h3>${t('rp_nv_h')}</h3><p class="rp-meta">${t('rp_nv_p')}</p><table><thead><tr><th>${t('np_fn_name')}</th><th>${t('rp_nv_found')}</th><th>${t('cost')}</th><th>${t('nv_time')}</th></tr></thead><tbody>${p.features.map(f => `<tr><td>${esc(tx(f.name))}${how(f)}</td><td>${f.unused ? t('nv_unused', { n: num(f.of, 0) }) : t('nv_used', { k: num(f.used, 0), n: num(f.of, 0) })}</td><td>${nvDelta(f.dc, 'cost')}</td><td>${nvDelta(f.dd, 'days')}</td></tr>`).join('')}</tbody></table>`;
 }
+
+/* ---------------- students' ideas: what students send from their page, and the page itself (server only) ---------------- */
+Object.assign(L.S, {
+  nav_ideas: ['Students’ ideas', 'أفكار الطلاب'],
+  id_p: ['Students sign in to their own page, write a description of their idea and send it to you. They cannot open any other part of the platform.', 'يدخل الطلاب إلى صفحتهم الخاصة، فيكتبون وصف فكرتهم ويرسلونه إليك، ولا يستطيعون فتح أي جزء آخر من المنصة.'],
+  id_gate: ['Students’ ideas are available to administrators and supervisors on the server version.', 'أفكار الطلاب متاحة للمسؤولين والمشرفين في نسخة الخادم.'],
+  id_page_h: ['Students’ page', 'صفحة الطلاب'], id_open_on: ['Accepting ideas', 'تستقبل الأفكار'], id_open_off: ['Closed to new ideas', 'مغلقة أمام الأفكار الجديدة'],
+  id_link: ['Students’ address', 'رابط صفحة الطلاب'], id_copy: ['Copy', 'نسخ'], id_copied: ['Address copied. Share it with your students.', 'نُسخ الرابط، فشاركه مع طلابك.'],
+  id_preview: ['Preview', 'معاينة'],
+  id_open: ['Accept new ideas', 'استقبال الأفكار الجديدة'],
+  id_signup: ['Student accounts', 'حسابات الطلاب'],
+  id_su_open: ['Students create their account and sign in at once', 'ينشئ الطالب حسابه ويدخل مباشرة'],
+  id_su_approve: ['Students create their account and I approve it', 'ينشئ الطالب حسابه وأوافق عليه أنا'],
+  id_su_closed: ['Only I create accounts', 'أنا من ينشئ الحسابات فقط'],
+  id_msg: ['Your message to students', 'رسالتك للطلاب'], id_msg_note: ['Shown at the top of the students’ page. Leave it empty to show nothing.', 'تظهر أعلى صفحة الطلاب، واتركها فارغة إن لم ترد إظهار شيء.'],
+  id_msg_ph: ['Example: Send your idea by 30 November. Explain the problem, your solution and who benefits.', 'مثال: أرسل فكرتك قبل 30 نوفمبر، واشرح المشكلة والحل والفئة المستفيدة.'],
+  id_save_page: ['Save the page', 'حفظ إعدادات الصفحة'], id_page_saved: ['Students’ page saved.', 'حُفظت إعدادات صفحة الطلاب.'],
+  id_accounts: ['Manage student accounts', 'إدارة حسابات الطلاب'],
+  id_list_h: ['Ideas received', 'الأفكار الواردة'], id_search: ['Search ideas or students', 'ابحث في الأفكار أو أسماء الطلاب'],
+  id_f_all: ['All', 'الكل'],
+  idst_new: ['New', 'جديدة'], idst_review: ['Under review', 'قيد المراجعة'], idst_accepted: ['Accepted', 'مقبولة'], idst_changes: ['Needs changes', 'تحتاج تعديلًا'], idst_declined: ['Not accepted', 'غير مقبولة'],
+  id_none: ['No student has sent an idea yet. Share the students’ address with them.', 'لم يرسل أي طالب فكرة بعد، فشارك رابط صفحة الطلاب معهم.'],
+  id_none_f: ['No ideas match.', 'لا توجد أفكار مطابقة.'],
+  id_loading: ['Loading ideas', 'جارٍ تحميل الأفكار'], id_error: ['Ideas could not be loaded.', 'تعذّر تحميل الأفكار.'], id_refresh: ['Refresh', 'تحديث'],
+  id_sent: ['Sent {d}', 'أُرسلت في {d}'], id_reviewed: ['Reviewed {d}', 'روجعت في {d}'], id_unknown: ['Former account', 'حساب محذوف'],
+  id_status: ['Decision', 'القرار'], id_reply: ['Your reply to the student', 'ردك على الطالب'],
+  id_reply_ph: ['Optional. The student reads it on their page.', 'اختياري، ويقرؤه الطالب في صفحته.'],
+  id_save: ['Save review', 'حفظ المراجعة'], id_saved: ['Review saved. The student sees it on their page.', 'حُفظت المراجعة، وسيراها الطالب في صفحته.'],
+  id_save_err: ['The review could not be saved.', 'تعذّر حفظ المراجعة.'],
+  id_start: ['Start a project from this idea', 'ابدأ مشروعًا من هذه الفكرة'],
+  id_started: ['The idea is in New project. Extract the functions, then build the project.', 'نُقلت الفكرة إلى «مشروع جديد»، فاستخرج الوظائف ثم أنشئ المشروع.'],
+  id_more: ['Show the full description', 'عرض الوصف كاملًا'], id_less: ['Show less', 'عرض أقل'],
+  id_del: ['Delete idea', 'حذف الفكرة'], id_del_p: ['The idea “{t}” will be deleted for good, and the student will no longer see it on their page.', 'ستُحذف فكرة «{t}» نهائيًا، ولن يراها الطالب في صفحته بعد ذلك.'],
+  id_deleted: ['Idea deleted.', 'حُذفت الفكرة.'],
+  id_new_n: ['{n} new', '{n} جديدة'],
+  id_sup_note: ['Administrators manage the students’ page and accounts. You can review the ideas.', 'يدير المسؤولون صفحة الطلاب والحسابات، ويمكنك مراجعة الأفكار.']
+});
+ICONS.inbox = 'M4 13h4.5l1.5 3h4l1.5-3H20M4 13l2.2-8h11.6L20 13v6H4z';
+ICONS.copy = 'M9 9h11v11H9zM5 15H4V4h11v1';
+ICONS.eye = 'M2.5 12s3.5-6.5 9.5-6.5S21.5 12 21.5 12s-3.5 6.5-9.5 6.5S2.5 12 2.5 12zM12 9.2a2.8 2.8 0 1 0 0 5.6a2.8 2.8 0 1 0 0-5.6';
+ROUTES.splice(ROUTES.indexOf('dashboard') + 1, 0, 'ideas');
+NAV.splice(NAV.findIndex(x => x[0] === 'dashboard') + 1, 0, ['ideas', 'inbox']);
+const IDEA_ST = ['new', 'review', 'accepted', 'changes', 'declined'];
+const IDEA_TONE = { new: 'cyan', review: 'info', accepted: 'ok', changes: 'risk', declined: 'gap' };
+const pme = () => (window.CF_PLATFORM && window.CF_PLATFORM.me) || null;
+const ideasStaff = () => { const m = pme(); return !!(m && (m.role === 'admin' || m.role === 'supervisor')); };
+const ideasAdmin = () => { const m = pme(); return !!(m && m.role === 'admin'); };
+const ideasState = () => S.ui.ideas || (S.ui.ideas = { list: null, page: null, loading: false, error: false, f: 'all', q: '', more: {}, edit: {}, pageEdit: null });
+NAV_GATE.ideas = ideasStaff;
+NAV_BADGE.ideas = () => { const s = S.ui.ideas; return s && s.list ? s.list.filter(i => i.status === 'new').length : 0; };
+
+async function loadIdeas() {
+  const s = ideasState();
+  if (!ideasStaff() || s.loading) return;
+  s.loading = true;
+  try {
+    const r = await window.CF_PLATFORM.api('GET', '/api/admin/ideas');
+    s.list = r.ideas || []; s.page = r.page || null; s.error = false;
+  } catch (e) { s.error = true; }
+  s.loading = false;
+  if (S.route === 'ideas') render();
+  else {
+    /* elsewhere only the counter on the rail changes, so nothing the person is typing is redrawn */
+    const a = $('.rail a[href="#ideas"]');
+    if (a) { const old = a.querySelector('.nav-badge'); if (old) old.remove(); a.insertAdjacentHTML('beforeend', navBadge('ideas')); }
+  }
+}
+if (window.CF_PLATFORM_READY) window.CF_PLATFORM_READY.then(ok => { if (ok && ideasStaff()) loadIdeas(); });
+
+function studentsAddress() { return location.origin + '/students'; }
+function ideasPagePanel(s) {
+  if (!ideasAdmin()) return `<section class="panel id-page"><h2>${t('id_page_h')}</h2><div class="id-link"><span class="hint">${t('id_link')}</span><code dir="ltr">${esc(studentsAddress())}</code><button class="btn small ghost" data-act="ideas-copy">${icon('copy')}<span>${t('id_copy')}</span></button></div><p class="hint">${t('id_sup_note')}</p></section>`;
+  const pg = s.pageEdit || s.page || { open: true, message: '', signup: 'open' };
+  return `<section class="panel id-page"><div class="id-page-head"><h2>${t('id_page_h')}</h2>${chip(t(pg.open ? 'id_open_on' : 'id_open_off'), pg.open ? 'ok' : 'gap')}</div>
+    <div class="id-link"><span class="hint">${t('id_link')}</span><code dir="ltr">${esc(studentsAddress())}</code>
+      <button class="btn small ghost" data-act="ideas-copy">${icon('copy')}<span>${t('id_copy')}</span></button><a class="btn small ghost" href="/students" target="_blank" rel="noopener">${icon('eye')}<span>${t('id_preview')}</span></a></div>
+    <div class="id-form">
+      <label class="tog id-open"><input type="checkbox" data-on="idp-open" ${pg.open ? 'checked' : ''}><span>${t('id_open')}</span></label>
+      <label class="field"><span>${t('id_signup')}</span><select data-on="idp-signup">${['open', 'approve', 'closed'].map(k => `<option value="${k}" ${pg.signup === k ? 'selected' : ''}>${t('id_su_' + k)}</option>`).join('')}</select></label>
+      <label class="field id-msg"><span>${t('id_msg')}</span><textarea rows="3" dir="auto" maxlength="2000" data-in="idp-msg" placeholder="${esc(t('id_msg_ph'))}">${esc(pg.message || '')}</textarea><small>${t('id_msg_note')}</small></label>
+    </div>
+    <div class="row-btns"><button class="btn primary" data-act="idp-save">${t('id_save_page')}</button><button class="btn ghost" data-act="ideas-accounts">${icon('user')}<span>${t('id_accounts')}</span></button></div></section>`;
+}
+function ideaCardHTML(it, s) {
+  const ed = s.edit[it.id] || {}, st = ed.status || it.status, reply = ed.reply !== undefined ? ed.reply : (it.reply || ''), a = it.author || {};
+  const long = it.description.length > 700, open = !!s.more[it.id];
+  const who = [a.name ? '<bdi>' + esc(a.name) + '</bdi>' : esc(t('id_unknown')), a.email ? `<span dir="ltr">${esc(a.email)}</span>` : '', a.institution ? '<bdi>' + esc(a.institution) + '</bdi>' : ''].filter(Boolean).join(' · ');
+  return `<article class="id-card" id="idea-${esc(it.id)}" data-status="${esc(it.status)}"><header><div class="id-h"><h3><bdi>${esc(it.title)}</bdi></h3>
+      <p class="id-who">${who}</p><p class="id-when">${t('id_sent', { d: fdate(it.createdAt, true) })}${it.reviewedAt ? ' · ' + t('id_reviewed', { d: fdate(it.reviewedAt, true) }) : ''}</p></div>
+      ${chip(t('idst_' + it.status), IDEA_TONE[it.status] || 'info')}</header>
+    <p class="id-desc" dir="auto">${esc(long && !open ? it.description.slice(0, 700).replace(/\s+\S*$/, '') + '…' : it.description)}</p>
+    ${long ? `<button class="linkish small" data-act="idea-more" data-id="${esc(it.id)}">${t(open ? 'id_less' : 'id_more')}</button>` : ''}
+    <div class="id-review"><label class="field"><span>${t('id_status')}</span><select data-on="idea-status" data-id="${esc(it.id)}">${IDEA_ST.map(k => `<option value="${k}" ${st === k ? 'selected' : ''}>${t('idst_' + k)}</option>`).join('')}</select></label>
+      <label class="field"><span>${t('id_reply')}</span><textarea rows="2" dir="auto" maxlength="4000" data-in="idea-reply" data-id="${esc(it.id)}" placeholder="${esc(t('id_reply_ph'))}">${esc(reply)}</textarea></label></div>
+    <div class="row-btns"><button class="btn small primary" data-act="idea-save" data-id="${esc(it.id)}">${icon('check')}<span>${t('id_save')}</span></button>
+      <button class="btn small ghost" data-act="idea-start" data-id="${esc(it.id)}">${icon('plus')}<span>${t('id_start')}</span></button><span class="grow"></span>
+      ${ideasAdmin() ? `<button class="icon-btn" data-act="idea-del" data-id="${esc(it.id)}" aria-label="${t('id_del')}" title="${t('id_del')}">${icon('trash')}</button>` : ''}</div></article>`;
+}
+function ideasListHTML(s) {
+  const q = s.q.trim().toLowerCase(), all = s.list || [];
+  const count = k => (k === 'all' ? all.length : all.filter(i => i.status === k).length);
+  const list = all.filter(i => (s.f === 'all' || i.status === s.f) && (!q || [i.title, i.description, i.author && i.author.name, i.author && i.author.email].join(' ').toLowerCase().indexOf(q) >= 0));
+  return `<div class="tabs id-tabs" role="tablist">${['all'].concat(IDEA_ST).map(k => `<button role="tab" data-act="ideas-f" data-v="${k}" aria-selected="${s.f === k}">${t(k === 'all' ? 'id_f_all' : 'idst_' + k)} <span class="cnt">${num(count(k), 0)}</span></button>`).join('')}</div>
+    ${!all.length ? `<p class="hint">${t('id_none')}</p>` : list.length ? `<div class="id-list">${list.map(it => ideaCardHTML(it, s)).join('')}</div>` : `<p class="hint">${t('id_none_f')}</p>`}`;
+}
+function pageIdeas() {
+  if (!ideasStaff()) return `<div class="empty"><h1>${t('nav_ideas')}</h1><p>${t('id_gate')}</p></div>`;
+  const s = ideasState();
+  if (!s.list && !s.loading && !s.error) setTimeout(loadIdeas, 0);
+  const body = s.error && !s.list ? `<p class="warnbox">${t('id_error')}</p>` : !s.list ? `<p class="hint">${t('id_loading')}</p>` : ideasListHTML(s);
+  return `<header class="page-head"><div><h1>${t('nav_ideas')}</h1><p class="lede">${t('id_p')}</p></div>
+      <div class="row-btns"><button class="btn small ghost" data-act="ideas-refresh" ${s.loading ? 'disabled' : ''}>${icon('reset')}<span>${t('id_refresh')}</span></button></div></header>
+    ${ideasPagePanel(s)}
+    <section class="panel"><div class="id-list-head"><h2>${t('id_list_h')}</h2><input type="search" class="search" data-in="ideas-q" value="${esc(s.q)}" placeholder="${esc(t('id_search'))}" aria-label="${t('id_search')}"></div>
+      <div id="ideas-body">${body}</div></section>`;
+}
+PAGES.ideas = pageIdeas;
+const ideaById = id => ((S.ui.ideas && S.ui.ideas.list) || []).find(i => i.id === id);
+Object.assign(ACT, {
+  'ideas-refresh'() { const s = ideasState(); s.edit = {}; loadIdeas(); render(); },
+  'ideas-f'(el) { ideasState().f = el.dataset.v; render(); },
+  'ideas-copy'() {
+    const v = studentsAddress();
+    const done = () => toast(t('id_copied'), 'ok');
+    try { navigator.clipboard.writeText(v).then(done, () => toast(esc(v), 'ok')); } catch (e) { toast(esc(v), 'ok'); }
+  },
+  'ideas-accounts'() { S.ui.admin.tab = 'accounts'; location.hash = '#admin'; },
+  async 'idp-save'(el) {
+    const s = ideasState(), pg = Object.assign({ open: true, message: '', signup: 'open' }, s.page || {}, s.pageEdit || {});
+    el.disabled = true;
+    try {
+      s.page = await window.CF_PLATFORM.api('PUT', '/api/admin/student-page', { open: !!pg.open, message: String(pg.message || ''), signup: pg.signup });
+      s.pageEdit = null; toast(t('id_page_saved'), 'ok');
+    } catch (e) { toast(t('acc_err_gen'), 'warn'); }
+    el.disabled = false; render();
+  },
+  'idea-more'(el) { const s = ideasState(); s.more[el.dataset.id] = !s.more[el.dataset.id]; render(); },
+  async 'idea-save'(el) {
+    const s = ideasState(), it = ideaById(el.dataset.id);
+    if (!it) return;
+    const ed = s.edit[it.id] || {};
+    el.disabled = true;
+    try {
+      const r = await window.CF_PLATFORM.api('PATCH', '/api/admin/ideas/' + encodeURIComponent(it.id), { status: ed.status || it.status, reply: ed.reply !== undefined ? ed.reply : (it.reply || '') });
+      Object.assign(it, r); delete s.edit[it.id];
+      toast(t('id_saved'), 'ok');
+    } catch (e) { toast(t('id_save_err'), 'warn'); }
+    el.disabled = false; render();
+  },
+  'idea-start'(el) {
+    const it = ideaById(el.dataset.id);
+    if (!it) return;
+    let domain = 'other';
+    try { domain = E.parseProjectText(it.title + '\n' + it.description, D.LEXICON).domain || 'other'; } catch (e) { /* the student can choose the field */ }
+    S.ui.np = Object.assign(newDraft(), { title: it.title.slice(0, 120), domain: D.DOMAINS[domain] ? domain : 'other', desc: it.description, institution: (it.author && it.author.institution) || '' });
+    saveDraft(); toast(t('id_started'), 'ok'); location.hash = '#new';
+  },
+  'idea-del'(el) {
+    const it = ideaById(el.dataset.id);
+    if (!it) return;
+    openModal(t('id_del'), `<p>${t('id_del_p', { t: '<bdi>' + esc(it.title) + '</bdi>' })}</p>`, `<button class="btn ghost" data-act="modal-close">${t('cancel')}</button><button class="btn danger" data-act="idea-del-ok" data-id="${esc(it.id)}">${t('delete')}</button>`);
+  },
+  async 'idea-del-ok'(el) {
+    const s = ideasState(), id = el.dataset.id;
+    closeModal();
+    try { await window.CF_PLATFORM.api('DELETE', '/api/admin/ideas/' + encodeURIComponent(id)); s.list = (s.list || []).filter(i => i.id !== id); toast(t('id_deleted'), 'ok'); }
+    catch (e) { toast(t('acc_err_gen'), 'warn'); }
+    render();
+  }
+});
+Object.assign(ON, {
+  'idp-open'(el) { const s = ideasState(); s.pageEdit = Object.assign({}, s.page || {}, s.pageEdit || {}, { open: el.checked }); },
+  'idp-signup'(el) { const s = ideasState(); s.pageEdit = Object.assign({}, s.page || {}, s.pageEdit || {}, { signup: el.value }); },
+  'idea-status'(el) { const s = ideasState(); s.edit[el.dataset.id] = Object.assign(s.edit[el.dataset.id] || {}, { status: el.value }); }
+});
+Object.assign(IN, {
+  'idp-msg'(el) { const s = ideasState(); s.pageEdit = Object.assign({}, s.page || {}, s.pageEdit || {}, { message: el.value }); },
+  'idea-reply'(el) { const s = ideasState(); s.edit[el.dataset.id] = Object.assign(s.edit[el.dataset.id] || {}, { reply: el.value }); },
+  'ideas-q'(el) { const s = ideasState(); s.q = el.value; const b = $('#ideas-body'); if (b && s.list) b.innerHTML = ideasListHTML(s); }
+});
 
 /* ---------------- registry and boot ---------------- */
 Object.assign(PAGES, { dashboard: pageDashboard, new: pageNew, gaps: pageGaps, reconfig: pageReconfig, planner: pagePlanner, report: pageReport, lab: pageLab, engine: pageEngine, admin: pageAdmin });
