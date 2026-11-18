@@ -748,6 +748,39 @@ html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
 .id-cred dt{color:var(--muted);font-size:13.5px}
 .id-cred dd{margin:0}
 .id-cred code{font:600 15px var(--font-m);background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:2px 8px}
+/* supervisors and their permissions */
+.tm-grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(min(380px,100%),1fr))}
+.tm-card{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--panel);min-width:0;display:flex;flex-direction:column;gap:10px}
+.tm-card[data-status="suspended"]{border-style:dashed;background:var(--panel2)}
+.tm-card header{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.tm-who{min-width:0}
+.tm-card h3{margin:0;font-size:16px;overflow-wrap:anywhere}
+.tm-mail{margin:2px 0 0;font:500 13px var(--font-m);color:var(--muted);overflow-wrap:anywhere;text-align:start}
+[dir="rtl"] .tm-mail{text-align:end}
+.tm-meta{margin:0;font-size:12.5px;color:var(--faint)}
+.tm-perms{display:grid;gap:7px}
+.tm-perms>div{display:flex;flex-wrap:wrap;gap:4px 6px;align-items:center;min-width:0}
+.tm-perms b{font-size:12.5px;color:var(--muted);font-weight:600;margin-inline-end:2px}
+.tm-perms .chip{white-space:normal;line-height:1.5}
+.tm-card .row-btns{margin-top:auto;padding-top:4px}
+.tm-keep h2{display:flex;align-items:center;gap:8px;font-size:15px;margin-bottom:6px}
+.tm-keep h2 .ic{width:18px;height:18px;color:var(--muted)}
+.tm-keep p{margin:0}
+.pm-h{margin:18px 0 8px;font-size:15px}
+.pm-quick{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:12px}
+.pm-quick .hint{margin-inline-end:4px}
+.pm-group{border:1px solid var(--line);border-radius:12px;padding:6px 10px 8px;margin:0 0 10px;min-width:0}
+.pm-group legend{padding:0 6px;font-weight:600;font-size:13.5px;color:var(--text)}
+.pm-item{display:flex;gap:10px;align-items:flex-start;padding:7px 6px;border-radius:8px;cursor:pointer}
+.pm-item:hover{background:var(--panel2)}
+.pm-item input{width:17px;height:17px;margin:2px 0 0;flex:none;accent-color:var(--cyan)}
+.pm-item>span{display:flex;flex-direction:column;gap:1px;min-width:0}
+.pm-item b{font-size:14px;font-weight:600;color:var(--text)}
+.pm-item small{font-size:12.5px;color:var(--muted);line-height:1.45}
+.pm-foot{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;margin:4px 0 0}
+.perm-empty>.ic{width:36px;height:36px;color:var(--faint);margin-bottom:6px}
+.row-btns.center{justify-content:center}
+.id-card .st-reply{margin-top:12px}
 </style>
 </head>
 <body>
@@ -770,7 +803,9 @@ html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
       portal: 'Student portal', portalRegister: 'Create a student account', portalLede: 'Sign in to write your project idea and send it to your supervisor.',
       askAccount: 'No account yet? Ask your supervisor for one.',
       demoNote: 'Demo page: accounts and ideas are kept in this browser only, so do not use a real password.',
-      err: { bad_credentials: 'The email or password is not correct.', pending: 'Your account is waiting for approval.', suspended: 'This account is suspended.',
+      staffTitle: 'Supervisors’ sign-in', staffLede: 'Sign in with the email and password the administrator gave you. You will see only the services you are allowed to use.',
+      staffDemo: 'Demo page: supervisor accounts are kept in this browser only, so do not use a real password.', staffBack: 'Back to the platform',
+      err: { not_staff: 'This page is for supervisors. Students sign in at the students’ page.', bad_credentials: 'The email or password is not correct.', pending: 'Your account is waiting for approval.', suspended: 'This account is suspended.',
         domain_not_allowed: 'Use your institution email address.', email_taken: 'An account with this email already exists. Sign in instead.', bad_email: 'Enter a valid email address.',
         signup_closed: 'New accounts are created by the administrator.', too_many_attempts: 'Too many attempts. Wait 15 minutes and try again.', network: 'The server cannot be reached.', generic: 'Something went wrong. Try again.' },
       st: { title: 'Send your project idea', kicker: 'Student portal', lede: 'Describe your idea clearly and send it to your supervisor. Its status and your supervisor’s reply appear here after the review.',
@@ -793,7 +828,9 @@ html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
       portal: 'بوابة الطلاب', portalRegister: 'إنشاء حساب طالب', portalLede: 'سجّل الدخول لتكتب فكرة مشروعك وترسلها إلى المشرف.',
       askAccount: 'ليس لديك حساب؟ اطلبه من المشرف.',
       demoNote: 'صفحة تجريبية: تُحفظ الحسابات والأفكار في هذا المتصفح فقط، فلا تستخدم كلمة مرور حقيقية.',
-      err: { bad_credentials: 'البريد الإلكتروني أو كلمة المرور غير صحيحة.', pending: 'حسابك بانتظار الموافقة.', suspended: 'هذا الحساب موقوف.',
+      staffTitle: 'دخول المشرفين', staffLede: 'ادخل بالبريد وكلمة المرور اللذين أعطاك إياهما المسؤول، وسترى الخدمات المسموح لك بها فقط.',
+      staffDemo: 'صفحة تجريبية: تُحفظ حسابات المشرفين في هذا المتصفح فقط، فلا تستخدم كلمة مرور حقيقية.', staffBack: 'العودة إلى المنصة',
+      err: { not_staff: 'هذه الصفحة لدخول المشرفين، ويدخل الطلاب من صفحة الطلاب.', bad_credentials: 'البريد الإلكتروني أو كلمة المرور غير صحيحة.', pending: 'حسابك بانتظار الموافقة.', suspended: 'هذا الحساب موقوف.',
         domain_not_allowed: 'استخدم بريد مؤسستك.', email_taken: 'يوجد حساب بهذا البريد، فسجّل الدخول.', bad_email: 'أدخل بريدًا إلكترونيًا صحيحًا.',
         signup_closed: 'ينشئ المسؤول الحسابات الجديدة.', too_many_attempts: 'محاولات كثيرة. انتظر 15 دقيقة ثم حاول.', network: 'تعذّر الوصول إلى الخادم.', generic: 'حدث خطأ. حاول مجددًا.' },
       st: { title: 'أرسل فكرة مشروعك', kicker: 'بوابة الطلاب', lede: 'اكتب وصفًا واضحًا لفكرتك ثم أرسلها إلى المشرف، وستظهر هنا حالتها وردّ المشرف بعد مراجعتها.',
@@ -831,25 +868,28 @@ html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
   let FORCED = null;
   const curLang = () => FORCED || lang();
   function applySavedTheme() { const x = prefs(); if (x.theme === 'dark' || x.theme === 'light') document.documentElement.setAttribute('data-theme', x.theme); }
-  function renderAuth(mode) {
-    const L = curLang(), T = TXT[L], c = H().config, root = document.getElementById('app'), portal = H().isPortal();
+  /* variant 'staff': the supervisors' sign-in of the demonstration (on the server, supervisors use the main sign-in) */
+  function renderAuth(mode, variant) {
+    const L = curLang(), T = TXT[L], c = H().config, root = document.getElementById('app'), staff = variant === 'staff', portal = !staff && H().isPortal();
+    if (staff) mode = 'signin';
     document.documentElement.lang = L; document.documentElement.dir = L === 'ar' ? 'rtl' : 'ltr';
     applySavedTheme();
     if (portal) document.title = T.portal + ' | CampusForge AI';
+    if (staff) document.title = T.staffTitle + ' | CampusForge AI';
     const field = (n, label, type, ac) => `<label class="field"><span>${label}</span><input name="${n}" type="${type}" autocomplete="${ac}" ${type === 'email' || type === 'password' ? 'dir="ltr"' : ''} required></label>`;
     root.innerHTML = `<div class="auth-wrap"><div class="auth-card">
       <div class="auth-top"><span class="brand">${LOGO}<span>CampusForge AI</span></span>
       <button class="btn small ghost" id="auth-lang" type="button">${L === 'ar' ? 'English' : 'عربي'}</button></div>
       ${c.institution ? `<p class="auth-inst">${esc(c.institution)}</p>` : ''}
-      <h1>${portal ? (mode === 'register' ? T.portalRegister : T.portal) : (mode === 'register' ? T.register : T.signIn)}</h1>
-      ${portal ? `<p class="auth-lede">${T.portalLede}</p>` : ''}
-      ${H().demo ? `<p class="st-demo" role="note">${T.demoNote}</p>` : ''}
+      <h1>${staff ? T.staffTitle : portal ? (mode === 'register' ? T.portalRegister : T.portal) : (mode === 'register' ? T.register : T.signIn)}</h1>
+      ${staff ? `<p class="auth-lede">${T.staffLede}</p>` : portal ? `<p class="auth-lede">${T.portalLede}</p>` : ''}
+      ${H().demo ? `<p class="st-demo" role="note">${staff ? T.staffDemo : T.demoNote}</p>` : ''}
       <form id="auth-form" novalidate>${mode === 'register' ? field('name', T.name, 'text', 'name') + field('institution', T.institution, 'text', 'organization') : ''}${field('email', T.email, 'email', 'email')}${field('password', T.password, 'password', mode === 'register' ? 'new-password' : 'current-password')}
         <p class="form-err" id="auth-err" role="alert"></p><button class="btn primary lg" type="submit">${mode === 'register' ? T.registerBtn : T.signInBtn}</button></form>
-      ${c.allowSignup ? `<p class="auth-switch">${mode === 'register' ? T.haveAccount : T.noAccount} <button class="linkish" id="auth-mode" type="button">${mode === 'register' ? T.signInBtn : T.registerBtn}</button></p>` : portal ? `<p class="auth-switch">${T.askAccount}</p>` : ''}
+      ${staff ? `<p class="auth-switch"><a class="linkish" href="${esc(H().appHref || '/')}">${T.staffBack}</a></p>` : c.allowSignup ? `<p class="auth-switch">${mode === 'register' ? T.haveAccount : T.noAccount} <button class="linkish" id="auth-mode" type="button">${mode === 'register' ? T.signInBtn : T.registerBtn}</button></p>` : portal ? `<p class="auth-switch">${T.askAccount}</p>` : ''}
       ${mode === 'register' && c.allowedDomains && c.allowedDomains.length ? `<p class="hint">${esc(T.domains.replace('{d}', c.allowedDomains.join(', ')))}</p>` : ''}
     </div></div>`;
-    document.getElementById('auth-lang').addEventListener('click', () => { switchLang(); renderAuth(mode); });
+    document.getElementById('auth-lang').addEventListener('click', () => { switchLang(); renderAuth(mode, variant); });
     const sw = document.getElementById('auth-mode');
     if (sw) sw.addEventListener('click', () => renderAuth(mode === 'register' ? 'signin' : 'register'));
     document.getElementById('auth-form').addEventListener('submit', async ev => {
@@ -861,8 +901,9 @@ html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
       btn.disabled = true; err.textContent = '';
       try {
         const r = mode === 'register' ? await H().api('POST', '/api/auth/register', { name: f('name'), institution: f('institution'), email: f('email'), password: pw })
-          : await H().api('POST', '/api/auth/login', { email: f('email'), password: pw });
+          : await H().api('POST', '/api/auth/login', staff ? { email: f('email'), password: pw, staff: true } : { email: f('email'), password: pw });
         if (r && r.pending) { err.className = 'form-err auth-ok'; err.textContent = T.pending; btn.disabled = false; return; }
+        if (staff) { location.replace((H().appHref || '/') + '#dashboard'); return; }
         location.reload();
       } catch (e) { err.textContent = T.err[e.code] || T.err.generic; btn.disabled = false; }
     });
@@ -1016,23 +1057,34 @@ html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
   PT.wire = wireStudent;
 }());
 
-/* CampusForge AI students' page as a demonstration, for the single-file and GitHub versions: the same API as the
-   server (accounts, sign-in, ideas, the administrator's page settings and review), kept in this browser's storage.
-   Nothing leaves this device, so the administrator and the students share one browser: it shows how the page
-   works, and the server version is the one for real use. The person who opens the platform itself is its owner,
-   so the administrator's calls need no sign-in here. */
+/* CampusForge AI students' page and supervisors as a demonstration, for the single-file and GitHub versions: the same
+   API as the server (accounts, sign-in, ideas, the administrator's page settings and review, supervisors and their
+   permissions), kept in this browser's storage. Nothing leaves this device, so the administrator, the supervisors
+   and the students share one browser: it shows how the platform works, and the server version is the one for real
+   use. The person who opens the platform itself is its owner, so the owner's calls need no sign-in here; a
+   supervisor signs in on one tab (#supervisor), and on that tab the administrator's routes follow the supervisor's
+   permissions, as on the server. */
 (function () {
   'use strict';
-  const KEY = 'cf.demo.portal', SKEY = 'cf.demo.session';
+  const KEY = 'cf.demo.portal', SKEY = 'cf.demo.session', STAFF_KEY = 'cf.demo.staff';
   const EMAIL_RE = /^[^@\s]{1,64}@[A-Za-z0-9.\-]{1,190}\.[A-Za-z]{2,}$/;
   const CONTROL = /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g;
   const STATUSES = ['new', 'review', 'accepted', 'changes', 'declined'], POLICIES = ['open', 'approve', 'closed'], USER_STATUS = ['active', 'pending', 'suspended'];
+  const ROLES = ['ideas', 'supervisor'];   // no separate workspaces here: students send ideas, supervisors help the owner
   const IDEAS_PER_DAY = 10;
-  const fresh = () => ({ v: 1, users: [], ideas: [], page: { open: true, message: '', signup: 'open' }, saved: false });
+  /* the same permission catalogue as the server (core.py) */
+  const PERMS = ['projects', 'ai', 'discover', 'sustain', 'ideas_view', 'ideas_review', 'ideas_delete', 'submissions', 'student_page', 'students', 'catalog'];
+  const NEEDS = { ai: ['projects'], discover: ['projects'], sustain: ['projects'], ideas_review: ['ideas_view'], ideas_delete: ['ideas_view'] };
+  const SUPERVISOR_DEFAULT = ['projects', 'ai', 'discover', 'sustain', 'ideas_view', 'ideas_review', 'submissions'];
+  const fresh = () => ({ v: 2, users: [], ideas: [], page: { open: true, message: '', signup: 'open' }, saved: false });
   function load() {
     try {
       const x = JSON.parse(localStorage.getItem(KEY) || 'null');
-      if (x && Array.isArray(x.users) && Array.isArray(x.ideas)) { x.page = Object.assign(fresh().page, x.page || {}); return x; }
+      if (x && Array.isArray(x.users) && Array.isArray(x.ideas)) {
+        x.page = Object.assign(fresh().page, x.page || {});
+        x.users.forEach(u => { if (ROLES.indexOf(u.role) < 0) u.role = 'ideas'; });
+        return x;
+      }
     } catch (e) { /* storage unavailable or damaged: start empty */ }
     return fresh();
   }
@@ -1055,29 +1107,58 @@ html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
   }
   const salt = () => Math.random().toString(36).slice(2, 12) + Math.random().toString(36).slice(2, 6);
   async function setPassword(u, pw) { u.salt = salt(); u.hash = await digest(pw, u.salt); u.pv = (u.pv || 0) + 1; }
-  /* a session belongs to one account and one password: changing or resetting the password ends the other sessions */
+  function cleanPerms(list) {
+    const want = new Set((list || []).filter(p => PERMS.indexOf(p) >= 0));
+    for (const p of Array.from(want)) (NEEDS[p] || []).forEach(n => want.add(n));
+    return PERMS.filter(p => want.has(p));
+  }
+  function checkedPerms(list) {
+    if (!Array.isArray(list) || list.some(p => PERMS.indexOf(p) < 0)) throw fail(400, 'bad_permission');
+    return cleanPerms(list);
+  }
+  const permsOf = u => (u.role === 'supervisor' ? (Array.isArray(u.permissions) ? cleanPerms(u.permissions) : SUPERVISOR_DEFAULT.slice()) : []);
+
+  /* A student's session is kept for the whole browser; a supervisor's for one tab, so the owner can work in another
+     tab at the same time. A session belongs to one account and one password: a new password ends the others. */
   function session() { try { return JSON.parse(localStorage.getItem(SKEY) || 'null'); } catch (e) { return null; } }
   function startSession(u) { try { localStorage.setItem(SKEY, JSON.stringify({ uid: u.id, pv: u.pv })); } catch (e) { throw fail(507, 'storage'); } }
   function endSession() { try { localStorage.removeItem(SKEY); } catch (e) { /* nothing to end */ } }
+  function staffSession() { try { return JSON.parse(sessionStorage.getItem(STAFF_KEY) || 'null'); } catch (e) { return null; } }
+  function startStaff(u) { try { sessionStorage.setItem(STAFF_KEY, JSON.stringify({ uid: u.id, pv: u.pv })); } catch (e) { throw fail(507, 'storage'); } }
+  function endStaff() { try { sessionStorage.removeItem(STAFF_KEY); } catch (e) { /* nothing to end */ } }
+  const validStaff = (db, s) => { const u = s && db.users.find(x => x.id === s.uid); return u && u.pv === s.pv && u.status === 'active' && u.role === 'supervisor' ? u : null; };
   function current(db) {
+    const st = staffSession();
+    if (st) { const u = validStaff(db, st); if (u) return u; endStaff(); }
     const s = session(), u = s && db.users.find(x => x.id === s.uid);
-    if (!u || u.pv !== s.pv || u.status !== 'active') throw fail(401, 'unauthorized');
+    if (!u || u.pv !== s.pv || u.status !== 'active' || u.role !== 'ideas') throw fail(401, 'unauthorized');
     return u;
   }
+  /* who calls the administrator's routes: the supervisor signed in on this tab, or else the owner of this copy */
+  function actor(db) {
+    const st = staffSession();
+    if (!st) return null;
+    const u = validStaff(db, st);
+    if (!u) { endStaff(); throw fail(401, 'unauthorized'); }
+    return u;
+  }
+  function need(db, perm) { const a = actor(db); if (a && permsOf(a).indexOf(perm) < 0) throw fail(403, 'no_permission'); return a; }
+  function ownerOnly(db) { if (actor(db)) throw fail(403, 'no_permission'); }
   const iso = ms => (ms ? new Date(ms).toISOString() : null);
-  const pub = (u, full) => Object.assign({ id: u.id, email: u.email, name: u.name, role: 'ideas', status: u.status, institution: u.institution || '', country: '' },
+  const pub = (u, full) => Object.assign({ id: u.id, email: u.email, name: u.name, role: u.role, status: u.status, institution: u.institution || '', country: '', permissions: permsOf(u) },
     full ? { createdAt: iso(u.createdAt), lastLogin: iso(u.lastLogin) } : {});
   function ideaOut(i, db, withAuthor) {
     const d = { id: i.id, title: i.title, description: i.description, status: i.status, reply: i.reply || '', createdAt: i.createdAt, reviewedAt: i.reviewedAt || null };
     if (withAuthor) {
       const a = db.users.find(u => u.id === i.authorId);
-      d.author = a ? { id: a.id, name: a.name, email: a.email, role: 'ideas', status: a.status, institution: a.institution || '' } : { id: i.authorId, name: '', email: '', role: '', status: '', institution: '' };
+      d.author = a ? { id: a.id, name: a.name, email: a.email, role: a.role, status: a.status, institution: a.institution || '' } : { id: i.authorId, name: '', email: '', role: '', status: '', institution: '' };
     }
     return d;
   }
   const pageOut = db => ({ open: db.page.open !== false, message: String(db.page.message || '').slice(0, 2000), signup: POLICIES.indexOf(db.page.signup) >= 0 ? db.page.signup : 'open', saved: !!db.saved });
   const findUser = (db, email) => db.users.find(u => u.email === email);
   const normEmail = e => String(e || '').trim().toLowerCase();
+  const byId = (db, m) => { const u = db.users.find(x => x.id === decodeURIComponent(m[1])); if (!u) throw fail(404, 'not_found'); return u; };
 
   /* the server's routes, in the same order of checks and with the same error codes */
   const ROUTES = [
@@ -1090,7 +1171,7 @@ html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
       if (String(b.password || '').length < 8) throw fail(400, 'bad_password');
       if (!String(b.name || '').trim()) throw fail(400, 'bad_name');
       if (findUser(db, email)) throw fail(409, 'email_taken');
-      const u = { id: newId(), email, name: clean(b.name).trim().slice(0, 120), institution: clean(b.institution).trim().slice(0, 160), status: pg.signup === 'open' ? 'active' : 'pending', createdAt: now(), lastLogin: null };
+      const u = { id: newId(), email, name: clean(b.name).trim().slice(0, 120), institution: clean(b.institution).trim().slice(0, 160), role: 'ideas', permissions: null, status: pg.signup === 'open' ? 'active' : 'pending', createdAt: now(), lastLogin: null };
       await setPassword(u, b.password);
       db.users.push(u); save(db);
       if (u.status !== 'active') return { pending: true };
@@ -1100,24 +1181,28 @@ html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
     ['POST', /^\/api\/auth\/login$/, async (db, m, b) => {
       const u = findUser(db, normEmail(b.email));
       if (!u || (await digest(String(b.password || ''), u.salt)) !== u.hash) throw fail(401, 'bad_credentials');
+      if (b.staff && u.role !== 'supervisor') throw fail(403, 'not_staff');   // the supervisors' sign-in page
       if (u.status === 'pending') throw fail(403, 'pending');
       if (u.status !== 'active') throw fail(403, 'suspended');
-      u.lastLogin = now(); save(db); startSession(u);
+      u.lastLogin = now(); save(db);
+      if (u.role === 'supervisor') startStaff(u); else startSession(u);
       return { user: pub(u) };
     }],
-    ['POST', /^\/api\/auth\/logout$/, () => { endSession(); return { ok: true }; }],
+    ['POST', /^\/api\/auth\/logout$/, () => { if (staffSession()) endStaff(); else endSession(); return { ok: true }; }],
     ['GET', /^\/api\/me$/, (db) => pub(current(db))],
     ['POST', /^\/api\/auth\/password$/, async (db, m, b) => {
       const u = current(db);
       if ((await digest(String(b.current || ''), u.salt)) !== u.hash) throw fail(400, 'bad_credentials');
       if (String(b.new || '').length < 8) throw fail(400, 'bad_password');
-      await setPassword(u, b.new); save(db); startSession(u);
+      await setPassword(u, b.new); save(db);
+      if (u.role === 'supervisor') startStaff(u); else startSession(u);
       return { ok: true };
     }],
     ['GET', /^\/api\/ideas\/page$/, (db) => { current(db); const pg = pageOut(db); return { open: pg.open, message: pg.message }; }],
     ['GET', /^\/api\/ideas\/mine$/, (db) => { const u = current(db); return { ideas: db.ideas.filter(i => i.authorId === u.id).sort((a, b) => b.createdAt - a.createdAt).map(i => ideaOut(i, db)) }; }],
     ['POST', /^\/api\/ideas$/, (db, m, b) => {
       const u = current(db);
+      if (u.role !== 'ideas') throw fail(403, 'forbidden');
       if (!pageOut(db).open) throw fail(403, 'ideas_closed');
       const title = clean(b.title).split(/\s+/).filter(Boolean).join(' '), description = clean(b.description).trim();
       if (title.length < 3 || title.length > 160) throw fail(400, 'bad_title');
@@ -1127,9 +1212,10 @@ html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
       db.ideas.push(i); save(db);
       return ideaOut(i, db);
     }],
-    /* the administrator: the owner of this copy of the platform */
-    ['GET', /^\/api\/admin\/ideas$/, (db) => ({ ideas: db.ideas.slice().sort((a, b) => b.createdAt - a.createdAt).map(i => ideaOut(i, db, true)), page: pageOut(db) })],
+    /* the administrator's routes: the owner of this copy, or a supervisor within their permissions */
+    ['GET', /^\/api\/admin\/ideas$/, (db) => { need(db, 'ideas_view'); return { ideas: db.ideas.slice().sort((a, b) => b.createdAt - a.createdAt).map(i => ideaOut(i, db, true)), page: pageOut(db) }; }],
     ['PATCH', /^\/api\/admin\/ideas\/([^/]+)$/, (db, m, b) => {
+      need(db, 'ideas_review');
       const i = db.ideas.find(x => x.id === decodeURIComponent(m[1]));
       if (!i) throw fail(404, 'not_found');
       if (b.status !== undefined && b.status !== null && STATUSES.indexOf(b.status) < 0) throw fail(400, 'bad_status');
@@ -1138,48 +1224,70 @@ html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
       i.reviewedAt = now(); save(db);
       return ideaOut(i, db, true);
     }],
-    ['DELETE', /^\/api\/admin\/ideas\/([^/]+)$/, (db, m) => { db.ideas = db.ideas.filter(x => x.id !== decodeURIComponent(m[1])); save(db); return { ok: true }; }],
+    ['DELETE', /^\/api\/admin\/ideas\/([^/]+)$/, (db, m) => { need(db, 'ideas_delete'); db.ideas = db.ideas.filter(x => x.id !== decodeURIComponent(m[1])); save(db); return { ok: true }; }],
     ['PUT', /^\/api\/admin\/student-page$/, (db, m, b) => {
+      need(db, 'student_page');
       if (POLICIES.indexOf(b.signup) < 0) throw fail(400, 'bad_signup');
       db.page = { open: !!b.open, message: clean(b.message).trim().slice(0, 2000), signup: b.signup }; db.saved = true; save(db);
       return pageOut(db);
     }],
-    ['GET', /^\/api\/admin\/users$/, (db) => ({ users: db.users.slice().sort((a, b) => a.createdAt - b.createdAt).map(u => pub(u, true)) })],
+    ['GET', /^\/api\/admin\/users$/, (db) => {
+      const a = need(db, 'students');
+      return { users: db.users.filter(u => !a || u.role === 'ideas').sort((x, y) => x.createdAt - y.createdAt).map(u => pub(u, true)) };
+    }],
     ['POST', /^\/api\/admin\/users$/, async (db, m, b) => {
-      const email = normEmail(b.email);
+      const a = need(db, 'students');
+      const email = normEmail(b.email), role = b.role || 'ideas';
       if (!EMAIL_RE.test(email)) throw fail(400, 'bad_email');
-      if (b.role && b.role !== 'ideas') throw fail(400, 'bad_role');
+      if (ROLES.indexOf(role) < 0) throw fail(400, 'bad_role');
+      if (a && (role !== 'ideas' || b.permissions != null)) throw fail(403, 'no_permission');
+      if (b.permissions != null && role !== 'supervisor') throw fail(400, 'not_supervisor');
+      const perms = b.permissions != null ? checkedPerms(b.permissions) : null;
       if (String(b.password || '').length < 8 || !String(b.name || '').trim()) throw fail(400, 'bad_request');
       if (findUser(db, email)) throw fail(409, 'email_taken');
-      const u = { id: newId(), email, name: clean(b.name).trim().slice(0, 120), institution: '', status: 'active', createdAt: now(), lastLogin: null };
+      const u = { id: newId(), email, name: clean(b.name).trim().slice(0, 120), institution: '', role, permissions: perms, status: 'active', createdAt: now(), lastLogin: null };
       await setPassword(u, b.password);
       db.users.push(u); save(db);
       return pub(u, true);
     }],
     ['PATCH', /^\/api\/admin\/users\/([^/]+)$/, (db, m, b) => {
-      const u = db.users.find(x => x.id === decodeURIComponent(m[1]));
-      if (!u) throw fail(404, 'not_found');
-      if (b.role && b.role !== 'ideas') throw fail(400, 'bad_role');
+      const a = need(db, 'students'), u = byId(db, m);
+      if (a && u.role !== 'ideas') throw fail(403, 'no_permission');   // supervisors reach student accounts only
+      if (b.role && ROLES.indexOf(b.role) < 0) throw fail(400, 'bad_role');
       if (b.status && USER_STATUS.indexOf(b.status) < 0) throw fail(400, 'bad_status');
+      if (a && ((b.role && b.role !== 'ideas') || b.permissions != null)) throw fail(403, 'no_permission');
+      if (b.permissions != null && (b.role || u.role) !== 'supervisor') throw fail(400, 'not_supervisor');
+      const perms = b.permissions != null ? checkedPerms(b.permissions) : null;
+      if (b.role && b.role !== u.role) { u.role = b.role; u.permissions = null; }
+      if (perms) u.permissions = perms;
       if (b.status) { if (b.status !== 'active') u.pv = (u.pv || 0) + 1; u.status = b.status; }
       if (typeof b.name === 'string' && b.name.trim()) u.name = clean(b.name).trim().slice(0, 120);
       save(db);
       return pub(u, true);
     }],
     ['POST', /^\/api\/admin\/users\/([^/]+)\/password$/, async (db, m, b) => {
-      const u = db.users.find(x => x.id === decodeURIComponent(m[1]));
-      if (!u) throw fail(404, 'not_found');
+      const a = need(db, 'students'), u = byId(db, m);
+      if (a && u.role !== 'ideas') throw fail(403, 'no_permission');
       if (String(b.password || '').length < 8) throw fail(400, 'bad_password');
       await setPassword(u, b.password); save(db);
       return { ok: true };
     }],
     ['DELETE', /^\/api\/admin\/users\/([^/]+)$/, (db, m) => {
+      ownerOnly(db);
       const id = decodeURIComponent(m[1]);
       db.users = db.users.filter(x => x.id !== id); db.ideas = db.ideas.filter(i => i.authorId !== id); save(db);
       return { ok: true };
     }],
+    /* demo only: the supervisor signed in on this tab, if any (the platform then runs as that supervisor) */
+    ['GET', /^\/api\/demo\/staff$/, (db) => {
+      const st = staffSession();
+      if (!st) return { staff: null };
+      const u = validStaff(db, st);
+      if (!u) { endStaff(); return { staff: null, ended: true }; }
+      return { staff: pub(u) };
+    }],
     /* demo only: start again with no accounts, ideas or settings */
-    ['POST', /^\/api\/demo\/reset$/, () => { try { localStorage.removeItem(KEY); } catch (e) { /* nothing stored */ } endSession(); return { ok: true }; }]
+    ['POST', /^\/api\/demo\/reset$/, (db) => { ownerOnly(db); try { localStorage.removeItem(KEY); } catch (e) { /* nothing stored */ } endSession(); endStaff(); return { ok: true }; }]
   ];
   async function api(method, path, body) {
     const p = String(path).split('?')[0];
@@ -1189,7 +1297,7 @@ html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
     }
     throw fail(404, 'not_found');
   }
-  window.CF_DEMO = { api, key: KEY, sessionKey: SKEY, version: 1 };
+  window.CF_DEMO = { api, key: KEY, sessionKey: SKEY, staffKey: STAFF_KEY, version: 2 };
 }());
 
 /* CampusForge AI local mode: one person on their own device, with their own Claude API key.
@@ -1207,12 +1315,14 @@ html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
     novelty: '\nUse the web search tool to look for projects and products like this one that already offer each feature before you propose it. Propose only features you did not find in them, and list in "sources" the pages you checked.'
   };
   const KNOWLEDGE_ONLY = /Using only your own knowledge \((?:you have )?no web access in this task\),\s*/;
+  /* which permission each Claude service needs, as on the server (main.py): a supervisor signed in on this tab uses only those */
+  const AI_PERMISSION = { discovery: 'discover', novelty: 'discover', sustain: 'sustain', inspire: 'sustain', parts: 'ai', extract: 'ai', generic: 'ai' };
   const ls = {
     get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
     set(k, v) { try { localStorage.setItem(k, v); return true; } catch (e) { return false; } },
     del(k) { try { localStorage.removeItem(k); } catch (e) { /* storage unavailable */ } }
   };
-  const L = window.CF_LOCAL = { config: { ai: false, webSearch: false }, openSettings: () => renderKey('change') };
+  const L = window.CF_LOCAL = { config: { ai: false, webSearch: false }, openSettings: () => renderKey('change'), staff: null, staffSignOut: () => {} };
   const KEY = ls.get(K.key) || '';
   L.config.ai = !!KEY;
   L.config.webSearch = !!KEY && ls.get(K.web) !== '0';
@@ -1283,7 +1393,8 @@ html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
     }
     async function stream(input, opts) {
       let prompt = typeof input === 'string' ? input : JSON.stringify(input);
-      const purpose = /Global Discovery module/.test(prompt) ? 'discovery' : /purchasable components/.test(prompt) ? 'parts' : /Inspiration finder/.test(prompt) ? 'inspire' : /Sustainability Studio/.test(prompt) ? 'sustain' : /Novelty module/.test(prompt) ? 'novelty' : 'generic';
+      const purpose = /Global Discovery module/.test(prompt) ? 'discovery' : /purchasable components/.test(prompt) ? 'parts' : /Project Parser/.test(prompt) ? 'extract' : /Inspiration finder/.test(prompt) ? 'inspire' : /Sustainability Studio/.test(prompt) ? 'sustain' : /Novelty module/.test(prompt) ? 'novelty' : 'generic';
+      if (L.staff && (L.staff.permissions || []).indexOf(AI_PERMISSION[purpose]) < 0) throw fail('no_permission');
       const web = L.config.webSearch && (purpose === 'discovery' || purpose === 'parts' || purpose === 'inspire' || purpose === 'novelty');
       const m = models();
       const body = { model: opts.modelTier === 'quick' ? m.quick : opts.modelTier === 'complex' ? m.complex : m.default, max_tokens: web || purpose === 'sustain' ? 8000 : 4000, stream: true };
@@ -1377,9 +1488,10 @@ html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
   const snap = docs => ({ docs: docs.map(d => ({ id: d.id, exists: true, data: () => d.data })), size: docs.length, empty: !docs.length });
 
   const CAPS = {
+    /* one workspace on this device: the owner's, which a supervisor signed in on this tab helps with */
     user: () => ({
-      id: async () => 'local', isOwner: async () => true, canEdit: async () => true,
-      me: async () => ({ id: 'local', name: '', isOwner: true, canEdit: true }), name: async () => '',
+      id: async () => 'local', isOwner: async () => !L.staff, canEdit: async () => true,
+      me: async () => ({ id: 'local', name: L.staff ? L.staff.name : '', isOwner: !L.staff, canEdit: true }), name: async () => (L.staff ? L.staff.name : ''),
       profiles: async ids => { const o = {}; (ids || []).forEach(i => { o[i] = { name: '' }; }); return o; }
     }),
     db: () => ({
@@ -1473,27 +1585,47 @@ html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
   }
   L.checkKey = checkKey;
 
-  /* ---------- the students' page as a demonstration (portal.js on demo.js): this address followed by #students ---------- */
-  const isPortal = () => /^#students\/?$/.test(location.hash);
-  const PORTAL = isPortal(), PT = window.CF_PORTAL, DEMO = window.CF_DEMO;
+  /* ---------- the students' page and the supervisors' sign-in as a demonstration (portal.js on demo.js) ----------
+     this address followed by #students for students, by #supervisor for supervisors; anything else is the platform */
+  const pageKind = () => (/^#students\/?$/.test(location.hash) ? 'students' : /^#supervisor\/?$/.test(location.hash) ? 'staff' : 'app');
+  const KIND = pageKind(), PT = window.CF_PORTAL, DEMO = window.CF_DEMO;
+  const APP = location.pathname + location.search;
   const whenReady = f => { if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', f); else f(); };
   if (PT && DEMO) {
-    PT.host = { api: DEMO.api, config: { institution: '', allowSignup: true, allowedDomains: [] }, me: null, demo: true, isPortal,
-      appHref: location.pathname + location.search, reload: () => location.reload(),
+    PT.host = { api: DEMO.api, config: { institution: '', allowSignup: true, allowedDomains: [] }, me: null, demo: true, isPortal: () => KIND === 'students',
+      appHref: APP, reload: () => location.reload(),
       signOut: async () => { try { await DEMO.api('POST', '/api/auth/logout', {}); } catch (e) { /* already signed out */ } location.reload(); } };
-    /* moving between the platform and the students' page starts the other one */
-    window.addEventListener('hashchange', () => { if (isPortal() !== PORTAL) location.reload(); });
+    /* moving between the platform, the students' page and the supervisors' sign-in starts the other one */
+    window.addEventListener('hashchange', () => { if (pageKind() !== KIND) location.reload(); });
+    /* a supervisor signing out, or signed out by the owner, goes back to the supervisors' sign-in on this tab */
+    L.staffSignOut = async ended => {
+      if (!ended) { try { await DEMO.api('POST', '/api/auth/logout', {}); } catch (e) { /* already signed out */ } }
+      location.replace(APP + '#supervisor');
+    };
   }
-  window.CF_PLATFORM_READY = PORTAL && PT && DEMO ? (async () => {
+  window.CF_PLATFORM_READY = PT && DEMO && KIND === 'students' ? (async () => {
     try { Object.assign(PT.host.config, await DEMO.api('GET', '/api/config')); } catch (e) { /* defaults */ }
     try { PT.host.me = await DEMO.api('GET', '/api/me'); }
     catch (e) { whenReady(() => PT.renderAuth('signin')); return false; }
     PT.wire(); whenReady(PT.showStudent);
     return false;
-  })() : new Promise(resolve => {
-    if (KEY || ls.get(K.skip) === '1') { resolve(true); return; }
+  })() : PT && DEMO && KIND === 'staff' ? (async () => {
+    let r = { staff: null };
+    try { r = await DEMO.api('GET', '/api/demo/staff'); } catch (e) { /* storage unavailable */ }
+    if (r.staff) { location.replace(APP + '#dashboard'); return false; }   // already signed in on this tab
+    whenReady(() => PT.renderAuth('signin', 'staff'));
+    return false;
+  })() : (async () => {
+    if (DEMO) {
+      let r = { staff: null };
+      try { r = await DEMO.api('GET', '/api/demo/staff'); } catch (e) { /* storage unavailable */ }
+      if (r.ended) { location.replace(APP + '#supervisor'); return false; }
+      if (r.staff) { L.staff = r.staff; return true; }   // the platform runs as this supervisor, with the owner's Claude key if allowed
+    }
+    if (KEY || ls.get(K.skip) === '1') return true;
     whenReady(() => renderKey('first'));
-  });
+    return new Promise(() => { /* the key screen reloads the page */ });
+  })();
 }());
 </script>
 <script>(function (root) {
@@ -5432,9 +5564,9 @@ const NAV = [
   ['dashboard', 'grid'], ['new', 'plus'], ['graph', 'graph'], ['gaps', 'alert'], ['reconfig', 'shuffle'],
   ['planner', 'calendar'], ['report', 'file'], ['lab', 'flask'], ['engine', 'book'], ['admin', 'shield']
 ];
-/* optional gates and counters for rail items, set by later modules (the students' ideas page exists for staff on the server) */
+/* counters for rail items, set by later modules; which items show depends on the account's permissions (app-staff.js) */
 const NAV_GATE = {}, NAV_BADGE = {};
-const navShown = r => (r === 'admin' ? S.role === 'admin' : NAV_GATE[r] ? NAV_GATE[r]() : true);
+const navShown = r => routeOk(r) && (NAV_GATE[r] ? NAV_GATE[r]() : true);
 function navBadge(r) { const n = NAV_BADGE[r] ? NAV_BADGE[r]() : 0; return n ? `<span class="nav-badge">${num(n, 0)}</span>` : ''; }
 const freshG = () => ({ view: 'current', sel: null, focus: false, bounds: false, tab: 'resources', batch: false, pending: {}, vb: null, gref: null, anim: null });
 
@@ -6238,7 +6370,7 @@ function landingHTML() {
     <span class="grow"></span>
     ${langSeg()}
     <button class="icon-btn" data-act="theme" aria-label="${t('theme_toggle')}" title="${t('theme_toggle')}">${icon(isDark() ? 'sun' : 'moon')}</button>
-    ${demoMode() ? `<a class="btn ghost small" href="#students">${t('lp_students')}</a>` : ''}
+    ${demoMode() && isOwner() ? `<a class="btn ghost small" href="#students">${t('lp_students')}</a><a class="btn ghost small" href="#supervisor">${t('lp_staff')}</a>` : ''}
     <a class="btn ghost small" href="#dashboard">${t('open_app')}</a>
   </header>
   <section class="hero">
@@ -6301,7 +6433,7 @@ function shellHTML(content) {
   <header class="topbar">
     <button class="icon-btn menu-btn" data-act="menu" aria-label="${t('menu')}" aria-expanded="${S.ui.menu}">${icon('menu')}</button>
     <a class="brand" href="#home">${logoSVG()}<span>CampusForge AI</span></a>
-    ${projectSelect()}
+    ${can('projects') ? projectSelect() : ''}
     <span class="grow"></span>
     ${storageChip()}
     ${langSeg()}
@@ -6322,9 +6454,10 @@ function render() {
   stopTimers();
   const root = $('#app');
   if (S.route === 'home') root.innerHTML = landingHTML();
-  else root.innerHTML = shellHTML((PAGES[S.route] || PAGES.dashboard)());
+  else root.innerHTML = shellHTML(routeOk(S.route) ? (PAGES[S.route] || PAGES.dashboard)() : noAccessHTML(S.route));
   document.title = (S.route === 'home' ? '' : t('nav_' + S.route) + ' | ') + 'CampusForge AI';
   if (S.route === 'home') heroPlay();
+  if (!routeOk(S.route)) return;
   if (S.route === 'graph') mountGraph();
   if (MOUNTS[S.route]) MOUNTS[S.route]();
 }
@@ -6333,6 +6466,8 @@ const PAGES = { graph: pageGraph }, MOUNTS = {};
 function onRoute() {
   const h = (location.hash || '').replace(/^#/, '');
   const next = ROUTES.indexOf(h) >= 0 ? h : 'home';
+  /* a page this account may not open leads to the first one it may, once the account is known */
+  if (next !== 'home' && !routeOk(next) && identityKnown()) { const f = firstRoute(); if (f && f !== next) { location.replace('#' + f); return; } }
   const changed = next !== S.route;
   S.route = next; S.ui.menu = false;
   render();
@@ -6375,10 +6510,19 @@ document.addEventListener('click', e => {
   const a = e.target.closest('[data-act]');
   if (!a || a.disabled) return;
   const f = ACT[a.dataset.act];
-  if (f) { if (a.tagName !== 'A' || a.dataset.act === 'sel') e.preventDefault(); f(a, e); }
+  if (f) {
+    if (a.tagName !== 'A' || a.dataset.act === 'sel') e.preventDefault();
+    if (!permOk(ACT_PERM[a.dataset.act])) { toast(t('perm_denied'), 'warn'); return; }
+    f(a, e);
+  }
 });
-document.addEventListener('change', e => { const a = e.target.closest('[data-on]'); if (a && ON[a.dataset.on]) ON[a.dataset.on](a, e); });
-document.addEventListener('input', e => { const a = e.target.closest('[data-in]'); if (a && IN[a.dataset.in]) IN[a.dataset.in](a, e); });
+document.addEventListener('change', e => {
+  const a = e.target.closest('[data-on]');
+  if (!a || !ON[a.dataset.on]) return;
+  if (!permOk(ON_PERM[a.dataset.on])) { toast(t('perm_denied'), 'warn'); return; }
+  ON[a.dataset.on](a, e);
+});
+document.addEventListener('input', e => { const a = e.target.closest('[data-in]'); if (a && IN[a.dataset.in] && permOk(IN_PERM[a.dataset.in])) IN[a.dataset.in](a, e); });
 document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
   const m = $('#modal');
@@ -6475,6 +6619,7 @@ Rules:
 - Use null for the budget or deadline when the text does not state them. Do not invent numbers.
 - Write name_ar in Modern Standard Arabic.`;
 function llmButton() {
+  if (S.caps.sample && !S.caps.sampleHidden && !can('ai')) return `<span class="hint">${t('perm_ai_short')}</span>`;
   if (S.caps.sample && !S.caps.sampleHidden) return `<button class="btn ghost" data-act="np-llm" ${S.ui.np && S.ui.np.busy ? 'disabled' : ''}>${icon('spark')}<span>${S.ui.np && S.ui.np.busy === 'llm' ? t('np_llm_busy') : t('np_llm')}</span></button>`;
   return '';
 }
@@ -6595,7 +6740,7 @@ Object.assign(ACT, {
     } catch (e) {
       const code = e && e.code;
       if (['not_granted', 'sampling_disabled', 'not_declared', 'capability_disabled', 'capability_removed'].indexOf(code) >= 0) S.caps.sampleHidden = true;
-      toast(t(code === 'rate_limited' ? 'llm_rate' : code === 'invalid_json' || code === 'empty_completion' ? 'llm_bad' : code === 'cancelled' ? 'llm_cancel' : 'llm_failed'), 'warn');
+      toast(t(code === 'no_permission' ? 'perm_ai_denied' : code === 'rate_limited' ? 'llm_rate' : code === 'invalid_json' || code === 'empty_completion' ? 'llm_bad' : code === 'cancelled' ? 'llm_cancel' : 'llm_failed'), 'warn');
     }
     np.busy = null;
     render();
@@ -7079,9 +7224,10 @@ function adminResTable(list) {
   </tbody></table>`;
 }
 function pageAdmin() {
-  if (S.role !== 'admin') return `<div class="empty"><h1>${t('nav_admin')}</h1><p>${t('adm_gate')}</p></div>`;
-  const tabs = ['resources', 'categories', 'projects', 'submissions'].concat((window.CF_PLATFORM && window.CF_PLATFORM.me && window.CF_PLATFORM.me.role === 'admin') || demoMode() ? ['accounts'] : [], ['quality']);
-  return `<header class="page-head"><div><h1>${t('nav_admin')}</h1><p class="lede">${t('adm_p')}</p></div></header>
+  const tabs = adminTabs();   /* each tab follows a permission: the catalog, projects, submitted projects, accounts */
+  if (!tabs.length) return noAccessHTML('admin');
+  if (tabs.indexOf(S.ui.admin.tab) < 0) S.ui.admin.tab = tabs[0];
+  return `<header class="page-head"><div><h1>${t('nav_admin')}</h1>${can('catalog') ? `<p class="lede">${t('adm_p')}</p>` : ''}</div></header>
   <div class="tabs big" role="tablist">${tabs.map(k => `<button role="tab" data-act="adm-tab" data-v="${k}" aria-selected="${S.ui.admin.tab === k}">${t('adm_t_' + k)}</button>`).join('')}</div>
   <section class="panel">${adminTab(S.ui.admin.tab)}</section>`;
 }
@@ -7103,7 +7249,7 @@ function readResForm(old) {
 }
 Object.assign(ACT, {
   'role-admin'() { S.role = 'admin'; savePrefLocal(); render(); },
-  'adm-tab'(el) { S.ui.admin.tab = el.dataset.v; render(); },
+  'adm-tab'(el) { if (adminTabs().indexOf(el.dataset.v) >= 0) S.ui.admin.tab = el.dataset.v; render(); },
   'res-new'() { openModal(t('res_add'), resourceForm(null), `<button class="btn ghost" data-act="modal-close">${t('cancel')}</button><button class="btn primary" data-act="res-save">${t('save')}</button>`); },
   'res-edit'(el) { const r = S.byId.get(el.dataset.res); if (!r) return; openModal(t('res_edit', { n: esc(r.name) }), resourceForm(r), `<button class="btn ghost" data-act="modal-close">${t('cancel')}</button><button class="btn primary" data-act="res-save" data-res="${esc(r.id)}">${t('save')}</button>`); },
   'res-save'(el) {
@@ -7251,7 +7397,7 @@ async function askJSON(prompt, o) {
   }
 }
 function claudeErrText(code) {
-  const k = code === 'rate_limited' ? 'dc_rate' : code === 'cancelled' ? 'dc_stopped' : code === 'key_rejected' ? 'dc_key_rejected' : code === 'web_search_disabled' ? 'dc_web_off' : code === 'no_credit' ? 'dc_no_credit' : (code === 'unavailable' || DENIED.indexOf(code) >= 0) ? unavailableKey() : (code === 'invalid_json' || code === 'empty_result' || code === 'empty_completion') ? 'dc_none' : 'dc_failed';
+  const k = code === 'no_permission' ? 'perm_ai_denied' : code === 'rate_limited' ? 'dc_rate' : code === 'cancelled' ? 'dc_stopped' : code === 'key_rejected' ? 'dc_key_rejected' : code === 'web_search_disabled' ? 'dc_web_off' : code === 'no_credit' ? 'dc_no_credit' : (code === 'unavailable' || DENIED.indexOf(code) >= 0) ? unavailableKey() : (code === 'invalid_json' || code === 'empty_result' || code === 'empty_completion') ? 'dc_none' : 'dc_failed';
   return t(k) + (code ? ' ' + t('err_code', { c: esc(code) }) : '');
 }
 function dcStatusHTML(st) {
@@ -7441,7 +7587,7 @@ Reply with only one JSON object:
 Vocabulary of ids:
 {VOCAB}`;
 function aiPartsButton(cap) {
-  if (S.caps.sample === null || S.caps.sampleHidden) return '';
+  if (S.caps.sample === null || S.caps.sampleHidden || !can('ai')) return '';
   return `<button class="btn small ghost" data-act="ai-parts" data-cap="${esc(cap || '')}">${icon('spark')}<span>${t('ai_parts_btn')}</span></button>`;
 }
 function configInterfaces(p) {
@@ -7682,7 +7828,11 @@ async function loadIdentity(user) {
 const roleLabel = () => (S.me ? t(S.me.owner ? 'role_owner' : S.me.editor ? 'role_supervisor' : 'role_student') : '');
 function idChip() {
   if (!S.me) return '<span id="id-chip"></span>';
-  return `<span id="id-chip" class="id-chip" title="${esc(t('id_note'))}">${icon('user')}<span>${S.me.name ? '<bdi>' + esc(S.me.name) + '</bdi>' : ''}<small>${roleLabel()}</small></span>${window.CF_PLATFORM ? `<button class="icon-btn" data-act="signout" aria-label="${t('sign_out')}" title="${t('sign_out')}">${icon('logout')}</button>` : ''}${window.CF_LOCAL ? `<button class="icon-btn" data-act="claude-key" aria-label="${t('lk_btn')}" title="${t('lk_btn')}">${icon('key')}</button>` : ''}</span>`;
+  /* signed-in accounts (the server, or a supervisor in the demonstration) change their password and sign out here;
+     the owner of a single-file copy manages the Claude key */
+  const staffDemo = !!(window.CF_LOCAL && window.CF_LOCAL.staff), signedIn = !!window.CF_PLATFORM || staffDemo;
+  const note = window.CF_LOCAL ? (staffDemo ? 'id_note_staff' : 'id_note_owner') : 'id_note';
+  return `<span id="id-chip" class="id-chip" title="${esc(t(note))}">${icon('user')}<span>${S.me.name ? '<bdi>' + esc(S.me.name) + '</bdi>' : ''}<small>${roleLabel()}</small></span>${signedIn ? `<button class="icon-btn" data-act="my-password" aria-label="${t('acc_pw_change')}" title="${t('acc_pw_change')}">${icon('lock')}</button><button class="icon-btn" data-act="signout" aria-label="${t('sign_out')}" title="${t('sign_out')}">${icon('logout')}</button>` : ''}${window.CF_LOCAL && !staffDemo ? `<button class="icon-btn" data-act="claude-key" aria-label="${t('lk_btn')}" title="${t('lk_btn')}">${icon('key')}</button>` : ''}</span>`;
 }
 function welcomeHTML() {
   const n = S.me && S.me.name ? ', <bdi>' + esc(S.me.name) + '</bdi>' : '';
@@ -7819,7 +7969,7 @@ const PLATFORM_TEXT = {
   hero_note: ['Sign in with your university account, describe your idea and work with real components and worldwide discovery.', 'ادخل بحساب جامعتك، وصف فكرتك، واعمل بمكونات حقيقية واكتشاف دولي.'],
   role_owner: ['Administrator', 'مسؤول'],
   urole_ideas: ['Student: sends ideas only', 'طالب: يرسل الأفكار فقط'], urole_student: ['Student: whole platform', 'طالب: المنصة كاملة'],
-  acc_note: ['New students can only write and send ideas from the students’ page. Choose “Student: whole platform” to open everything to an account. Supervisors review ideas and submitted projects; administrators also manage the catalog, the students’ page and accounts.', 'لا يستطيع الطلاب الجدد إلا كتابة أفكارهم وإرسالها من صفحة الطلاب، واختر «طالب: المنصة كاملة» لتفتح المنصة لحساب معيّن. يراجع المشرفون الأفكار والمشاريع المرسلة، ويدير المسؤولون أيضًا الكتالوج وصفحة الطلاب والحسابات.'],
+  acc_note: ['New students can only write and send ideas from the students’ page. Choose “Student: whole platform” to open everything to an account. Supervisors use only the services you choose for them on the Supervisors page; administrators manage everything.', 'لا يستطيع الطلاب الجدد إلا كتابة أفكارهم وإرسالها من صفحة الطلاب، واختر «طالب: المنصة كاملة» لتفتح المنصة لحساب معيّن. ولا يستخدم المشرفون إلا الخدمات التي تختارها لهم في صفحة «المشرفون»، ويدير المسؤولون كل شيء.'],
   store_cloud: ['Saved on the server', 'محفوظ على الخادم'], store_cloud_d: ['Your projects are saved on this platform’s server and stay private to your account.', 'تُحفظ مشاريعك على خادم المنصة وتبقى خاصة بحسابك.'],
   store_local_d: ['Changes stay in this tab until the server can be reached.', 'تبقى التغييرات في هذه النافذة حتى يتوفر الاتصال بالخادم.']
 };
@@ -7829,13 +7979,13 @@ function applyPlatformText() {
   if (liveSearch()) L.S.lp_honest_p = ['Your projects, imported inventory and verified prices are real data. The reference catalog lists real products with indicative prices until someone verifies them, and example projects are labelled as examples. Worldwide discovery uses live web search through Claude, so open each source.', 'مشاريعك والمخزون الذي تستورده والأسعار الموثّقة بيانات حقيقية. ويضم الكتالوج المرجعي منتجات حقيقية بأسعار استرشادية حتى يتم توثيقها، والمشاريع النموذجية موسومة بذلك. ويستخدم الاكتشاف الدولي بحثًا مباشرًا في الويب عبر Claude، فافتح كل مصدر.'];
 }
 if (window.CF_PLATFORM_READY) window.CF_PLATFORM_READY.then(applyPlatformText);
-ACT.signout = () => { if (window.CF_PLATFORM) window.CF_PLATFORM.signOut(); };
+ACT.signout = () => { if (window.CF_PLATFORM) window.CF_PLATFORM.signOut(); else if (window.CF_LOCAL && window.CF_LOCAL.staff) window.CF_LOCAL.staffSignOut(); };
 /* the API behind accounts and the students' page: the server, or the demonstration kept in this browser (demo.js) */
 function portalApi() { return (window.CF_PLATFORM && window.CF_PLATFORM.api) || (window.CF_DEMO && window.CF_DEMO.api) || null; }
 function demoMode() { return !window.CF_PLATFORM && !!window.CF_DEMO; }
 Object.assign(L.S, {
   urole_ideas: ['Student: sends ideas only', 'طالب: يرسل الأفكار فقط'],
-  acc_note_demo: ['Demo accounts, kept in this browser only. Create an account for each student who will try the students’ page on this device.', 'حسابات تجريبية محفوظة في هذا المتصفح فقط. أنشئ حسابًا لكل طالب سيجرّب صفحة الطلاب على هذا الجهاز.'],
+  acc_note_demo: ['Demo accounts, kept in this browser only. Create an account for each student who will try the students’ page on this device; add supervisors on the Supervisors page.', 'حسابات تجريبية محفوظة في هذا المتصفح فقط. أنشئ حسابًا لكل طالب سيجرّب صفحة الطلاب على هذا الجهاز، وأضف المشرفين من صفحة «المشرفون».'],
   acc_del: ['Delete account', 'حذف الحساب'], acc_del_p: ['The account of {n} and its ideas will be deleted from this browser.', 'سيُحذف حساب {n} وأفكاره من هذا المتصفح.'], acc_deleted: ['Account deleted.', 'حُذف الحساب.'],
   acc_none: ['No accounts yet.', 'لا توجد حسابات بعد.']
 });
@@ -7845,12 +7995,17 @@ function accountsTabHTML() {
   if (a.loading) return `<p class="hint">${t('acc_loading')}</p>`;
   if (a.error) return `<p class="warnbox">${t('acc_err_gen')}</p>`;
   const sel = (u, field, opts) => `<select data-on="acc-${field}" data-id="${esc(u.id)}" aria-label="${t(field)}">${opts.map(o => `<option value="${o}" ${u[field] === o ? 'selected' : ''}>${t((field === 'role' ? 'urole_' : 'ustatus_') + o)}</option>`).join('')}</select>`;
-  const demo = demoMode(), roles = demo ? ['ideas'] : ['ideas', 'student', 'supervisor', 'admin'];
-  return `<p class="hint">${t(demo ? 'acc_note_demo' : 'acc_note')}</p><div class="row-btns"><button class="btn small primary" data-act="acc-add">${icon('plus')}<span>${t('acc_add')}</span></button></div>
+  const demo = demoMode(), owner = isOwner(), roles = accountRoles();
+  return `<p class="hint">${t(!owner ? 'acc_note_sup' : demo ? 'acc_note_demo' : 'acc_note')}</p><div class="row-btns"><button class="btn small primary" data-act="acc-add">${icon('plus')}<span>${t('acc_add')}</span></button></div>
     <div class="tbl-wrap"><table class="tbl"><thead><tr><th>${t('name')}</th><th>${t('acc_email')}</th><th>${t('role')}</th><th>${t('status')}</th><th>${t('acc_last')}</th><th></th></tr></thead><tbody>
-    ${a.users.map(u => `<tr><td><bdi>${esc(u.name)}</bdi>${u.institution ? `<small class="d-block muted">${esc(u.institution)}</small>` : ''}</td><td dir="ltr">${esc(u.email)}</td><td>${demo ? t('urole_ideas') : sel(u, 'role', roles)}</td><td>${sel(u, 'status', ['active', 'pending', 'suspended'])}</td><td>${u.lastLogin ? fdate(Date.parse(u.lastLogin), true) : '–'}</td>
-      <td class="act"><button class="icon-btn" data-act="acc-reset" data-id="${esc(u.id)}" aria-label="${t('acc_reset')}: ${esc(u.name)}" title="${t('acc_reset')}">${icon('key')}</button>${demo ? `<button class="icon-btn" data-act="acc-del" data-id="${esc(u.id)}" aria-label="${t('acc_del')}: ${esc(u.name)}" title="${t('acc_del')}">${icon('trash')}</button>` : ''}</td></tr>`).join('')}
+    ${a.users.map(u => `<tr><td><bdi>${esc(u.name)}</bdi>${u.institution ? `<small class="d-block muted">${esc(u.institution)}</small>` : ''}</td><td dir="ltr">${esc(u.email)}</td><td>${roles.length > 1 && roles.indexOf(u.role) >= 0 ? sel(u, 'role', roles) : t('urole_' + u.role)}</td><td>${sel(u, 'status', ['active', 'pending', 'suspended'])}</td><td>${u.lastLogin ? fdate(Date.parse(u.lastLogin), true) : '–'}</td>
+      <td class="act">${owner && u.role === 'supervisor' ? `<button class="icon-btn" data-act="team-perms" data-id="${esc(u.id)}" aria-label="${t('acc_perms')}: ${esc(u.name)}" title="${t('acc_perms')}">${icon('lock')}</button>` : ''}<button class="icon-btn" data-act="acc-reset" data-id="${esc(u.id)}" aria-label="${t('acc_reset')}: ${esc(u.name)}" title="${t('acc_reset')}">${icon('key')}</button>${demo && owner ? `<button class="icon-btn" data-act="acc-del" data-id="${esc(u.id)}" aria-label="${t('acc_del')}: ${esc(u.name)}" title="${t('acc_del')}">${icon('trash')}</button>` : ''}</td></tr>`).join('')}
     </tbody></table></div>${a.users.length ? '' : `<p class="hint">${t('acc_none')}</p>`}`;
+}
+/* the roles this person may give: administrators any (in the demonstration: students and supervisors), supervisors student roles only */
+function accountRoles() {
+  if (demoMode()) return isOwner() ? ['ideas', 'supervisor'] : ['ideas'];
+  return isOwner() ? ['ideas', 'student', 'supervisor', 'admin'] : ['ideas', 'student'];
 }
 async function loadAccounts() {
   S.ui.accounts = { loading: true };
@@ -7859,9 +8014,12 @@ async function loadAccounts() {
   if (S.route === 'admin' && S.ui.admin.tab === 'accounts') render();
 }
 async function patchAccount(id, body) {
-  try { await portalApi()('PATCH', '/api/admin/users/' + encodeURIComponent(id), body); toast(t('saved'), 'ok'); }
+  let u = null;
+  try { u = await portalApi()('PATCH', '/api/admin/users/' + encodeURIComponent(id), body); toast(t('saved'), 'ok'); }
   catch (e) { toast(t(e.code === 'last_admin' ? 'acc_err_last' : 'acc_err_gen'), 'warn'); }
-  loadAccounts();
+  S.ui.team = null;
+  await loadAccounts();
+  if (u && body.role === 'supervisor') openPermEditor(u);   /* a new supervisor: choose what they can use */
 }
 ON['acc-role'] = el => patchAccount(el.dataset.id, { role: el.value });
 ON['acc-status'] = el => patchAccount(el.dataset.id, { status: el.value });
@@ -7869,18 +8027,21 @@ ACT['acc-add'] = () => openModal(t('acc_add'), `<div class="form-grid" id="acc-f
     <label class="field"><span>${t('name')}</span><input name="name" maxlength="120"></label>
     <label class="field"><span>${t('acc_email')}</span><input name="email" type="email" dir="ltr"></label>
     <label class="field"><span>${t('acc_password')}</span><input name="password" type="text" dir="ltr" autocomplete="off"></label>
-    <label class="field"><span>${t('role')}</span><select name="role">${(demoMode() ? ['ideas'] : ['ideas', 'student', 'supervisor', 'admin']).map(r => `<option value="${r}">${t('urole_' + r)}</option>`).join('')}</select></label>
+    <label class="field"><span>${t('role')}</span><select name="role">${accountRoles().map(r => `<option value="${r}">${t('urole_' + r)}</option>`).join('')}</select></label>
   </div><p class="hint">${t('acc_pw_note')}</p><p class="form-err" id="form-err" role="alert"></p>`,
   `<button class="btn ghost" data-act="modal-close">${t('cancel')}</button><button class="btn primary" data-act="acc-create">${t('save')}</button>`);
 ACT['acc-create'] = async () => {
   const f = n => $('#acc-form [name="' + n + '"]');
   const body = { name: f('name').value.trim(), email: f('email').value.trim(), password: f('password').value, role: f('role').value };
   if (!body.name || !body.email || body.password.length < 8) { $('#form-err').textContent = t('acc_err_form'); return; }
-  try { await portalApi()('POST', '/api/admin/users', body); closeModal(); toast(t('acc_created'), 'ok'); loadAccounts(); }
-  catch (e) { $('#form-err').textContent = t(e.code === 'email_taken' ? 'acc_err_taken' : 'acc_err_gen'); }
+  try {
+    const u = await portalApi()('POST', '/api/admin/users', body);
+    closeModal(); toast(t('acc_created'), 'ok'); S.ui.team = null; loadAccounts();
+    if (u && u.role === 'supervisor') openPermEditor(u);
+  } catch (e) { $('#form-err').textContent = t(e.code === 'email_taken' ? 'acc_err_taken' : e.code === 'bad_email' ? 'acc_err_email' : 'acc_err_gen'); }
 };
 ACT['acc-del'] = el => {
-  const u = ((S.ui.accounts && S.ui.accounts.users) || []).find(x => x.id === el.dataset.id);
+  const u = accountById(el.dataset.id);
   if (!u) return;
   openModal(t('acc_del'), `<p>${t('acc_del_p', { n: '<bdi>' + esc(u.name) + '</bdi>' })}</p>`, `<button class="btn ghost" data-act="modal-close">${t('cancel')}</button><button class="btn danger" data-act="acc-del-ok" data-id="${esc(u.id)}">${t('delete')}</button>`);
 };
@@ -7891,7 +8052,7 @@ ACT['acc-del-ok'] = async el => {
   loadAccounts();
 };
 ACT['acc-reset'] = el => {
-  const u = ((S.ui.accounts && S.ui.accounts.users) || []).find(x => x.id === el.dataset.id);
+  const u = accountById(el.dataset.id);
   if (!u) return;
   openModal(t('acc_reset_for', { n: '<bdi>' + esc(u.name) + '</bdi>' }), `<div class="form-grid" id="acc-pw-form"><label class="field span2"><span>${t('acc_password')}</span><input name="password" type="text" dir="ltr" autocomplete="off" maxlength="200"></label></div>
     <p class="hint">${t('acc_reset_note')}</p><p class="form-err" id="form-err" role="alert"></p>`,
@@ -8133,7 +8294,7 @@ function suResultHTML(su) {
     ${ideas ? `<section class="panel"><h2>${t('su_ideas')}</h2><div class="su-ideas">${ideas}</div></section>` : ''}`;
 }
 function pageSustain() {
-  const su = suState(), canAI = !!(S.caps.sample && !S.caps.sampleHidden);
+  const su = suState(), canAI = !!(S.caps.sample && !S.caps.sampleHidden) && can('sustain');
   if (su.imgOK === null && canAI) suImagesAllowed().then(() => { if (S.route === 'sustain') render(); });
   if (su.design && su.design.plan) setTimeout(sdPreview, 0);
   const lab = m => (m.kind === 'frame' ? t('su_frame', { s: suClock(m.t) }) : t('su_photo'));
@@ -8691,7 +8852,7 @@ IN['up-note'] = el => { upState().note = el.value; };
 const SV = window.CF_SALVAGE;
 ICONS.recycle = 'M7.2 19.5H4.6a1.6 1.6 0 0 1-1.4-2.4l2.6-4.5M9.6 6.2l1-1.7a1.6 1.6 0 0 1 2.8 0l2.5 4.4M18.3 12.6l2.4 4.4a1.6 1.6 0 0 1-1.4 2.5H14M3.6 12.9l2.2-.4.6 2.2M14.2 8.1l1.8.9.9-2.1M14 19.5l1.4 1.6M14 19.5l1.4-1.7';
 const SV_HAZ = { low: 'ok', caution: 'risk', danger: 'gap' };
-const svCanAI = () => !!(S.caps.sample && !S.caps.sampleHidden);
+const svCanAI = () => !!(S.caps.sample && !S.caps.sampleHidden) && can('sustain');
 const svTitle = o => (o ? (S.lang === 'ar' ? o.ar || o.en : o.en || o.ar) : '');
 function svRecogHTML(text) {
   const r = SV.recognize(text);
@@ -8926,7 +9087,7 @@ const NV = window.CF_NOVELTY;
 const nvBox = () => S.ui.nv || (S.ui.nv = { pid: null, key: '', res: null, more: false, ai: {} });
 /* Claude's search for each project: whether it runs, its last error, and the discoveries it already followed */
 const nvAI = pid => { const b = nvBox(); return b.ai[pid] || (b.ai[pid] = { busy: false, err: '', auto: {}, ctrl: null }); };
-const nvAIOk = () => { const smp = S.caps.sample; return !(smp === null || S.caps.sampleHidden); };
+const nvAIOk = () => { const smp = S.caps.sample; return !(smp === null || S.caps.sampleHidden) && can('discover'); };
 function nvKey(p) {
   return [p.discovery.ts, (p.discovery.ai && p.discovery.ai.ts) || 0, S.catStamp, E.configSignature(p, p.current.config), p.components.length,
     p.functions.length, JSON.stringify(p.current.overrides || {}), (p.features || []).length, JSON.stringify(S.ws.weights)].join('|');
@@ -9131,7 +9292,7 @@ Object.assign(L.S, {
   id_demo_made_note: ['Anyone on this device can use these details: they are for the demonstration only.', 'يستطيع أي شخص على هذا الجهاز استخدام هذه البيانات، فهي للتجربة فقط.'],
   id_demo_reset_p: ['All test student accounts, their ideas and the page settings will be deleted from this browser.', 'ستُحذف من هذا المتصفح كل حسابات الطلاب التجريبية وأفكارهم وإعدادات الصفحة.'],
   id_demo_cleared: ['Demo data cleared.', 'مُسحت البيانات التجريبية.'], lp_students: ['Student sign-in (demo)', 'دخول الطلاب (تجريبي)'],
-  id_sup_note: ['Administrators manage the students’ page and accounts. You can review the ideas.', 'يدير المسؤولون صفحة الطلاب والحسابات، ويمكنك مراجعة الأفكار.']
+  id_sup_note: ['The administrator manages the settings of the students’ page.', 'يدير المسؤول إعدادات صفحة الطلاب.']
 });
 ICONS.inbox = 'M4 13h4.5l1.5 3h4l1.5-3H20M4 13l2.2-8h11.6L20 13v6H4z';
 ICONS.copy = 'M9 9h11v11H9zM5 15H4V4h11v1';
@@ -9140,10 +9301,9 @@ ROUTES.splice(ROUTES.indexOf('dashboard') + 1, 0, 'ideas');
 NAV.splice(NAV.findIndex(x => x[0] === 'dashboard') + 1, 0, ['ideas', 'inbox']);
 const IDEA_ST = ['new', 'review', 'accepted', 'changes', 'declined'];
 const IDEA_TONE = { new: 'cyan', review: 'info', accepted: 'ok', changes: 'risk', declined: 'gap' };
-const pme = () => (window.CF_PLATFORM && window.CF_PLATFORM.me) || null;
-/* on the server: administrators and supervisors; in the demonstration kept in this browser: the owner of this copy */
-const ideasStaff = () => { const m = pme(); return demoMode() || !!(m && (m.role === 'admin' || m.role === 'supervisor')); };
-const ideasAdmin = () => { const m = pme(); return demoMode() || !!(m && m.role === 'admin'); };
+/* on the server and in the demonstration kept in this browser: administrators, and supervisors allowed to see ideas;
+   reviewing, deleting, the page settings and student accounts are separate permissions (app-staff.js) */
+const ideasStaff = () => !!portalApi() && can('ideas_view');
 const ideasState = () => S.ui.ideas || (S.ui.ideas = { list: null, page: null, loading: false, error: false, f: 'all', q: '', more: {}, edit: {}, pageEdit: null });
 NAV_GATE.ideas = ideasStaff;
 NAV_BADGE.ideas = () => { const s = S.ui.ideas; return s && s.list ? s.list.filter(i => i.status === 'new').length : 0; };
@@ -9175,7 +9335,8 @@ if (window.CF_DEMO) window.addEventListener('storage', e => {
 function studentsAddress() { return demoMode() ? location.href.split('#')[0] + '#students' : location.origin + '/students'; }
 const studentsHref = () => (demoMode() ? '#students' : '/students');
 function ideasPagePanel(s) {
-  if (!ideasAdmin()) return `<section class="panel id-page"><h2>${t('id_page_h')}</h2><div class="id-link"><span class="hint">${t('id_link')}</span><code dir="ltr">${esc(studentsAddress())}</code><button class="btn small ghost" data-act="ideas-copy">${icon('copy')}<span>${t('id_copy')}</span></button></div><p class="hint">${t('id_sup_note')}</p></section>`;
+  if (!can('student_page')) return `<section class="panel id-page"><h2>${t('id_page_h')}</h2><div class="id-link"><span class="hint">${t('id_link')}</span><code dir="ltr">${esc(studentsAddress())}</code><button class="btn small ghost" data-act="ideas-copy">${icon('copy')}<span>${t('id_copy')}</span></button></div><p class="hint">${t('id_sup_note')}</p>
+    ${can('students') ? `<div class="row-btns"><button class="btn ghost" data-act="ideas-accounts">${icon('user')}<span>${t('id_accounts')}</span></button></div>` : ''}</section>`;
   const pg = s.pageEdit || s.page || { open: true, message: '', signup: 'open' };
   return `<section class="panel id-page"><div class="id-page-head"><h2>${t('id_page_h')}</h2>${chip(t(pg.open ? 'id_open_on' : 'id_open_off'), pg.open ? 'ok' : 'gap')}</div>
     <div class="id-link"><span class="hint">${t('id_link')}</span><code dir="ltr">${esc(studentsAddress())}</code>
@@ -9185,7 +9346,7 @@ function ideasPagePanel(s) {
       <label class="field"><span>${t('id_signup')}</span><select data-on="idp-signup">${['open', 'approve', 'closed'].map(k => `<option value="${k}" ${pg.signup === k ? 'selected' : ''}>${t('id_su_' + k)}</option>`).join('')}</select></label>
       <label class="field id-msg"><span>${t('id_msg')}</span><textarea rows="3" dir="auto" maxlength="2000" data-in="idp-msg" placeholder="${esc(t('id_msg_ph'))}">${esc(pg.message || '')}</textarea><small>${t('id_msg_note')}</small></label>
     </div>
-    <div class="row-btns"><button class="btn primary" data-act="idp-save">${t('id_save_page')}</button><button class="btn ghost" data-act="ideas-accounts">${icon('user')}<span>${t('id_accounts')}</span></button></div></section>`;
+    <div class="row-btns"><button class="btn primary" data-act="idp-save">${t('id_save_page')}</button>${can('students') ? `<button class="btn ghost" data-act="ideas-accounts">${icon('user')}<span>${t('id_accounts')}</span></button>` : ''}</div></section>`;
 }
 function ideaCardHTML(it, s) {
   const ed = s.edit[it.id] || {}, st = ed.status || it.status, reply = ed.reply !== undefined ? ed.reply : (it.reply || ''), a = it.author || {};
@@ -9196,11 +9357,12 @@ function ideaCardHTML(it, s) {
       ${chip(t('idst_' + it.status), IDEA_TONE[it.status] || 'info')}</header>
     <p class="id-desc" dir="auto">${esc(long && !open ? it.description.slice(0, 700).replace(/\s+\S*$/, '') + '…' : it.description)}</p>
     ${long ? `<button class="linkish small" data-act="idea-more" data-id="${esc(it.id)}">${t(open ? 'id_less' : 'id_more')}</button>` : ''}
-    <div class="id-review"><label class="field"><span>${t('id_status')}</span><select data-on="idea-status" data-id="${esc(it.id)}">${IDEA_ST.map(k => `<option value="${k}" ${st === k ? 'selected' : ''}>${t('idst_' + k)}</option>`).join('')}</select></label>
-      <label class="field"><span>${t('id_reply')}</span><textarea rows="2" dir="auto" maxlength="4000" data-in="idea-reply" data-id="${esc(it.id)}" placeholder="${esc(t('id_reply_ph'))}">${esc(reply)}</textarea></label></div>
-    <div class="row-btns"><button class="btn small primary" data-act="idea-save" data-id="${esc(it.id)}">${icon('check')}<span>${t('id_save')}</span></button>
-      <button class="btn small ghost" data-act="idea-start" data-id="${esc(it.id)}">${icon('plus')}<span>${t('id_start')}</span></button><span class="grow"></span>
-      ${ideasAdmin() ? `<button class="icon-btn" data-act="idea-del" data-id="${esc(it.id)}" aria-label="${t('id_del')}" title="${t('id_del')}">${icon('trash')}</button>` : ''}</div></article>`;
+    ${can('ideas_review') ? `<div class="id-review"><label class="field"><span>${t('id_status')}</span><select data-on="idea-status" data-id="${esc(it.id)}">${IDEA_ST.map(k => `<option value="${k}" ${st === k ? 'selected' : ''}>${t('idst_' + k)}</option>`).join('')}</select></label>
+      <label class="field"><span>${t('id_reply')}</span><textarea rows="2" dir="auto" maxlength="4000" data-in="idea-reply" data-id="${esc(it.id)}" placeholder="${esc(t('id_reply_ph'))}">${esc(reply)}</textarea></label></div>`
+      : it.reply ? `<div class="st-reply"><b>${t('id_reply')}</b><p dir="auto">${esc(it.reply)}</p></div>` : ''}
+    <div class="row-btns">${can('ideas_review') ? `<button class="btn small primary" data-act="idea-save" data-id="${esc(it.id)}">${icon('check')}<span>${t('id_save')}</span></button>` : ''}
+      ${can('projects') ? `<button class="btn small ghost" data-act="idea-start" data-id="${esc(it.id)}">${icon('plus')}<span>${t('id_start')}</span></button>` : ''}<span class="grow"></span>
+      ${can('ideas_delete') ? `<button class="icon-btn" data-act="idea-del" data-id="${esc(it.id)}" aria-label="${t('id_del')}" title="${t('id_del')}">${icon('trash')}</button>` : ''}</div></article>`;
 }
 function ideasListHTML(s) {
   const q = s.q.trim().toLowerCase(), all = s.list || [];
@@ -9223,7 +9385,7 @@ function pageIdeas() {
 PAGES.ideas = pageIdeas;
 /* the demonstration in this browser: a ready test student, the students' page, and a clean start */
 function ideasDemoHTML() {
-  if (!demoMode()) return '';
+  if (!demoMode() || !isOwner()) return '';
   return `<section class="panel id-demo"><div class="id-page-head"><h2>${t('id_demo_h')}</h2>${chip(t('id_demo_chip'), 'risk')}</div>
     <p class="small">${t('id_demo_p')}</p>
     <div class="row-btns"><button class="btn small primary" data-act="demo-student">${icon('user')}<span>${t('id_demo_student')}</span></button>
@@ -9262,7 +9424,7 @@ Object.assign(ACT, {
     const done = () => toast(t('id_copied'), 'ok');
     try { navigator.clipboard.writeText(v).then(done, () => toast(esc(v), 'ok')); } catch (e) { toast(esc(v), 'ok'); }
   },
-  'ideas-accounts'() { S.ui.admin.tab = 'accounts'; location.hash = '#admin'; },
+  'ideas-accounts'() { S.ui.admin.tab = 'accounts'; if (location.hash === '#admin') render(); else location.hash = '#admin'; },
   async 'idp-save'(el) {
     const s = ideasState(), pg = Object.assign({ open: true, message: '', signup: 'open' }, s.page || {}, s.pageEdit || {});
     el.disabled = true;
@@ -9315,6 +9477,318 @@ Object.assign(IN, {
   'idp-msg'(el) { const s = ideasState(); s.pageEdit = Object.assign({}, s.page || {}, s.pageEdit || {}, { message: el.value }); },
   'idea-reply'(el) { const s = ideasState(); s.edit[el.dataset.id] = Object.assign(s.edit[el.dataset.id] || {}, { reply: el.value }); },
   'ideas-q'(el) { const s = ideasState(); s.q = el.value; const b = $('#ideas-body'); if (b && s.list) b.innerHTML = ideasListHTML(s); }
+});
+
+/* ---------------- supervisors and permissions: the owner adds supervisors and chooses what each one can use ----------------
+   On the server the permissions are enforced by the API; in the demonstration kept in this browser (demo.js) by the
+   demo API and this page. Inside Claude there are no supervisor accounts: owners and editors keep the whole admin area. */
+Object.assign(L.S, {
+  nav_team: ['Supervisors', 'المشرفون'],
+  pmg_research: ['Research and projects', 'البحث والمشاريع'], pmg_students: ['Students’ ideas and projects', 'أفكار الطلاب ومشاريعهم'], pmg_manage: ['Running the platform', 'إدارة المنصة'],
+  perm_projects: ['Projects and the FGAR engine', 'المشاريع ومحرك FGAR'], perm_projects_d: ['Create projects, analyse them, plan them and write their reports.', 'إنشاء المشاريع وتحليلها وتخطيطها وكتابة تقاريرها.'],
+  perm_ai: ['AI help in projects', 'الذكاء الاصطناعي في المشاريع'], perm_ai_d: ['Extract a project from its description and suggest real parts.', 'استخراج المشروع من وصفه واقتراح قطع حقيقية له.'],
+  perm_discover: ['Global discovery and new features', 'الكشف الدولي والميزات الجديدة'], perm_discover_d: ['Search the web for similar work and for features nobody uses yet.', 'البحث في الويب عن الأعمال المشابهة وعن ميزات لا يستخدمها أحد.'],
+  perm_sustain: ['Sustainability Studio', 'استوديو الاستدامة'], perm_sustain_d: ['Turn old items and waste into project ideas.', 'تحويل الأشياء القديمة والنفايات إلى أفكار مشاريع.'],
+  perm_ideas_view: ['See students’ ideas', 'الاطلاع على أفكار الطلاب'], perm_ideas_view_d: ['Read the ideas students send and who sent them.', 'قراءة الأفكار التي يرسلها الطلاب ومعرفة أصحابها.'],
+  perm_ideas_review: ['Review ideas and reply', 'مراجعة الأفكار والرد عليها'], perm_ideas_review_d: ['Decide on each idea and write a reply the student reads.', 'تحديد قرار كل فكرة وكتابة رد يقرؤه الطالب.'],
+  perm_ideas_delete: ['Delete ideas', 'حذف الأفكار'], perm_ideas_delete_d: ['Remove ideas for good.', 'حذف الأفكار نهائيًا.'],
+  perm_submissions: ['Students’ submitted projects', 'مشاريع الطلاب المرسلة'], perm_submissions_d: ['See the projects students send and open review copies.', 'عرض المشاريع التي يرسلها الطلاب وفتح نسخ منها للمراجعة.'],
+  perm_student_page: ['Students’ page settings', 'إعدادات صفحة الطلاب'], perm_student_page_d: ['Open or close the page to new ideas, write the message to students and choose who creates accounts.', 'فتح الصفحة للأفكار الجديدة أو إغلاقها، وكتابة رسالة الطلاب، وتحديد من ينشئ الحسابات.'],
+  perm_students: ['Student accounts', 'حسابات الطلاب'], perm_students_d: ['Add student accounts, approve or suspend them and set new passwords.', 'إضافة حسابات الطلاب والموافقة عليها أو إيقافها وتعيين كلمات مرور جديدة.'],
+  perm_catalog: ['Shared parts catalog', 'كتالوج القطع المشترك'], perm_catalog_d: ['Add and edit parts, verify prices and manage categories for everyone.', 'إضافة القطع وتعديلها وتوثيق أسعارها وإدارة الفئات للجميع.'],
+  pmp_research: ['Research assistant', 'مساعد بحث'], pmp_reviewer: ['Ideas reviewer', 'مراجع أفكار'], pmp_students: ['Students manager', 'مسؤول شؤون الطلاب'], pmp_all: ['All permissions', 'كل الصلاحيات'], pmp_none: ['Clear all', 'إلغاء الكل'],
+  pm_quick: ['Quick choice:', 'اختيار سريع:'], pm_count: ['{n} of {m} permissions', '{n} من {m} صلاحية'],
+  pm_needs: ['Some permissions need another one, which is ticked with them: replying to ideas needs seeing them, and research needs projects.', 'بعض الصلاحيات تحتاج غيرها فتُختار معها تلقائيًا: الرد على الأفكار يحتاج الاطلاع عليها، والبحث يحتاج المشاريع.'],
+  pm_none_warn: ['With no permission the supervisor can sign in but sees nothing.', 'بدون أي صلاحية يستطيع المشرف الدخول لكنه لن يرى شيئًا.'],
+  tm_p: ['Add supervisors who help you run the platform and research. Choose for each one exactly which services they can use, and change it at any time.', 'أضف مشرفين يساعدونك في إدارة المنصة والبحث، واختر لكل مشرف الخدمات التي يستخدمها بالضبط، وغيّرها متى شئت.'],
+  tm_add: ['Add a supervisor', 'إضافة مشرف'], tm_create: ['Add the supervisor', 'إضافة المشرف'], tm_perms_h: ['What can this supervisor use?', 'ماذا يستطيع هذا المشرف أن يستخدم؟'],
+  tm_list_h: ['Your supervisors', 'مشرفوك'], tm_none: ['You have not added a supervisor yet.', 'لم تضف أي مشرف بعد.'],
+  tm_loading: ['Loading supervisors', 'جارٍ تحميل المشرفين'], tm_error: ['Supervisors could not be loaded.', 'تعذّر تحميل المشرفين.'],
+  tm_last: ['Last sign-in {d}', 'آخر دخول {d}'], tm_never: ['Has not signed in yet', 'لم يدخل بعد'], tm_default: ['Default permissions', 'الصلاحيات الافتراضية'],
+  tm_perms_btn: ['Permissions', 'الصلاحيات'], tm_perms_t: ['Permissions of {n}', 'صلاحيات {n}'], tm_pw_btn: ['New password', 'كلمة مرور جديدة'],
+  tm_suspend: ['Suspend', 'إيقاف'], tm_activate: ['Activate', 'تفعيل'], tm_suspended: ['Suspended', 'موقوف'], tm_active: ['Active', 'نشط'],
+  tm_suspended_ok: ['{n} is suspended and signed out.', 'أُوقف حساب {n} وسُجّل خروجه.'], tm_activated_ok: ['{n} can sign in again.', 'يستطيع {n} الدخول مجددًا.'],
+  tm_delete: ['Delete supervisor', 'حذف المشرف'], tm_del_p: ['The supervisor account of {n} will be deleted from this browser.', 'سيُحذف حساب المشرف {n} من هذا المتصفح.'], tm_deleted: ['Supervisor deleted.', 'حُذف المشرف.'],
+  tm_saved: ['Permissions saved. They apply from the supervisor’s next step.', 'حُفظت الصلاحيات، وتسري من الخطوة التالية للمشرف.'],
+  tm_created_h: ['Supervisor added', 'أُضيف المشرف'], tm_created_p: ['Share these sign-in details with {n} privately:', 'شارك بيانات الدخول هذه مع {n} بشكل خاص:'], tm_where: ['Sign-in address', 'رابط الدخول'],
+  tm_signin_h: ['How supervisors sign in', 'كيف يدخل المشرفون'],
+  tm_signin_p: ['Supervisors sign in at the platform’s address with the email and password you give them, and see only the services you allowed.', 'يدخل المشرف من رابط المنصة بالبريد وكلمة المرور اللذين تعطيهما له، ولا يرى إلا الخدمات التي سمحت بها.'],
+  tm_signin_demo: ['Demo: supervisor accounts are kept in this browser. Add a supervisor, then open the supervisors’ sign-in in a new tab to see exactly what they see. Here a supervisor works on this device’s projects.', 'نسخة تجريبية: تُحفظ حسابات المشرفين في هذا المتصفح. أضف مشرفًا، ثم افتح صفحة دخول المشرفين في نافذة جديدة لترى ما يراه بالضبط. ويعمل المشرف هنا على مشاريع هذا الجهاز نفسها.'],
+  tm_open_signin: ['Open the supervisors’ sign-in', 'افتح صفحة دخول المشرفين'], tm_copied: ['Address copied.', 'نُسخ الرابط.'],
+  tm_owner_h: ['Only for you', 'لك وحدك'],
+  tm_owner_p: ['Adding supervisors and changing their permissions, administrator accounts and the AI key stay with you. Supervisors never see this page.', 'تبقى لك وحدك إضافة المشرفين وتغيير صلاحياتهم، وحسابات المسؤولين، ومفتاح الذكاء الاصطناعي، ولا يرى المشرفون هذه الصفحة.'],
+  tm_gate: ['Supervisors are available on the server version and in the demo.', 'المشرفون متاحون في نسخة الخادم وفي النسخة التجريبية.'],
+  tm_owner_only: ['Only the administrator adds supervisors and chooses their permissions.', 'المسؤول وحده يضيف المشرفين ويحدد صلاحياتهم.'],
+  perm_denied: ['You do not have permission for this. Ask the administrator.', 'ليست لديك صلاحية لهذا الإجراء، فاطلبها من المسؤول.'],
+  perm_page_no: ['You do not have permission to open this page.', 'ليست لديك صلاحية لفتح هذه الصفحة.'], perm_page_ask: ['Ask the administrator to add it to your permissions.', 'اطلب من المسؤول إضافتها إلى صلاحياتك.'],
+  perm_none: ['The administrator has not given you any permission yet.', 'لم يمنحك المسؤول أي صلاحية بعد.'], perm_go: ['You can open:', 'يمكنك فتح:'],
+  perm_ai_denied: ['You do not have permission to use this service. Ask the administrator.', 'ليست لديك صلاحية استخدام هذه الخدمة، فاطلبها من المسؤول.'],
+  perm_ai_short: ['AI extraction is not allowed for your account.', 'الاستخراج بالذكاء الاصطناعي غير مسموح لحسابك.'],
+  perm_changed: ['The administrator changed your permissions.', 'غيّر المسؤول صلاحياتك.'],
+  acc_perms: ['Permissions', 'الصلاحيات'], acc_err_email: ['Enter a valid email address.', 'أدخل بريدًا إلكترونيًا صحيحًا.'],
+  acc_note_sup: ['You can manage student accounts: add them, approve or suspend them and set new passwords.', 'تستطيع إدارة حسابات الطلاب: إضافتها، والموافقة عليها أو إيقافها، وتعيين كلمات مرور جديدة لها.'],
+  acc_pw_change: ['Change your password', 'تغيير كلمة المرور'], acc_pw_cur: ['Current password', 'كلمة المرور الحالية'], acc_pw_new: ['New password (at least 8 characters)', 'كلمة المرور الجديدة (8 أحرف على الأقل)'],
+  acc_pw_done: ['Password changed.', 'تم تغيير كلمة المرور.'], acc_pw_bad: ['The current password is not correct.', 'كلمة المرور الحالية غير صحيحة.'],
+  id_note_owner: ['You are the owner of this copy of the platform.', 'أنت مالك هذه النسخة من المنصة.'], id_note_staff: ['You signed in as a supervisor: you see what the administrator allowed.', 'دخلت بصفة مشرف، فترى ما سمح به المسؤول.'],
+  lp_staff: ['Supervisor sign-in (demo)', 'دخول المشرفين (تجريبي)']
+});
+ICONS.team = 'M9 11a3.5 3.5 0 1 0 0-7a3.5 3.5 0 1 0 0 7M2.5 20c.8-3.6 3.3-5.5 6.5-5.5s5.7 1.9 6.5 5.5M16 4.3a3.5 3.5 0 0 1 0 6.4M18 14.8c1.9.6 3.1 2.3 3.5 5.2';
+ICONS.lock = 'M6 11h12v9H6zM8.5 11V8a3.5 3.5 0 0 1 7 0v3M12 14.5v2';
+ROUTES.splice(ROUTES.indexOf('admin'), 0, 'team');
+NAV.splice(NAV.findIndex(x => x[0] === 'admin'), 0, ['team', 'team']);
+
+/* the same catalogue as the server (core.py) */
+const PERMS = ['projects', 'ai', 'discover', 'sustain', 'ideas_view', 'ideas_review', 'ideas_delete', 'submissions', 'student_page', 'students', 'catalog'];
+const PERM_GROUPS = [['research', ['projects', 'ai', 'discover', 'sustain']], ['students', ['ideas_view', 'ideas_review', 'ideas_delete', 'submissions']], ['manage', ['student_page', 'students', 'catalog']]];
+const PERM_NEEDS = { ai: ['projects'], discover: ['projects'], sustain: ['projects'], ideas_review: ['ideas_view'], ideas_delete: ['ideas_view'] };
+const STUDENT_PERMS = ['projects', 'ai', 'discover', 'sustain'];
+const PERM_PRESETS = [['research', ['projects', 'ai', 'discover', 'sustain']], ['reviewer', ['ideas_view', 'ideas_review', 'submissions']],
+  ['students', ['ideas_view', 'ideas_review', 'ideas_delete', 'submissions', 'student_page', 'students']], ['all', PERMS], ['none', []]];
+function withNeeds(list) {
+  const on = new Set((list || []).filter(p => PERMS.indexOf(p) >= 0));
+  for (const p of Array.from(on)) (PERM_NEEDS[p] || []).forEach(n => on.add(n));
+  return PERMS.filter(p => on.has(p));
+}
+
+/* who is using this page, and what they may use */
+function whoAmI() {
+  const me = window.CF_PLATFORM && window.CF_PLATFORM.me;
+  if (me) {
+    const kind = me.role === 'admin' ? 'owner' : me.role === 'supervisor' ? 'supervisor' : 'student';
+    return { kind, perms: kind === 'owner' ? PERMS : Array.isArray(me.permissions) ? me.permissions : kind === 'student' ? STUDENT_PERMS : [] };
+  }
+  const lc = window.CF_LOCAL;
+  if (lc && lc.staff) return { kind: 'supervisor', perms: lc.staff.permissions || [] };
+  if (lc) return { kind: 'owner', perms: PERMS };   // whoever opens their own copy of the platform owns it
+  return S.role === 'admin' ? { kind: 'owner', perms: PERMS } : { kind: 'student', perms: STUDENT_PERMS };
+}
+const can = p => whoAmI().perms.indexOf(p) >= 0;
+const isOwner = () => whoAmI().kind === 'owner';
+const isStaff = () => whoAmI().kind !== 'student';
+const identityKnown = () => !!(window.CF_PLATFORM || window.CF_LOCAL);
+function permOk(need) {
+  if (!need) return true;
+  if (need === 'owner') return isOwner();
+  return (Array.isArray(need) ? need : [need]).every(can);
+}
+
+/* pages */
+const ROUTE_PERM = { dashboard: 'projects', new: 'projects', graph: 'projects', gaps: 'projects', reconfig: 'projects', planner: 'projects', report: 'projects', lab: 'projects', discover: 'discover', sustain: 'sustain' };
+function adminTabs() {
+  if (!isStaff()) return [];
+  return ['resources', 'categories', 'projects', 'submissions', 'accounts', 'quality'].filter(k =>
+    k === 'projects' ? can('projects') : k === 'submissions' ? can('submissions') : k === 'accounts' ? !!portalApi() && (isOwner() || can('students')) : can('catalog'));
+}
+function routeOk(r) {
+  if (r === 'admin') return adminTabs().length > 0;
+  if (r === 'team') return !!portalApi() && isOwner();
+  if (r === 'ideas') return !!portalApi() && can('ideas_view');
+  return ROUTE_PERM[r] ? can(ROUTE_PERM[r]) : true;
+}
+function firstRoute() { const r = NAV.map(x => x[0]).find(x => x !== 'engine' && routeOk(x)); return r || null; }
+function noAccessHTML(r) {
+  const me = whoAmI(), open = NAV.filter(([x]) => x !== r && routeOk(x));
+  const why = r === 'admin' && me.kind === 'student' ? t('adm_gate') : r === 'ideas' && !portalApi() ? t('id_gate') : r === 'team' && !portalApi() ? t('tm_gate')
+    : r === 'team' ? t('tm_owner_only') : me.kind === 'supervisor' && !firstRoute() ? t('perm_none') : t('perm_page_no') + (me.kind === 'supervisor' ? ' ' + t('perm_page_ask') : '');
+  return `<div class="empty perm-empty">${icon('lock')}<h1>${t('nav_' + r)}</h1><p>${why}</p>
+    ${open.length ? `<p class="hint">${t('perm_go')}</p><div class="row-btns center">${open.map(([x, ic]) => `<a class="btn ghost small" href="#${x}">${icon(ic)}<span>${t('nav_' + x)}</span></a>`).join('')}</div>` : ''}</div>`;
+}
+
+/* what each action needs; the server checks the same on its side */
+const ACT_PERM = {
+  'load-examples': 'projects', 'remove-examples': 'projects', 'open-example': 'projects', 'idea-start': 'projects', 'pj-dup': 'projects', 'pj-del': 'projects', 'pj-restore': 'projects',
+  'np-llm': 'ai', 'ai-parts': 'ai', 'aip-run': 'ai', 'aip-add': 'ai', 'dc-run': 'discover', 'nv-ai': 'discover', 'su-run': 'sustain', 'up-run': 'sustain', 'up-find': 'sustain', 'sd-make': 'sustain',
+  'sub-refresh': 'submissions', 'sub-open': ['submissions', 'projects'],
+  'ideas-refresh': 'ideas_view', 'idea-save': 'ideas_review', 'idea-del': 'ideas_delete', 'idea-del-ok': 'ideas_delete', 'idp-save': 'student_page',
+  'ideas-accounts': 'students', 'demo-student': 'students', 'acc-add': 'students', 'acc-create': 'students', 'acc-reset': 'students', 'acc-reset-ok': 'students',
+  'acc-del': 'owner', 'acc-del-ok': 'owner', 'demo-reset': 'owner', 'demo-reset-ok': 'owner', 'claude-key': 'owner',
+  'res-new': 'catalog', 'res-edit': 'catalog', 'res-save': 'catalog', 'res-del': 'catalog', 'res-del-ok': 'catalog', 'res-price': 'catalog', 'price-save': 'catalog',
+  'csv-open': 'catalog', 'cat-add': 'catalog', 'cat-del': 'catalog',
+  'team-add': 'owner', 'team-create': 'owner', 'team-perms': 'owner', 'team-perms-ok': 'owner', 'team-status': 'owner', 'team-del': 'owner', 'team-del-ok': 'owner', 'pm-preset': 'owner'
+};
+const ON_PERM = { 'idea-status': 'ideas_review', 'idp-open': 'student_page', 'idp-signup': 'student_page', 'acc-role': 'students', 'acc-status': 'students', 'res-status': 'catalog', 'csv-file': 'catalog', 'pm-perm': 'owner', 'pj-num': 'projects' };
+const IN_PERM = { 'idea-reply': 'ideas_review', 'idp-msg': 'student_page', 'cat-name': 'catalog', 'pj-title': 'projects' };
+
+/* ---------------- the supervisors page (the owner only) ---------------- */
+const teamState = () => S.ui.team || (S.ui.team = { list: null, loading: false, error: false });
+async function loadTeam() {
+  const s = teamState(), api = portalApi();
+  if (s.loading || !api || !isOwner()) return;
+  s.loading = true;
+  try { const r = await api('GET', '/api/admin/users'); s.list = (r.users || []).filter(u => u.role === 'supervisor'); s.error = false; }
+  catch (e) { s.error = true; }
+  s.loading = false;
+  if (S.route === 'team') render();
+}
+const staffAddress = () => (demoMode() ? location.href.split('#')[0] + '#supervisor' : location.origin + '/');
+const permCount = n => t('pm_count', { n: num(n, 0), m: num(PERMS.length, 0) });
+function permSummaryHTML(perms) {
+  return `<div class="tm-perms">${PERM_GROUPS.map(([g, list]) => {
+    const on = list.filter(p => perms.indexOf(p) >= 0);
+    return `<div><b>${t('pmg_' + g)}</b>${on.length ? on.map(p => chip(t('perm_' + p), 'cyan')).join('') : `<span class="muted">–</span>`}</div>`;
+  }).join('')}</div>`;
+}
+function teamCardHTML(u) {
+  const perms = u.permissions || [], off = u.status !== 'active';
+  return `<article class="tm-card" data-status="${esc(u.status)}" data-id="${esc(u.id)}"><header><div class="tm-who"><h3><bdi>${esc(u.name)}</bdi></h3><p class="tm-mail" dir="ltr">${esc(u.email)}</p></div>
+      ${chip(t(off ? 'tm_suspended' : 'tm_active'), off ? 'gap' : 'ok')}</header>
+    <p class="tm-meta">${u.lastLogin ? t('tm_last', { d: fdate(Date.parse(u.lastLogin), true) }) : t('tm_never')} · ${permCount(perms.length)}</p>
+    ${permSummaryHTML(perms)}
+    <div class="row-btns"><button class="btn small primary" data-act="team-perms" data-id="${esc(u.id)}">${icon('lock')}<span>${t('tm_perms_btn')}</span></button>
+      <button class="btn small ghost" data-act="acc-reset" data-id="${esc(u.id)}">${icon('key')}<span>${t('tm_pw_btn')}</span></button>
+      <button class="btn small ghost" data-act="team-status" data-id="${esc(u.id)}">${t(off ? 'tm_activate' : 'tm_suspend')}</button>
+      ${demoMode() ? `<span class="grow"></span><button class="icon-btn" data-act="team-del" data-id="${esc(u.id)}" aria-label="${t('tm_delete')}: ${esc(u.name)}" title="${t('tm_delete')}">${icon('trash')}</button>` : ''}</div></article>`;
+}
+function pageTeam() {
+  const s = teamState();
+  if (!s.list && !s.loading && !s.error) setTimeout(loadTeam, 0);
+  const list = s.list || [];
+  const body = s.error && !s.list ? `<p class="warnbox">${t('tm_error')}</p>` : !s.list ? `<p class="hint">${t('tm_loading')}</p>`
+    : list.length ? `<div class="tm-grid">${list.map(teamCardHTML).join('')}</div>`
+    : `<div class="empty small"><p>${t('tm_none')}</p><button class="btn primary" data-act="team-add">${icon('plus')}<span>${t('tm_add')}</span></button></div>`;
+  return `<header class="page-head"><div><h1>${t('nav_team')}</h1><p class="lede">${t('tm_p')}</p></div>
+      <div class="row-btns"><button class="btn primary" data-act="team-add">${icon('plus')}<span>${t('tm_add')}</span></button></div></header>
+    <section class="panel${demoMode() ? ' id-demo' : ''}"><div class="id-page-head"><h2>${t('tm_signin_h')}</h2>${demoMode() ? chip(t('id_demo_chip'), 'risk') : ''}</div>
+      <p class="small">${t(demoMode() ? 'tm_signin_demo' : 'tm_signin_p')}</p>
+      <div class="id-link"><span class="hint">${t('tm_where')}</span><code dir="ltr">${esc(staffAddress())}</code>
+        <button class="btn small ghost" data-act="team-copy">${icon('copy')}<span>${t('id_copy')}</span></button>
+        ${demoMode() ? `<a class="btn small ghost" href="#supervisor" target="_blank" rel="noopener">${icon('eye')}<span>${t('tm_open_signin')}</span></a>` : ''}</div></section>
+    <section class="panel"><div class="id-list-head"><h2>${t('tm_list_h')}${list.length ? ' ' + chip(num(list.length, 0), 'cyan') : ''}</h2></div>${body}</section>
+    <section class="panel tm-keep"><h2>${icon('lock')}<span>${t('tm_owner_h')}</span></h2><p class="hint">${t('tm_owner_p')}</p></section>`;
+}
+PAGES.team = pageTeam;
+
+/* the permissions editor, in a dialog */
+function permEditorHTML(sel) {
+  const on = new Set(withNeeds(sel));
+  return `<div class="pm" id="pm">
+    <div class="pm-quick"><span class="hint">${t('pm_quick')}</span>${PERM_PRESETS.map(([k]) => `<button type="button" class="chip-btn" data-act="pm-preset" data-v="${k}">${t('pmp_' + k)}</button>`).join('')}</div>
+    ${PERM_GROUPS.map(([g, list]) => `<fieldset class="pm-group"><legend>${t('pmg_' + g)}</legend>${list.map(p => `<label class="pm-item"><input type="checkbox" data-on="pm-perm" value="${p}" ${on.has(p) ? 'checked' : ''}><span><b>${t('perm_' + p)}</b><small>${t('perm_' + p + '_d')}</small></span></label>`).join('')}</fieldset>`).join('')}
+    <p class="pm-foot"><span id="pm-count" class="chip cyan">${permCount(on.size)}</span><span class="hint" id="pm-warn">${on.size ? t('pm_needs') : t('pm_none_warn')}</span></p></div>`;
+}
+const pmBoxes = () => $$('#pm input[data-on="pm-perm"]');
+const pmRead = () => pmBoxes().filter(i => i.checked).map(i => i.value);
+function pmCount() {
+  const n = pmRead().length, c = $('#pm-count'), w = $('#pm-warn');
+  if (c) c.textContent = permCount(n);
+  if (w) w.textContent = n ? t('pm_needs') : t('pm_none_warn');
+}
+function pmSet(list) { const on = new Set(withNeeds(list)); pmBoxes().forEach(i => { i.checked = on.has(i.value); }); pmCount(); }
+ON['pm-perm'] = el => {
+  const boxes = pmBoxes(), box = v => boxes.find(i => i.value === v);
+  if (el.checked) (PERM_NEEDS[el.value] || []).forEach(n => { const b = box(n); if (b) b.checked = true; });
+  else Object.keys(PERM_NEEDS).forEach(k => { if (PERM_NEEDS[k].indexOf(el.value) >= 0) { const b = box(k); if (b) b.checked = false; } });
+  pmCount();
+};
+ACT['pm-preset'] = el => { const pr = PERM_PRESETS.find(x => x[0] === el.dataset.v); if (pr) pmSet(pr[1]); };
+
+function accountById(id) {
+  return ((teamState().list || []).concat((S.ui.accounts && S.ui.accounts.users) || [])).find(u => u.id === id) || null;
+}
+function afterAccountChange() { S.ui.accounts = null; teamState().list = null; loadTeam(); if (S.route === 'admin' && S.ui.admin.tab === 'accounts') loadAccounts(); }
+function openPermEditor(u) {
+  openModal(t('tm_perms_t', { n: '<bdi>' + esc(u.name) + '</bdi>' }), permEditorHTML(u.permissions || []) + `<p class="form-err" id="form-err" role="alert"></p>`,
+    `<button class="btn ghost" data-act="modal-close">${t('cancel')}</button><button class="btn primary" data-act="team-perms-ok" data-id="${esc(u.id)}">${t('save')}</button>`);
+}
+function showCreds(u, password) {
+  openModal(t('tm_created_h'), `<p>${t('tm_created_p', { n: '<bdi>' + esc(u.name) + '</bdi>' })}</p>
+    <dl class="id-cred"><dt>${t('acc_email')}</dt><dd dir="ltr"><code>${esc(u.email)}</code></dd><dt>${t('id_demo_pw')}</dt><dd dir="ltr"><code>${esc(password)}</code></dd>
+      <dt>${t('tm_where')}</dt><dd dir="ltr"><code>${esc(staffAddress())}</code></dd></dl>${permSummaryHTML(u.permissions || [])}`,
+  `<button class="btn ghost" data-act="modal-close">${t('close')}</button>${demoMode() ? `<a class="btn primary" href="#supervisor" target="_blank" rel="noopener">${t('tm_open_signin')}</a>` : ''}`);
+}
+Object.assign(ACT, {
+  'team-add'() {
+    openModal(t('tm_add'), `<div class="form-grid" id="tm-form">
+        <label class="field"><span>${t('name')}</span><input name="name" maxlength="120" autocomplete="off"></label>
+        <label class="field"><span>${t('acc_email')}</span><input name="email" type="email" dir="ltr" autocomplete="off"></label>
+        <label class="field"><span>${t('acc_password')}</span><input name="password" type="text" dir="ltr" autocomplete="off" maxlength="200"></label></div>
+      <p class="hint">${t('acc_pw_note')}</p><h3 class="pm-h">${t('tm_perms_h')}</h3>${permEditorHTML([])}<p class="form-err" id="form-err" role="alert"></p>`,
+    `<button class="btn ghost" data-act="modal-close">${t('cancel')}</button><button class="btn primary" data-act="team-create">${t('tm_create')}</button>`);
+  },
+  async 'team-create'(el) {
+    const f = n => $('#tm-form [name="' + n + '"]');
+    const body = { name: f('name').value.trim(), email: f('email').value.trim(), password: f('password').value, role: 'supervisor', permissions: pmRead() };
+    if (!body.name || !body.email || body.password.length < 8) { $('#form-err').textContent = t('acc_err_form'); return; }
+    el.disabled = true;
+    try { const u = await portalApi()('POST', '/api/admin/users', body); afterAccountChange(); showCreds(u, body.password); }
+    catch (e) { $('#form-err').textContent = t(e.code === 'email_taken' ? 'acc_err_taken' : e.code === 'bad_email' ? 'acc_err_email' : 'acc_err_gen'); el.disabled = false; }
+  },
+  'team-perms'(el) { const u = accountById(el.dataset.id); if (u) openPermEditor(u); },
+  async 'team-perms-ok'(el) {
+    el.disabled = true;
+    try { await portalApi()('PATCH', '/api/admin/users/' + encodeURIComponent(el.dataset.id), { permissions: pmRead() }); closeModal(); toast(t('tm_saved'), 'ok'); afterAccountChange(); }
+    catch (e) { $('#form-err').textContent = t('acc_err_gen'); el.disabled = false; }
+  },
+  async 'team-status'(el) {
+    const u = accountById(el.dataset.id);
+    if (!u) return;
+    const next = u.status === 'active' ? 'suspended' : 'active';
+    el.disabled = true;
+    try { await portalApi()('PATCH', '/api/admin/users/' + encodeURIComponent(u.id), { status: next }); toast(t(next === 'active' ? 'tm_activated_ok' : 'tm_suspended_ok', { n: '<bdi>' + esc(u.name) + '</bdi>' }), 'ok'); }
+    catch (e) { toast(t('acc_err_gen'), 'warn'); }
+    afterAccountChange();
+  },
+  'team-del'(el) {
+    const u = accountById(el.dataset.id);
+    if (!u) return;
+    openModal(t('tm_delete'), `<p>${t('tm_del_p', { n: '<bdi>' + esc(u.name) + '</bdi>' })}</p>`, `<button class="btn ghost" data-act="modal-close">${t('cancel')}</button><button class="btn danger" data-act="team-del-ok" data-id="${esc(u.id)}">${t('delete')}</button>`);
+  },
+  async 'team-del-ok'(el) {
+    closeModal();
+    try { await portalApi()('DELETE', '/api/admin/users/' + encodeURIComponent(el.dataset.id)); toast(t('tm_deleted'), 'ok'); }
+    catch (e) { toast(t('acc_err_gen'), 'warn'); }
+    afterAccountChange();
+  },
+  'team-copy'() {
+    const v = staffAddress(), done = () => toast(t('tm_copied'), 'ok');
+    try { navigator.clipboard.writeText(v).then(done, () => toast(esc(v), 'ok')); } catch (e) { toast(esc(v), 'ok'); }
+  },
+  /* every signed-in account changes its own password here; the students' page has its own */
+  'my-password'() {
+    openModal(t('acc_pw_change'), `<div class="form-grid" id="my-pw-form"><label class="field span2"><span>${t('acc_pw_cur')}</span><input name="current" type="password" dir="ltr" autocomplete="current-password" maxlength="200"></label>
+      <label class="field span2"><span>${t('acc_pw_new')}</span><input name="next" type="password" dir="ltr" autocomplete="new-password" maxlength="200"></label></div><p class="form-err" id="form-err" role="alert"></p>`,
+    `<button class="btn ghost" data-act="modal-close">${t('cancel')}</button><button class="btn primary" data-act="my-password-ok">${t('save')}</button>`);
+  },
+  async 'my-password-ok'(el) {
+    const cur = $('#my-pw-form [name="current"]').value, next = $('#my-pw-form [name="next"]').value;
+    if (next.length < 8) { $('#form-err').textContent = t('acc_err_pw'); return; }
+    el.disabled = true;
+    try { await portalApi()('POST', '/api/auth/password', { current: cur, new: next }); closeModal(); toast(t('acc_pw_done'), 'ok'); }
+    catch (e) { $('#form-err').textContent = t(e.code === 'bad_credentials' ? 'acc_pw_bad' : 'acc_err_gen'); el.disabled = false; }
+  }
+});
+
+/* ---------------- a supervisor's page follows the administrator's changes ---------------- */
+function permsChanged() {
+  S.ui.ideas = null; S.ui.accounts = null;
+  toast(t('perm_changed'), 'info');
+  onRoute();
+  if (routeOk('ideas')) loadIdeas();
+}
+let idBusy = false;
+async function refreshIdentity() {
+  if (idBusy) return;
+  idBusy = true;
+  try {
+    const P = window.CF_PLATFORM, lc = window.CF_LOCAL;
+    if (P && P.me) {
+      let me;
+      try { me = await P.api('GET', '/api/me'); } catch (e) { if (e.status === 401) location.replace(location.pathname); return; }
+      if (me.role !== P.me.role) { location.reload(); return; }
+      if (JSON.stringify(me.permissions || []) !== JSON.stringify(P.me.permissions || [])) { P.me = me; permsChanged(); }
+    } else if (lc && lc.staff && window.CF_DEMO) {
+      let r = { staff: null };
+      try { r = await window.CF_DEMO.api('GET', '/api/demo/staff'); } catch (e) { /* storage unavailable */ }
+      if (!r.staff) { lc.staffSignOut(true); return; }
+      if (JSON.stringify(r.staff.permissions || []) !== JSON.stringify(lc.staff.permissions || []) || r.staff.name !== lc.staff.name) { lc.staff = r.staff; permsChanged(); }
+    }
+  } finally { idBusy = false; }
+}
+document.addEventListener('visibilitychange', () => { if (!document.hidden && whoAmI().kind === 'supervisor') refreshIdentity(); });
+if (window.CF_DEMO) window.addEventListener('storage', e => {
+  if (e.key !== window.CF_DEMO.key && e.key !== null) return;
+  if (window.CF_LOCAL && window.CF_LOCAL.staff) refreshIdentity();
+  else if (isOwner()) { teamState().list = null; if (S.route === 'team') loadTeam(); }
 });
 
 /* ---------------- registry and boot ---------------- */
