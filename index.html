@@ -740,6 +740,14 @@ html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
 .id-review{display:grid;grid-template-columns:minmax(150px,220px) minmax(0,1fr);gap:10px 14px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
 .id-review select,.id-review textarea{width:100%;box-sizing:border-box}
 @media (max-width:640px){.id-form,.id-review{grid-template-columns:1fr}}
+/* the students' page as a demonstration in this browser */
+.st-demo{background:var(--risk-bg);border:1px solid var(--risk);border-radius:10px;padding:8px 12px;font-size:13.5px;margin:-6px 0 14px}
+.id-demo{border-color:var(--risk);box-shadow:inset 4px 0 0 var(--risk)}
+[dir="rtl"] .id-demo{box-shadow:inset -4px 0 0 var(--risk)}
+.id-cred{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:10px 0}
+.id-cred dt{color:var(--muted);font-size:13.5px}
+.id-cred dd{margin:0}
+.id-cred code{font:600 15px var(--font-m);background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:2px 8px}
 </style>
 </head>
 <body>
@@ -747,7 +755,444 @@ html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
 <div id="toasts" aria-live="polite"></div>
 <div id="modal" hidden></div>
 <noscript>CampusForge AI needs JavaScript to run.</noscript>
-<script>/* CampusForge AI local mode: one person on their own device, with their own Claude API key.
+<script>/* CampusForge AI students' portal: the sign-in page and the students' idea page. platform.js runs it on the
+   server's API; local.js runs it as a demonstration kept in this browser (demo.js), with the same API contract.
+   The host gives: api(method, path, body), config, me, signOut(), reload(), isPortal(), appHref and demo. */
+(function () {
+  'use strict';
+  const PT = window.CF_PORTAL = { host: null };
+  const H = () => PT.host;
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const TXT = {
+    en: { signIn: 'Sign in', register: 'Create an account', name: 'Full name', institution: 'University or institution', email: 'Email', password: 'Password',
+      signInBtn: 'Sign in', registerBtn: 'Create account', noAccount: 'New here?', haveAccount: 'Already have an account?', domains: 'Use your email at: {d}',
+      pending: 'Account created. An administrator needs to approve it before you can sign in.', pwShort: 'Use at least 8 characters for the password.',
+      portal: 'Student portal', portalRegister: 'Create a student account', portalLede: 'Sign in to write your project idea and send it to your supervisor.',
+      askAccount: 'No account yet? Ask your supervisor for one.',
+      demoNote: 'Demo page: accounts and ideas are kept in this browser only, so do not use a real password.',
+      err: { bad_credentials: 'The email or password is not correct.', pending: 'Your account is waiting for approval.', suspended: 'This account is suspended.',
+        domain_not_allowed: 'Use your institution email address.', email_taken: 'An account with this email already exists. Sign in instead.', bad_email: 'Enter a valid email address.',
+        signup_closed: 'New accounts are created by the administrator.', too_many_attempts: 'Too many attempts. Wait 15 minutes and try again.', network: 'The server cannot be reached.', generic: 'Something went wrong. Try again.' },
+      st: { title: 'Send your project idea', kicker: 'Student portal', lede: 'Describe your idea clearly and send it to your supervisor. Its status and your supervisor’s reply appear here after the review.',
+        note: 'From your supervisor', ideaTitle: 'Idea title', ideaTitlePh: 'Example: Booking quiet study rooms from your phone', desc: 'Description of your idea',
+        descPh: 'What problem does it solve? How will your idea work? Who will benefit? What do you need to build it?',
+        tip: 'Include the problem, how your idea solves it, who benefits and what you need.', count: '{n} of {m} characters',
+        send: 'Send idea', sending: 'Sending…', sent: 'Your idea reached your supervisor. You can follow it below.', closed: 'Ideas are not being accepted right now. You can send yours when your supervisor opens them again.',
+        mine: 'Ideas you have sent', none: 'You have not sent an idea yet.', sentAt: 'Sent {d}', reply: 'Supervisor’s reply', showDesc: 'Show the description', refresh: 'Refresh',
+        status: { new: 'Waiting for review', review: 'Under review', accepted: 'Accepted', changes: 'Needs changes', declined: 'Not accepted' },
+        changesHint: 'Send an improved version as a new idea.', loadErr: 'Your page could not be loaded.', retry: 'Try again',
+        pw: 'Change password', pwCur: 'Current password', pwNew: 'New password (at least 8 characters)', save: 'Save', cancel: 'Cancel', close: 'Close', pwDone: 'Password changed.',
+        pwBad: 'The current password is not correct.', signOut: 'Sign out', back: 'Back to the platform',
+        preview: 'Preview: this is the page your students see. Sending is turned off in the preview.',
+        demo: 'Demo: your idea is saved in this browser, and your supervisor sees it on this device only.',
+        err: { bad_title: 'Write a title of at least 3 characters.', bad_description: 'Write a description of at least 20 characters.', ideas_closed: 'Ideas are not being accepted right now.',
+          too_many_ideas: 'You have sent many ideas today. Try again tomorrow.' } } },
+    ar: { signIn: 'تسجيل الدخول', register: 'إنشاء حساب', name: 'الاسم الكامل', institution: 'الجامعة أو المؤسسة', email: 'البريد الإلكتروني', password: 'كلمة المرور',
+      signInBtn: 'دخول', registerBtn: 'إنشاء الحساب', noAccount: 'مستخدم جديد؟', haveAccount: 'لديك حساب؟', domains: 'استخدم بريدك في: {d}',
+      pending: 'أُنشئ الحساب، ويحتاج إلى موافقة المسؤول قبل تسجيل الدخول.', pwShort: 'استخدم 8 أحرف على الأقل لكلمة المرور.',
+      portal: 'بوابة الطلاب', portalRegister: 'إنشاء حساب طالب', portalLede: 'سجّل الدخول لتكتب فكرة مشروعك وترسلها إلى المشرف.',
+      askAccount: 'ليس لديك حساب؟ اطلبه من المشرف.',
+      demoNote: 'صفحة تجريبية: تُحفظ الحسابات والأفكار في هذا المتصفح فقط، فلا تستخدم كلمة مرور حقيقية.',
+      err: { bad_credentials: 'البريد الإلكتروني أو كلمة المرور غير صحيحة.', pending: 'حسابك بانتظار الموافقة.', suspended: 'هذا الحساب موقوف.',
+        domain_not_allowed: 'استخدم بريد مؤسستك.', email_taken: 'يوجد حساب بهذا البريد، فسجّل الدخول.', bad_email: 'أدخل بريدًا إلكترونيًا صحيحًا.',
+        signup_closed: 'ينشئ المسؤول الحسابات الجديدة.', too_many_attempts: 'محاولات كثيرة. انتظر 15 دقيقة ثم حاول.', network: 'تعذّر الوصول إلى الخادم.', generic: 'حدث خطأ. حاول مجددًا.' },
+      st: { title: 'أرسل فكرة مشروعك', kicker: 'بوابة الطلاب', lede: 'اكتب وصفًا واضحًا لفكرتك ثم أرسلها إلى المشرف، وستظهر هنا حالتها وردّ المشرف بعد مراجعتها.',
+        note: 'رسالة من المشرف', ideaTitle: 'عنوان الفكرة', ideaTitlePh: 'مثال: حجز قاعات المذاكرة الهادئة من الجوال', desc: 'وصف الفكرة',
+        descPh: 'ما المشكلة التي تحلها؟ كيف ستعمل فكرتك؟ من سيستفيد منها؟ وما الذي تحتاجه لتنفيذها؟',
+        tip: 'اذكر المشكلة، وكيف تحلها فكرتك، ومن سيستفيد منها، وما تحتاجه لتنفيذها.', count: '{n} من {m} حرف',
+        send: 'إرسال الفكرة', sending: 'جارٍ الإرسال…', sent: 'وصلت فكرتك إلى المشرف، ويمكنك متابعتها في الأسفل.', closed: 'استقبال الأفكار متوقف حاليًا، وستتمكن من الإرسال عندما يفتحه المشرف.',
+        mine: 'أفكارك المرسلة', none: 'لم ترسل أي فكرة بعد.', sentAt: 'أُرسلت في {d}', reply: 'رد المشرف', showDesc: 'عرض الوصف', refresh: 'تحديث',
+        status: { new: 'بانتظار المراجعة', review: 'قيد المراجعة', accepted: 'مقبولة', changes: 'تحتاج تعديلًا', declined: 'غير مقبولة' },
+        changesHint: 'أرسل نسخة محسّنة منها كفكرة جديدة.', loadErr: 'تعذّر تحميل صفحتك.', retry: 'حاول مجددًا',
+        pw: 'تغيير كلمة المرور', pwCur: 'كلمة المرور الحالية', pwNew: 'كلمة المرور الجديدة (8 أحرف على الأقل)', save: 'حفظ', cancel: 'إلغاء', close: 'إغلاق', pwDone: 'تم تغيير كلمة المرور.',
+        pwBad: 'كلمة المرور الحالية غير صحيحة.', signOut: 'تسجيل الخروج', back: 'العودة إلى المنصة',
+        preview: 'معاينة: هذه هي الصفحة التي يراها طلابك، والإرسال معطّل في المعاينة.',
+        demo: 'نسخة تجريبية: تُحفظ فكرتك في هذا المتصفح، ويراها المشرف على هذا الجهاز فقط.',
+        err: { bad_title: 'اكتب عنوانًا من 3 أحرف على الأقل.', bad_description: 'اكتب وصفًا من 20 حرفًا على الأقل.', ideas_closed: 'استقبال الأفكار متوقف حاليًا.',
+          too_many_ideas: 'أرسلت أفكارًا كثيرة اليوم، فحاول غدًا.' } } }
+  };
+  const LOGO = '<svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><path class="lg-l" d="M8 9l8 7 8-7M16 16v5.5"/><circle class="lg-a" cx="8" cy="9" r="3.4"/><circle class="lg-a" cx="24" cy="9" r="3.4"/><polygon class="lg-b" points="16,20 20,22.3 20,26.9 16,29.2 12,26.9 12,22.3"/><circle class="lg-c" cx="16" cy="16" r="2.5"/></svg>';
+  const ICO = { user: 'M12 12a4 4 0 1 0 0-8a4 4 0 1 0 0 8M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6', key: 'M7.5 10.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 1 0 0-7M10 15l10-10M15.5 9.5l2.5 2.5M18 7l2.5 2.5',
+    logout: 'M15 4h4v16h-4M10 8l-4 4 4 4M6 12h11', send: 'M4 12l16-8-6 16-3-7zM11 13l9-9', check: 'M5 12.5l4.5 4.5L19 7.5', x: 'M6 6l12 12M18 6L6 18',
+    reset: 'M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4.5v4.2h4.2', info: 'M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18M12 11v6M12 7.6v.4', back: 'M10 6l-6 6 6 6M4 12h16', eye: 'M2.5 12s3.5-6.5 9.5-6.5S21.5 12 21.5 12s-3.5 6.5-9.5 6.5S2.5 12 2.5 12zM12 9.2a2.8 2.8 0 1 0 0 5.6a2.8 2.8 0 1 0 0-5.6' };
+  const ic = n => `<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="${ICO[n]}"/></svg>`;
+  /* /students is the students' address; the server sends the same client there */
+    function prefs() { try { return JSON.parse(localStorage.getItem('cf.prefs') || 'null') || {}; } catch (e) { return {}; } }
+  function lang() {
+    const x = prefs();
+    if (x.lang === 'ar' || x.lang === 'en') return x.lang;
+    return /^ar/i.test(navigator.language || '') ? 'ar' : 'en';
+  }
+  function switchLang() {
+    const x = prefs(); x.lang = lang() === 'ar' ? 'en' : 'ar';
+    try { localStorage.setItem('cf.prefs', JSON.stringify(x)); } catch (e) { /* the choice lasts until the page reloads */ }
+    FORCED = x.lang;
+  }
+  let FORCED = null;
+  const curLang = () => FORCED || lang();
+  function applySavedTheme() { const x = prefs(); if (x.theme === 'dark' || x.theme === 'light') document.documentElement.setAttribute('data-theme', x.theme); }
+  function renderAuth(mode) {
+    const L = curLang(), T = TXT[L], c = H().config, root = document.getElementById('app'), portal = H().isPortal();
+    document.documentElement.lang = L; document.documentElement.dir = L === 'ar' ? 'rtl' : 'ltr';
+    applySavedTheme();
+    if (portal) document.title = T.portal + ' | CampusForge AI';
+    const field = (n, label, type, ac) => `<label class="field"><span>${label}</span><input name="${n}" type="${type}" autocomplete="${ac}" ${type === 'email' || type === 'password' ? 'dir="ltr"' : ''} required></label>`;
+    root.innerHTML = `<div class="auth-wrap"><div class="auth-card">
+      <div class="auth-top"><span class="brand">${LOGO}<span>CampusForge AI</span></span>
+      <button class="btn small ghost" id="auth-lang" type="button">${L === 'ar' ? 'English' : 'عربي'}</button></div>
+      ${c.institution ? `<p class="auth-inst">${esc(c.institution)}</p>` : ''}
+      <h1>${portal ? (mode === 'register' ? T.portalRegister : T.portal) : (mode === 'register' ? T.register : T.signIn)}</h1>
+      ${portal ? `<p class="auth-lede">${T.portalLede}</p>` : ''}
+      ${H().demo ? `<p class="st-demo" role="note">${T.demoNote}</p>` : ''}
+      <form id="auth-form" novalidate>${mode === 'register' ? field('name', T.name, 'text', 'name') + field('institution', T.institution, 'text', 'organization') : ''}${field('email', T.email, 'email', 'email')}${field('password', T.password, 'password', mode === 'register' ? 'new-password' : 'current-password')}
+        <p class="form-err" id="auth-err" role="alert"></p><button class="btn primary lg" type="submit">${mode === 'register' ? T.registerBtn : T.signInBtn}</button></form>
+      ${c.allowSignup ? `<p class="auth-switch">${mode === 'register' ? T.haveAccount : T.noAccount} <button class="linkish" id="auth-mode" type="button">${mode === 'register' ? T.signInBtn : T.registerBtn}</button></p>` : portal ? `<p class="auth-switch">${T.askAccount}</p>` : ''}
+      ${mode === 'register' && c.allowedDomains && c.allowedDomains.length ? `<p class="hint">${esc(T.domains.replace('{d}', c.allowedDomains.join(', ')))}</p>` : ''}
+    </div></div>`;
+    document.getElementById('auth-lang').addEventListener('click', () => { switchLang(); renderAuth(mode); });
+    const sw = document.getElementById('auth-mode');
+    if (sw) sw.addEventListener('click', () => renderAuth(mode === 'register' ? 'signin' : 'register'));
+    document.getElementById('auth-form').addEventListener('submit', async ev => {
+      ev.preventDefault();
+      const f = n => { const el = ev.target.querySelector('[name="' + n + '"]'); return el ? el.value.trim() : ''; };
+      const err = document.getElementById('auth-err'), btn = ev.target.querySelector('button[type="submit"]');
+      const pw = ev.target.querySelector('[name="password"]').value;
+      if (mode === 'register' && pw.length < 8) { err.textContent = T.pwShort; return; }
+      btn.disabled = true; err.textContent = '';
+      try {
+        const r = mode === 'register' ? await H().api('POST', '/api/auth/register', { name: f('name'), institution: f('institution'), email: f('email'), password: pw })
+          : await H().api('POST', '/api/auth/login', { email: f('email'), password: pw });
+        if (r && r.pending) { err.className = 'form-err auth-ok'; err.textContent = T.pending; btn.disabled = false; return; }
+        location.reload();
+      } catch (e) { err.textContent = T.err[e.code] || T.err.generic; btn.disabled = false; }
+    });
+  }
+  /* ---------------- the students' page: write an idea, send it, follow its review; nothing else of the platform ---------------- */
+  const STAFF = ['admin', 'supervisor'];
+  const ST = { page: { open: true, message: '' }, ideas: [], error: false, flash: '', draft: null, busy: false };
+  const TONE = { new: 'info', review: 'cyan', accepted: 'ok', changes: 'risk', declined: 'gap' };
+  const LIM = { title: 160, description: 6000 };
+  /* staff opening /students see a preview with sending turned off */
+  const stMode = () => (H().me && STAFF.indexOf(H().me.role) >= 0 ? 'preview' : 'student');
+  const draftKey = () => 'cf.ideaDraft.' + (H().me ? H().me.id : '');
+  function readDraft() {
+    try { const x = JSON.parse(localStorage.getItem(draftKey()) || 'null'); if (x && typeof x === 'object') return { title: String(x.title || ''), description: String(x.description || '') }; } catch (e) { /* storage unavailable */ }
+    return { title: '', description: '' };
+  }
+  function writeDraft() {
+    try { if (ST.draft.title || ST.draft.description) localStorage.setItem(draftKey(), JSON.stringify(ST.draft)); else localStorage.removeItem(draftKey()); } catch (e) { /* the draft lives in this tab only */ }
+  }
+  function fdate(ms, L) {
+    try { return new Intl.DateTimeFormat(L === 'ar' ? 'ar-OM-u-nu-latn' : 'en-GB', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(ms)); }
+    catch (e) { return new Date(ms).toISOString().slice(0, 16).replace('T', ' '); }
+  }
+  const nfmt = (n, L) => { try { return new Intl.NumberFormat(L === 'ar' ? 'ar-OM-u-nu-latn' : 'en-GB').format(n); } catch (e) { return String(n); } };
+  function toast(msg, kind) {
+    const box = document.getElementById('toasts');
+    if (!box) return;
+    const el = document.createElement('div');
+    el.className = 'toast ' + (kind || ''); el.textContent = msg; box.appendChild(el);
+    setTimeout(() => { el.classList.add('out'); setTimeout(() => el.remove(), 350); }, 4200);
+  }
+  async function loadStudent() {
+    const [page, mine] = await Promise.all([H().api('GET', '/api/ideas/page'), H().api('GET', '/api/ideas/mine')]);
+    ST.page = { open: page.open !== false, message: String(page.message || '') };
+    ST.ideas = (mine && mine.ideas) || [];
+  }
+  async function showStudent() {
+    if (!ST.draft) ST.draft = readDraft();
+    try { await loadStudent(); ST.error = false; }
+    catch (e) { if (e.status === 401) { H().reload(); return; } ST.error = true; }
+    renderStudent();
+  }
+  function ideaHTML(it, L) {
+    const S = TXT[L].st, st = S.status[it.status] ? it.status : 'new';
+    return `<article class="st-idea" data-status="${st}"><header><h3><bdi>${esc(it.title)}</bdi></h3><span class="chip ${TONE[st]}">${S.status[st]}</span></header>
+      <p class="st-date">${esc(S.sentAt.replace('{d}', fdate(it.createdAt, L)))}</p>
+      ${it.reply ? `<div class="st-reply"><b>${S.reply}</b><p dir="auto">${esc(it.reply)}</p></div>` : ''}
+      ${st === 'changes' ? `<p class="st-hint">${S.changesHint}</p>` : ''}
+      <details><summary>${S.showDesc}</summary><p class="st-desc" dir="auto">${esc(it.description)}</p></details></article>`;
+  }
+  function renderStudent() {
+    const L = curLang(), T = TXT[L], S = T.st, root = document.getElementById('app'), mode = stMode();
+    const off = mode === 'preview' || !ST.page.open, d = ST.draft || { title: '', description: '' };
+    document.documentElement.lang = L; document.documentElement.dir = L === 'ar' ? 'rtl' : 'ltr';
+    document.title = S.title + ' | CampusForge AI';
+    applySavedTheme();
+    const count = n => S.count.replace('{n}', nfmt(n, L)).replace('{m}', nfmt(LIM.description, L));
+    root.innerHTML = `<div class="st-app">
+      <header class="st-top"><span class="brand">${LOGO}<span>CampusForge AI</span></span><span class="grow"></span>
+        ${mode === 'preview' || (H().me && H().me.role === 'student') ? `<a class="btn small ghost" href="${esc(H().appHref || '/')}" aria-label="${S.back}" title="${S.back}">${ic('back')}<span>${S.back}</span></a>` : ''}
+        <button class="btn small ghost" type="button" data-st="lang" lang="${L === 'ar' ? 'en' : 'ar'}">${L === 'ar' ? 'English' : 'عربي'}</button>
+        ${H().me && H().me.name ? `<span class="st-who">${ic('user')}<bdi>${esc(H().me.name)}</bdi></span>` : ''}
+        <button class="icon-btn" type="button" data-st="pw" aria-label="${S.pw}" title="${S.pw}">${ic('key')}</button>
+        <button class="icon-btn" type="button" data-st="out" aria-label="${S.signOut}" title="${S.signOut}">${ic('logout')}</button></header>
+      <main class="st-main" id="main">
+        ${mode === 'preview' ? `<p class="st-preview">${ic('eye')}<span>${S.preview}</span></p>` : ''}
+        ${H().demo ? `<p class="st-preview" role="note">${ic('info')}<span>${S.demo}</span></p>` : ''}
+        <section class="st-intro"><p class="st-kicker">${S.kicker}${H().config.institution ? ' · <bdi>' + esc(H().config.institution) + '</bdi>' : ''}</p><h1>${S.title}</h1><p class="lede">${S.lede}</p></section>
+        ${ST.error ? `<p class="warnbox">${S.loadErr} <button class="linkish" type="button" data-st="refresh">${S.retry}</button></p>` : ''}
+        ${ST.page.message ? `<section class="st-note"><h2>${S.note}</h2><p dir="auto">${esc(ST.page.message)}</p></section>` : ''}
+        <section class="panel st-form-card">
+          ${!ST.page.open ? `<p class="warnbox">${S.closed}</p>` : ''}
+          ${ST.flash ? `<p class="st-flash" role="status">${ic('check')}<span>${ST.flash}</span></p>` : ''}
+          <form id="st-form" novalidate>
+            <label class="field"><span>${S.ideaTitle}</span><input name="title" type="text" dir="auto" maxlength="${LIM.title}" autocomplete="off" value="${esc(d.title)}" placeholder="${esc(S.ideaTitlePh)}" ${off ? 'disabled' : ''}></label>
+            <label class="field"><span>${S.desc}</span><textarea name="description" rows="9" dir="auto" maxlength="${LIM.description}" placeholder="${esc(S.descPh)}" ${off ? 'disabled' : ''}>${esc(d.description)}</textarea></label>
+            <div class="st-meta"><span class="hint">${S.tip}</span><span class="st-count" id="st-count" aria-live="polite">${count(d.description.length)}</span></div>
+            <p class="form-err" id="st-err" role="alert"></p>
+            <div><button class="btn primary lg" type="submit" ${off ? 'disabled' : ''}>${ic('send')}<span>${S.send}</span></button></div>
+          </form></section>
+        <section class="panel"><div class="st-list-head"><h2>${S.mine}${ST.ideas.length ? ` <span class="chip">${nfmt(ST.ideas.length, L)}</span>` : ''}</h2>
+          <button class="btn small ghost" type="button" data-st="refresh">${ic('reset')}<span>${S.refresh}</span></button></div>
+          ${ST.ideas.length ? `<div class="st-list">${ST.ideas.map(it => ideaHTML(it, L)).join('')}</div>` : `<p class="hint">${S.none}</p>`}</section>
+      </main></div>`;
+    const form = document.getElementById('st-form'), cnt = document.getElementById('st-count'), errEl = document.getElementById('st-err');
+    form.title.addEventListener('input', () => { ST.draft.title = form.title.value; writeDraft(); });
+    form.description.addEventListener('input', () => {
+      ST.draft.description = form.description.value; writeDraft();
+      const n = form.description.value.length;
+      cnt.textContent = count(n); cnt.classList.toggle('near', n > LIM.description * 0.9);
+    });
+    form.addEventListener('submit', async ev => {
+      ev.preventDefault();
+      if (off || ST.busy) return;
+      const title = form.title.value.trim(), description = form.description.value.trim(), btn = form.querySelector('button[type="submit"]');
+      errEl.textContent = '';
+      if (title.length < 3) { errEl.textContent = S.err.bad_title; form.title.focus(); return; }
+      if (description.length < 20) { errEl.textContent = S.err.bad_description; form.description.focus(); return; }
+      ST.busy = true; btn.disabled = true; btn.lastElementChild.textContent = S.sending;
+      try {
+        const it = await H().api('POST', '/api/ideas', { title, description });
+        ST.ideas.unshift(it); ST.draft = { title: '', description: '' }; writeDraft(); ST.flash = S.sent;
+        ST.busy = false; renderStudent();
+        const f = document.querySelector('.st-flash'); if (f && f.scrollIntoView) f.scrollIntoView({ block: 'nearest' });
+      } catch (e) {
+        ST.busy = false;
+        if (e.status === 401) { H().reload(); return; }
+        if (e.code === 'ideas_closed') { ST.page.open = false; renderStudent(); return; }
+        errEl.textContent = S.err[e.code] || T.err[e.code] || T.err.generic;
+        btn.disabled = false; btn.lastElementChild.textContent = S.send;
+      }
+    });
+  }
+  function openPassword() {
+    const L = curLang(), S = TXT[L].st, m = document.getElementById('modal');
+    m.innerHTML = `<div class="modal-card st-modal" role="dialog" aria-modal="true" aria-labelledby="pw-t"><header><h2 id="pw-t">${S.pw}</h2><button class="icon-btn" type="button" data-st="pw-close" aria-label="${S.close}">${ic('x')}</button></header>
+      <form id="pw-form" novalidate><div class="modal-body st-pw">
+        <label class="field"><span>${S.pwCur}</span><input name="current" type="password" dir="ltr" autocomplete="current-password"></label>
+        <label class="field"><span>${S.pwNew}</span><input name="next" type="password" dir="ltr" autocomplete="new-password"></label>
+        <p class="form-err" id="pw-err" role="alert"></p></div>
+      <footer><button class="btn ghost" type="button" data-st="pw-close">${S.cancel}</button><button class="btn primary" type="submit">${S.save}</button></footer></form></div>`;
+    m.hidden = false;
+    m.querySelector('input').focus();
+    document.getElementById('pw-form').addEventListener('submit', async ev => {
+      ev.preventDefault();
+      const f = ev.target, err = document.getElementById('pw-err'), btn = f.querySelector('button[type="submit"]');
+      if (f.next.value.length < 8) { err.textContent = TXT[L].pwShort; f.next.focus(); return; }
+      btn.disabled = true; err.textContent = '';
+      try { await H().api('POST', '/api/auth/password', { current: f.current.value, new: f.next.value }); closePassword(); toast(S.pwDone, 'ok'); }
+      catch (e) { err.textContent = e.code === 'bad_credentials' ? S.pwBad : (TXT[L].err[e.code] || TXT[L].err.generic); btn.disabled = false; }
+    });
+  }
+  function closePassword() { const m = document.getElementById('modal'); m.hidden = true; m.innerHTML = ''; }
+  let wired = false;
+  function wireStudent() {
+    if (wired) return;
+    wired = true;
+    document.addEventListener('click', e => {
+      const b = e.target.closest('[data-st]');
+      if (!b) return;
+      const a = b.dataset.st;
+      if (a === 'lang') { switchLang(); renderStudent(); }
+      else if (a === 'out') H().signOut();
+      else if (a === 'pw') openPassword();
+      else if (a === 'pw-close') closePassword();
+      else if (a === 'refresh') { ST.flash = ''; showStudent(); }
+    });
+  }
+  PT.renderAuth = renderAuth;
+  PT.showStudent = showStudent;
+  PT.wire = wireStudent;
+}());
+
+/* CampusForge AI students' page as a demonstration, for the single-file and GitHub versions: the same API as the
+   server (accounts, sign-in, ideas, the administrator's page settings and review), kept in this browser's storage.
+   Nothing leaves this device, so the administrator and the students share one browser: it shows how the page
+   works, and the server version is the one for real use. The person who opens the platform itself is its owner,
+   so the administrator's calls need no sign-in here. */
+(function () {
+  'use strict';
+  const KEY = 'cf.demo.portal', SKEY = 'cf.demo.session';
+  const EMAIL_RE = /^[^@\s]{1,64}@[A-Za-z0-9.\-]{1,190}\.[A-Za-z]{2,}$/;
+  const CONTROL = /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g;
+  const STATUSES = ['new', 'review', 'accepted', 'changes', 'declined'], POLICIES = ['open', 'approve', 'closed'], USER_STATUS = ['active', 'pending', 'suspended'];
+  const IDEAS_PER_DAY = 10;
+  const fresh = () => ({ v: 1, users: [], ideas: [], page: { open: true, message: '', signup: 'open' }, saved: false });
+  function load() {
+    try {
+      const x = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (x && Array.isArray(x.users) && Array.isArray(x.ideas)) { x.page = Object.assign(fresh().page, x.page || {}); return x; }
+    } catch (e) { /* storage unavailable or damaged: start empty */ }
+    return fresh();
+  }
+  function fail(status, code) { const e = new Error(code); e.status = status; e.code = code; return e; }
+  function save(db) { try { localStorage.setItem(KEY, JSON.stringify(db)); } catch (e) { throw fail(507, 'storage'); } }
+  const newId = () => 'd' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+  const clean = s => String(s == null ? '' : s).replace(/\r\n?/g, '\n').replace(CONTROL, '');
+  const now = () => Date.now();
+  async function digest(pw, salt) {
+    const text = salt + ':' + pw;
+    try {
+      if (window.crypto && crypto.subtle && window.TextEncoder) {
+        const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+        return 's' + Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+      }
+    } catch (e) { /* no Web Crypto on this page: a plain hash is enough for a demonstration */ }
+    let h = 0x811c9dc5;
+    for (let i = 0; i < text.length; i++) { h ^= text.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; }
+    return 'f' + h.toString(16);
+  }
+  const salt = () => Math.random().toString(36).slice(2, 12) + Math.random().toString(36).slice(2, 6);
+  async function setPassword(u, pw) { u.salt = salt(); u.hash = await digest(pw, u.salt); u.pv = (u.pv || 0) + 1; }
+  /* a session belongs to one account and one password: changing or resetting the password ends the other sessions */
+  function session() { try { return JSON.parse(localStorage.getItem(SKEY) || 'null'); } catch (e) { return null; } }
+  function startSession(u) { try { localStorage.setItem(SKEY, JSON.stringify({ uid: u.id, pv: u.pv })); } catch (e) { throw fail(507, 'storage'); } }
+  function endSession() { try { localStorage.removeItem(SKEY); } catch (e) { /* nothing to end */ } }
+  function current(db) {
+    const s = session(), u = s && db.users.find(x => x.id === s.uid);
+    if (!u || u.pv !== s.pv || u.status !== 'active') throw fail(401, 'unauthorized');
+    return u;
+  }
+  const iso = ms => (ms ? new Date(ms).toISOString() : null);
+  const pub = (u, full) => Object.assign({ id: u.id, email: u.email, name: u.name, role: 'ideas', status: u.status, institution: u.institution || '', country: '' },
+    full ? { createdAt: iso(u.createdAt), lastLogin: iso(u.lastLogin) } : {});
+  function ideaOut(i, db, withAuthor) {
+    const d = { id: i.id, title: i.title, description: i.description, status: i.status, reply: i.reply || '', createdAt: i.createdAt, reviewedAt: i.reviewedAt || null };
+    if (withAuthor) {
+      const a = db.users.find(u => u.id === i.authorId);
+      d.author = a ? { id: a.id, name: a.name, email: a.email, role: 'ideas', status: a.status, institution: a.institution || '' } : { id: i.authorId, name: '', email: '', role: '', status: '', institution: '' };
+    }
+    return d;
+  }
+  const pageOut = db => ({ open: db.page.open !== false, message: String(db.page.message || '').slice(0, 2000), signup: POLICIES.indexOf(db.page.signup) >= 0 ? db.page.signup : 'open', saved: !!db.saved });
+  const findUser = (db, email) => db.users.find(u => u.email === email);
+  const normEmail = e => String(e || '').trim().toLowerCase();
+
+  /* the server's routes, in the same order of checks and with the same error codes */
+  const ROUTES = [
+    ['GET', /^\/api\/config$/, (db) => { const pg = pageOut(db); return { institution: '', allowSignup: pg.signup !== 'closed', autoApprove: pg.signup === 'open', allowedDomains: [], ai: false, webSearch: false, demo: true }; }],
+    ['POST', /^\/api\/auth\/register$/, async (db, m, b) => {
+      const pg = pageOut(db);
+      if (pg.signup === 'closed') throw fail(403, 'signup_closed');
+      const email = normEmail(b.email);
+      if (!EMAIL_RE.test(email)) throw fail(400, 'bad_email');
+      if (String(b.password || '').length < 8) throw fail(400, 'bad_password');
+      if (!String(b.name || '').trim()) throw fail(400, 'bad_name');
+      if (findUser(db, email)) throw fail(409, 'email_taken');
+      const u = { id: newId(), email, name: clean(b.name).trim().slice(0, 120), institution: clean(b.institution).trim().slice(0, 160), status: pg.signup === 'open' ? 'active' : 'pending', createdAt: now(), lastLogin: null };
+      await setPassword(u, b.password);
+      db.users.push(u); save(db);
+      if (u.status !== 'active') return { pending: true };
+      u.lastLogin = now(); save(db); startSession(u);
+      return { user: pub(u) };
+    }],
+    ['POST', /^\/api\/auth\/login$/, async (db, m, b) => {
+      const u = findUser(db, normEmail(b.email));
+      if (!u || (await digest(String(b.password || ''), u.salt)) !== u.hash) throw fail(401, 'bad_credentials');
+      if (u.status === 'pending') throw fail(403, 'pending');
+      if (u.status !== 'active') throw fail(403, 'suspended');
+      u.lastLogin = now(); save(db); startSession(u);
+      return { user: pub(u) };
+    }],
+    ['POST', /^\/api\/auth\/logout$/, () => { endSession(); return { ok: true }; }],
+    ['GET', /^\/api\/me$/, (db) => pub(current(db))],
+    ['POST', /^\/api\/auth\/password$/, async (db, m, b) => {
+      const u = current(db);
+      if ((await digest(String(b.current || ''), u.salt)) !== u.hash) throw fail(400, 'bad_credentials');
+      if (String(b.new || '').length < 8) throw fail(400, 'bad_password');
+      await setPassword(u, b.new); save(db); startSession(u);
+      return { ok: true };
+    }],
+    ['GET', /^\/api\/ideas\/page$/, (db) => { current(db); const pg = pageOut(db); return { open: pg.open, message: pg.message }; }],
+    ['GET', /^\/api\/ideas\/mine$/, (db) => { const u = current(db); return { ideas: db.ideas.filter(i => i.authorId === u.id).sort((a, b) => b.createdAt - a.createdAt).map(i => ideaOut(i, db)) }; }],
+    ['POST', /^\/api\/ideas$/, (db, m, b) => {
+      const u = current(db);
+      if (!pageOut(db).open) throw fail(403, 'ideas_closed');
+      const title = clean(b.title).split(/\s+/).filter(Boolean).join(' '), description = clean(b.description).trim();
+      if (title.length < 3 || title.length > 160) throw fail(400, 'bad_title');
+      if (description.length < 20 || description.length > 6000) throw fail(400, 'bad_description');
+      if (db.ideas.filter(i => i.authorId === u.id && i.createdAt >= now() - 864e5).length >= IDEAS_PER_DAY) throw fail(429, 'too_many_ideas');
+      const i = { id: newId(), authorId: u.id, title, description, status: 'new', reply: '', createdAt: now(), reviewedAt: null };
+      db.ideas.push(i); save(db);
+      return ideaOut(i, db);
+    }],
+    /* the administrator: the owner of this copy of the platform */
+    ['GET', /^\/api\/admin\/ideas$/, (db) => ({ ideas: db.ideas.slice().sort((a, b) => b.createdAt - a.createdAt).map(i => ideaOut(i, db, true)), page: pageOut(db) })],
+    ['PATCH', /^\/api\/admin\/ideas\/([^/]+)$/, (db, m, b) => {
+      const i = db.ideas.find(x => x.id === decodeURIComponent(m[1]));
+      if (!i) throw fail(404, 'not_found');
+      if (b.status !== undefined && b.status !== null && STATUSES.indexOf(b.status) < 0) throw fail(400, 'bad_status');
+      if (b.status) i.status = b.status;
+      if (typeof b.reply === 'string') i.reply = clean(b.reply).trim().slice(0, 4000);
+      i.reviewedAt = now(); save(db);
+      return ideaOut(i, db, true);
+    }],
+    ['DELETE', /^\/api\/admin\/ideas\/([^/]+)$/, (db, m) => { db.ideas = db.ideas.filter(x => x.id !== decodeURIComponent(m[1])); save(db); return { ok: true }; }],
+    ['PUT', /^\/api\/admin\/student-page$/, (db, m, b) => {
+      if (POLICIES.indexOf(b.signup) < 0) throw fail(400, 'bad_signup');
+      db.page = { open: !!b.open, message: clean(b.message).trim().slice(0, 2000), signup: b.signup }; db.saved = true; save(db);
+      return pageOut(db);
+    }],
+    ['GET', /^\/api\/admin\/users$/, (db) => ({ users: db.users.slice().sort((a, b) => a.createdAt - b.createdAt).map(u => pub(u, true)) })],
+    ['POST', /^\/api\/admin\/users$/, async (db, m, b) => {
+      const email = normEmail(b.email);
+      if (!EMAIL_RE.test(email)) throw fail(400, 'bad_email');
+      if (b.role && b.role !== 'ideas') throw fail(400, 'bad_role');
+      if (String(b.password || '').length < 8 || !String(b.name || '').trim()) throw fail(400, 'bad_request');
+      if (findUser(db, email)) throw fail(409, 'email_taken');
+      const u = { id: newId(), email, name: clean(b.name).trim().slice(0, 120), institution: '', status: 'active', createdAt: now(), lastLogin: null };
+      await setPassword(u, b.password);
+      db.users.push(u); save(db);
+      return pub(u, true);
+    }],
+    ['PATCH', /^\/api\/admin\/users\/([^/]+)$/, (db, m, b) => {
+      const u = db.users.find(x => x.id === decodeURIComponent(m[1]));
+      if (!u) throw fail(404, 'not_found');
+      if (b.role && b.role !== 'ideas') throw fail(400, 'bad_role');
+      if (b.status && USER_STATUS.indexOf(b.status) < 0) throw fail(400, 'bad_status');
+      if (b.status) { if (b.status !== 'active') u.pv = (u.pv || 0) + 1; u.status = b.status; }
+      if (typeof b.name === 'string' && b.name.trim()) u.name = clean(b.name).trim().slice(0, 120);
+      save(db);
+      return pub(u, true);
+    }],
+    ['POST', /^\/api\/admin\/users\/([^/]+)\/password$/, async (db, m, b) => {
+      const u = db.users.find(x => x.id === decodeURIComponent(m[1]));
+      if (!u) throw fail(404, 'not_found');
+      if (String(b.password || '').length < 8) throw fail(400, 'bad_password');
+      await setPassword(u, b.password); save(db);
+      return { ok: true };
+    }],
+    ['DELETE', /^\/api\/admin\/users\/([^/]+)$/, (db, m) => {
+      const id = decodeURIComponent(m[1]);
+      db.users = db.users.filter(x => x.id !== id); db.ideas = db.ideas.filter(i => i.authorId !== id); save(db);
+      return { ok: true };
+    }],
+    /* demo only: start again with no accounts, ideas or settings */
+    ['POST', /^\/api\/demo\/reset$/, () => { try { localStorage.removeItem(KEY); } catch (e) { /* nothing stored */ } endSession(); return { ok: true }; }]
+  ];
+  async function api(method, path, body) {
+    const p = String(path).split('?')[0];
+    for (const [m, re, fn] of ROUTES) {
+      const hit = m === method && re.exec(p);
+      if (hit) return JSON.parse(JSON.stringify(await fn(load(), hit, body || {})));
+    }
+    throw fail(404, 'not_found');
+  }
+  window.CF_DEMO = { api, key: KEY, sessionKey: SKEY, version: 1 };
+}());
+
+/* CampusForge AI local mode: one person on their own device, with their own Claude API key.
    The key is never written into this file. It is typed into the page, kept in this browser only,
    and sent only to api.anthropic.com. Projects are saved in this browser (IndexedDB). */
 (function () {
@@ -1027,10 +1472,27 @@ html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
     const input = document.getElementById('lk-key'); if (input) input.focus();
   }
   L.checkKey = checkKey;
-  window.CF_PLATFORM_READY = new Promise(resolve => {
+
+  /* ---------- the students' page as a demonstration (portal.js on demo.js): this address followed by #students ---------- */
+  const isPortal = () => /^#students\/?$/.test(location.hash);
+  const PORTAL = isPortal(), PT = window.CF_PORTAL, DEMO = window.CF_DEMO;
+  const whenReady = f => { if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', f); else f(); };
+  if (PT && DEMO) {
+    PT.host = { api: DEMO.api, config: { institution: '', allowSignup: true, allowedDomains: [] }, me: null, demo: true, isPortal,
+      appHref: location.pathname + location.search, reload: () => location.reload(),
+      signOut: async () => { try { await DEMO.api('POST', '/api/auth/logout', {}); } catch (e) { /* already signed out */ } location.reload(); } };
+    /* moving between the platform and the students' page starts the other one */
+    window.addEventListener('hashchange', () => { if (isPortal() !== PORTAL) location.reload(); });
+  }
+  window.CF_PLATFORM_READY = PORTAL && PT && DEMO ? (async () => {
+    try { Object.assign(PT.host.config, await DEMO.api('GET', '/api/config')); } catch (e) { /* defaults */ }
+    try { PT.host.me = await DEMO.api('GET', '/api/me'); }
+    catch (e) { whenReady(() => PT.renderAuth('signin')); return false; }
+    PT.wire(); whenReady(PT.showStudent);
+    return false;
+  })() : new Promise(resolve => {
     if (KEY || ls.get(K.skip) === '1') { resolve(true); return; }
-    const show = () => renderKey('first');
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', show); else show();
+    whenReady(() => renderKey('first'));
   });
 }());
 </script>
@@ -5776,6 +6238,7 @@ function landingHTML() {
     <span class="grow"></span>
     ${langSeg()}
     <button class="icon-btn" data-act="theme" aria-label="${t('theme_toggle')}" title="${t('theme_toggle')}">${icon(isDark() ? 'sun' : 'moon')}</button>
+    ${demoMode() ? `<a class="btn ghost small" href="#students">${t('lp_students')}</a>` : ''}
     <a class="btn ghost small" href="#dashboard">${t('open_app')}</a>
   </header>
   <section class="hero">
@@ -6617,7 +7080,7 @@ function adminResTable(list) {
 }
 function pageAdmin() {
   if (S.role !== 'admin') return `<div class="empty"><h1>${t('nav_admin')}</h1><p>${t('adm_gate')}</p></div>`;
-  const tabs = ['resources', 'categories', 'projects', 'submissions'].concat(window.CF_PLATFORM && window.CF_PLATFORM.me && window.CF_PLATFORM.me.role === 'admin' ? ['accounts'] : [], ['quality']);
+  const tabs = ['resources', 'categories', 'projects', 'submissions'].concat((window.CF_PLATFORM && window.CF_PLATFORM.me && window.CF_PLATFORM.me.role === 'admin') || demoMode() ? ['accounts'] : [], ['quality']);
   return `<header class="page-head"><div><h1>${t('nav_admin')}</h1><p class="lede">${t('adm_p')}</p></div></header>
   <div class="tabs big" role="tablist">${tabs.map(k => `<button role="tab" data-act="adm-tab" data-v="${k}" aria-selected="${S.ui.admin.tab === k}">${t('adm_t_' + k)}</button>`).join('')}</div>
   <section class="panel">${adminTab(S.ui.admin.tab)}</section>`;
@@ -7367,26 +7830,36 @@ function applyPlatformText() {
 }
 if (window.CF_PLATFORM_READY) window.CF_PLATFORM_READY.then(applyPlatformText);
 ACT.signout = () => { if (window.CF_PLATFORM) window.CF_PLATFORM.signOut(); };
+/* the API behind accounts and the students' page: the server, or the demonstration kept in this browser (demo.js) */
+function portalApi() { return (window.CF_PLATFORM && window.CF_PLATFORM.api) || (window.CF_DEMO && window.CF_DEMO.api) || null; }
+function demoMode() { return !window.CF_PLATFORM && !!window.CF_DEMO; }
+Object.assign(L.S, {
+  urole_ideas: ['Student: sends ideas only', 'طالب: يرسل الأفكار فقط'],
+  acc_note_demo: ['Demo accounts, kept in this browser only. Create an account for each student who will try the students’ page on this device.', 'حسابات تجريبية محفوظة في هذا المتصفح فقط. أنشئ حسابًا لكل طالب سيجرّب صفحة الطلاب على هذا الجهاز.'],
+  acc_del: ['Delete account', 'حذف الحساب'], acc_del_p: ['The account of {n} and its ideas will be deleted from this browser.', 'سيُحذف حساب {n} وأفكاره من هذا المتصفح.'], acc_deleted: ['Account deleted.', 'حُذف الحساب.'],
+  acc_none: ['No accounts yet.', 'لا توجد حسابات بعد.']
+});
 function accountsTabHTML() {
   const a = S.ui.accounts;
   if (!a) { setTimeout(loadAccounts, 0); return `<p class="hint">${t('acc_loading')}</p>`; }
   if (a.loading) return `<p class="hint">${t('acc_loading')}</p>`;
   if (a.error) return `<p class="warnbox">${t('acc_err_gen')}</p>`;
   const sel = (u, field, opts) => `<select data-on="acc-${field}" data-id="${esc(u.id)}" aria-label="${t(field)}">${opts.map(o => `<option value="${o}" ${u[field] === o ? 'selected' : ''}>${t((field === 'role' ? 'urole_' : 'ustatus_') + o)}</option>`).join('')}</select>`;
-  return `<p class="hint">${t('acc_note')}</p><div class="row-btns"><button class="btn small primary" data-act="acc-add">${icon('plus')}<span>${t('acc_add')}</span></button></div>
+  const demo = demoMode(), roles = demo ? ['ideas'] : ['ideas', 'student', 'supervisor', 'admin'];
+  return `<p class="hint">${t(demo ? 'acc_note_demo' : 'acc_note')}</p><div class="row-btns"><button class="btn small primary" data-act="acc-add">${icon('plus')}<span>${t('acc_add')}</span></button></div>
     <div class="tbl-wrap"><table class="tbl"><thead><tr><th>${t('name')}</th><th>${t('acc_email')}</th><th>${t('role')}</th><th>${t('status')}</th><th>${t('acc_last')}</th><th></th></tr></thead><tbody>
-    ${a.users.map(u => `<tr><td><bdi>${esc(u.name)}</bdi>${u.institution ? `<small class="d-block muted">${esc(u.institution)}</small>` : ''}</td><td dir="ltr">${esc(u.email)}</td><td>${sel(u, 'role', ['ideas', 'student', 'supervisor', 'admin'])}</td><td>${sel(u, 'status', ['active', 'pending', 'suspended'])}</td><td>${u.lastLogin ? fdate(Date.parse(u.lastLogin), true) : '–'}</td>
-      <td class="act"><button class="icon-btn" data-act="acc-reset" data-id="${esc(u.id)}" aria-label="${t('acc_reset')}: ${esc(u.name)}" title="${t('acc_reset')}">${icon('key')}</button></td></tr>`).join('')}
-    </tbody></table></div>`;
+    ${a.users.map(u => `<tr><td><bdi>${esc(u.name)}</bdi>${u.institution ? `<small class="d-block muted">${esc(u.institution)}</small>` : ''}</td><td dir="ltr">${esc(u.email)}</td><td>${demo ? t('urole_ideas') : sel(u, 'role', roles)}</td><td>${sel(u, 'status', ['active', 'pending', 'suspended'])}</td><td>${u.lastLogin ? fdate(Date.parse(u.lastLogin), true) : '–'}</td>
+      <td class="act"><button class="icon-btn" data-act="acc-reset" data-id="${esc(u.id)}" aria-label="${t('acc_reset')}: ${esc(u.name)}" title="${t('acc_reset')}">${icon('key')}</button>${demo ? `<button class="icon-btn" data-act="acc-del" data-id="${esc(u.id)}" aria-label="${t('acc_del')}: ${esc(u.name)}" title="${t('acc_del')}">${icon('trash')}</button>` : ''}</td></tr>`).join('')}
+    </tbody></table></div>${a.users.length ? '' : `<p class="hint">${t('acc_none')}</p>`}`;
 }
 async function loadAccounts() {
   S.ui.accounts = { loading: true };
-  try { const r = await window.CF_PLATFORM.api('GET', '/api/admin/users'); S.ui.accounts = { users: r.users || [] }; }
+  try { const r = await portalApi()('GET', '/api/admin/users'); S.ui.accounts = { users: r.users || [] }; }
   catch (e) { S.ui.accounts = { error: true }; }
   if (S.route === 'admin' && S.ui.admin.tab === 'accounts') render();
 }
 async function patchAccount(id, body) {
-  try { await window.CF_PLATFORM.api('PATCH', '/api/admin/users/' + encodeURIComponent(id), body); toast(t('saved'), 'ok'); }
+  try { await portalApi()('PATCH', '/api/admin/users/' + encodeURIComponent(id), body); toast(t('saved'), 'ok'); }
   catch (e) { toast(t(e.code === 'last_admin' ? 'acc_err_last' : 'acc_err_gen'), 'warn'); }
   loadAccounts();
 }
@@ -7396,15 +7869,26 @@ ACT['acc-add'] = () => openModal(t('acc_add'), `<div class="form-grid" id="acc-f
     <label class="field"><span>${t('name')}</span><input name="name" maxlength="120"></label>
     <label class="field"><span>${t('acc_email')}</span><input name="email" type="email" dir="ltr"></label>
     <label class="field"><span>${t('acc_password')}</span><input name="password" type="text" dir="ltr" autocomplete="off"></label>
-    <label class="field"><span>${t('role')}</span><select name="role">${['ideas', 'student', 'supervisor', 'admin'].map(r => `<option value="${r}">${t('urole_' + r)}</option>`).join('')}</select></label>
+    <label class="field"><span>${t('role')}</span><select name="role">${(demoMode() ? ['ideas'] : ['ideas', 'student', 'supervisor', 'admin']).map(r => `<option value="${r}">${t('urole_' + r)}</option>`).join('')}</select></label>
   </div><p class="hint">${t('acc_pw_note')}</p><p class="form-err" id="form-err" role="alert"></p>`,
   `<button class="btn ghost" data-act="modal-close">${t('cancel')}</button><button class="btn primary" data-act="acc-create">${t('save')}</button>`);
 ACT['acc-create'] = async () => {
   const f = n => $('#acc-form [name="' + n + '"]');
   const body = { name: f('name').value.trim(), email: f('email').value.trim(), password: f('password').value, role: f('role').value };
   if (!body.name || !body.email || body.password.length < 8) { $('#form-err').textContent = t('acc_err_form'); return; }
-  try { await window.CF_PLATFORM.api('POST', '/api/admin/users', body); closeModal(); toast(t('acc_created'), 'ok'); loadAccounts(); }
+  try { await portalApi()('POST', '/api/admin/users', body); closeModal(); toast(t('acc_created'), 'ok'); loadAccounts(); }
   catch (e) { $('#form-err').textContent = t(e.code === 'email_taken' ? 'acc_err_taken' : 'acc_err_gen'); }
+};
+ACT['acc-del'] = el => {
+  const u = ((S.ui.accounts && S.ui.accounts.users) || []).find(x => x.id === el.dataset.id);
+  if (!u) return;
+  openModal(t('acc_del'), `<p>${t('acc_del_p', { n: '<bdi>' + esc(u.name) + '</bdi>' })}</p>`, `<button class="btn ghost" data-act="modal-close">${t('cancel')}</button><button class="btn danger" data-act="acc-del-ok" data-id="${esc(u.id)}">${t('delete')}</button>`);
+};
+ACT['acc-del-ok'] = async el => {
+  closeModal();
+  try { await portalApi()('DELETE', '/api/admin/users/' + encodeURIComponent(el.dataset.id)); toast(t('acc_deleted'), 'ok'); S.ui.ideas = null; }
+  catch (e) { toast(t('acc_err_gen'), 'warn'); }
+  loadAccounts();
 };
 ACT['acc-reset'] = el => {
   const u = ((S.ui.accounts && S.ui.accounts.users) || []).find(x => x.id === el.dataset.id);
@@ -7417,7 +7901,7 @@ ACT['acc-reset-ok'] = async el => {
   const pw = $('#acc-pw-form [name="password"]').value;
   if (pw.length < 8) { $('#form-err').textContent = t('acc_err_pw'); return; }
   el.disabled = true;
-  try { await window.CF_PLATFORM.api('POST', '/api/admin/users/' + encodeURIComponent(el.dataset.id) + '/password', { password: pw }); closeModal(); toast(t('acc_reset_done'), 'ok'); }
+  try { await portalApi()('POST', '/api/admin/users/' + encodeURIComponent(el.dataset.id) + '/password', { password: pw }); closeModal(); toast(t('acc_reset_done'), 'ok'); }
   catch (e) { $('#form-err').textContent = t('acc_err_gen'); el.disabled = false; }
 };
 
@@ -8639,6 +9123,14 @@ Object.assign(L.S, {
   id_del: ['Delete idea', 'حذف الفكرة'], id_del_p: ['The idea “{t}” will be deleted for good, and the student will no longer see it on their page.', 'ستُحذف فكرة «{t}» نهائيًا، ولن يراها الطالب في صفحته بعد ذلك.'],
   id_deleted: ['Idea deleted.', 'حُذفت الفكرة.'],
   id_new_n: ['{n} new', '{n} جديدة'],
+  id_demo_h: ['Demo on this device', 'نسخة تجريبية على هذا الجهاز'], id_demo_chip: ['Demo', 'تجريبي'],
+  id_demo_p: ['Student accounts and ideas are kept in this browser only, so you can try and present the students’ page here: create a test student, open the students’ page, sign in and send an idea, then review it here. For real use across devices, run the server version.', 'تُحفظ حسابات الطلاب وأفكارهم في هذا المتصفح فقط، لتجرّب صفحة الطلاب وتعرضها هنا: أنشئ حساب طالب تجريبي، وافتح صفحة الطالب، وادخل وأرسل فكرة، ثم راجعها هنا. وللاستخدام الحقيقي بين أجهزة مختلفة شغّل نسخة الخادم.'],
+  id_demo_student: ['Create a test student', 'أنشئ حساب طالب تجريبي'], id_demo_open: ['Open the students’ page', 'افتح صفحة الطالب'],
+  id_demo_reset: ['Clear the demo data', 'مسح البيانات التجريبية'], id_demo_name: ['Test student {n}', 'طالب تجريبي {n}'],
+  id_demo_made_h: ['Test student ready', 'حساب الطالب التجريبي جاهز'], id_demo_made_p: ['Open the students’ page and sign in with:', 'افتح صفحة الطالب وادخل بهذه البيانات:'], id_demo_pw: ['Password', 'كلمة المرور'],
+  id_demo_made_note: ['Anyone on this device can use these details: they are for the demonstration only.', 'يستطيع أي شخص على هذا الجهاز استخدام هذه البيانات، فهي للتجربة فقط.'],
+  id_demo_reset_p: ['All test student accounts, their ideas and the page settings will be deleted from this browser.', 'ستُحذف من هذا المتصفح كل حسابات الطلاب التجريبية وأفكارهم وإعدادات الصفحة.'],
+  id_demo_cleared: ['Demo data cleared.', 'مُسحت البيانات التجريبية.'], lp_students: ['Student sign-in (demo)', 'دخول الطلاب (تجريبي)'],
   id_sup_note: ['Administrators manage the students’ page and accounts. You can review the ideas.', 'يدير المسؤولون صفحة الطلاب والحسابات، ويمكنك مراجعة الأفكار.']
 });
 ICONS.inbox = 'M4 13h4.5l1.5 3h4l1.5-3H20M4 13l2.2-8h11.6L20 13v6H4z';
@@ -8649,8 +9141,9 @@ NAV.splice(NAV.findIndex(x => x[0] === 'dashboard') + 1, 0, ['ideas', 'inbox']);
 const IDEA_ST = ['new', 'review', 'accepted', 'changes', 'declined'];
 const IDEA_TONE = { new: 'cyan', review: 'info', accepted: 'ok', changes: 'risk', declined: 'gap' };
 const pme = () => (window.CF_PLATFORM && window.CF_PLATFORM.me) || null;
-const ideasStaff = () => { const m = pme(); return !!(m && (m.role === 'admin' || m.role === 'supervisor')); };
-const ideasAdmin = () => { const m = pme(); return !!(m && m.role === 'admin'); };
+/* on the server: administrators and supervisors; in the demonstration kept in this browser: the owner of this copy */
+const ideasStaff = () => { const m = pme(); return demoMode() || !!(m && (m.role === 'admin' || m.role === 'supervisor')); };
+const ideasAdmin = () => { const m = pme(); return demoMode() || !!(m && m.role === 'admin'); };
 const ideasState = () => S.ui.ideas || (S.ui.ideas = { list: null, page: null, loading: false, error: false, f: 'all', q: '', more: {}, edit: {}, pageEdit: null });
 NAV_GATE.ideas = ideasStaff;
 NAV_BADGE.ideas = () => { const s = S.ui.ideas; return s && s.list ? s.list.filter(i => i.status === 'new').length : 0; };
@@ -8660,7 +9153,7 @@ async function loadIdeas() {
   if (!ideasStaff() || s.loading) return;
   s.loading = true;
   try {
-    const r = await window.CF_PLATFORM.api('GET', '/api/admin/ideas');
+    const r = await portalApi()('GET', '/api/admin/ideas');
     s.list = r.ideas || []; s.page = r.page || null; s.error = false;
   } catch (e) { s.error = true; }
   s.loading = false;
@@ -8672,14 +9165,21 @@ async function loadIdeas() {
   }
 }
 if (window.CF_PLATFORM_READY) window.CF_PLATFORM_READY.then(ok => { if (ok && ideasStaff()) loadIdeas(); });
+/* the demonstration: what a student sends in another tab of this browser shows here at once */
+if (window.CF_DEMO) window.addEventListener('storage', e => {
+  if (e.key !== window.CF_DEMO.key && e.key !== null) return;
+  loadIdeas();
+  if (S.route === 'admin' && S.ui.admin.tab === 'accounts') loadAccounts();
+});
 
-function studentsAddress() { return location.origin + '/students'; }
+function studentsAddress() { return demoMode() ? location.href.split('#')[0] + '#students' : location.origin + '/students'; }
+const studentsHref = () => (demoMode() ? '#students' : '/students');
 function ideasPagePanel(s) {
   if (!ideasAdmin()) return `<section class="panel id-page"><h2>${t('id_page_h')}</h2><div class="id-link"><span class="hint">${t('id_link')}</span><code dir="ltr">${esc(studentsAddress())}</code><button class="btn small ghost" data-act="ideas-copy">${icon('copy')}<span>${t('id_copy')}</span></button></div><p class="hint">${t('id_sup_note')}</p></section>`;
   const pg = s.pageEdit || s.page || { open: true, message: '', signup: 'open' };
   return `<section class="panel id-page"><div class="id-page-head"><h2>${t('id_page_h')}</h2>${chip(t(pg.open ? 'id_open_on' : 'id_open_off'), pg.open ? 'ok' : 'gap')}</div>
     <div class="id-link"><span class="hint">${t('id_link')}</span><code dir="ltr">${esc(studentsAddress())}</code>
-      <button class="btn small ghost" data-act="ideas-copy">${icon('copy')}<span>${t('id_copy')}</span></button><a class="btn small ghost" href="/students" target="_blank" rel="noopener">${icon('eye')}<span>${t('id_preview')}</span></a></div>
+      <button class="btn small ghost" data-act="ideas-copy">${icon('copy')}<span>${t('id_copy')}</span></button><a class="btn small ghost" href="${studentsHref()}" target="_blank" rel="noopener">${icon('eye')}<span>${t(demoMode() ? 'id_demo_open' : 'id_preview')}</span></a></div>
     <div class="id-form">
       <label class="tog id-open"><input type="checkbox" data-on="idp-open" ${pg.open ? 'checked' : ''}><span>${t('id_open')}</span></label>
       <label class="field"><span>${t('id_signup')}</span><select data-on="idp-signup">${['open', 'approve', 'closed'].map(k => `<option value="${k}" ${pg.signup === k ? 'selected' : ''}>${t('id_su_' + k)}</option>`).join('')}</select></label>
@@ -8716,11 +9216,43 @@ function pageIdeas() {
   const body = s.error && !s.list ? `<p class="warnbox">${t('id_error')}</p>` : !s.list ? `<p class="hint">${t('id_loading')}</p>` : ideasListHTML(s);
   return `<header class="page-head"><div><h1>${t('nav_ideas')}</h1><p class="lede">${t('id_p')}</p></div>
       <div class="row-btns"><button class="btn small ghost" data-act="ideas-refresh" ${s.loading ? 'disabled' : ''}>${icon('reset')}<span>${t('id_refresh')}</span></button></div></header>
-    ${ideasPagePanel(s)}
+    ${ideasDemoHTML()}${ideasPagePanel(s)}
     <section class="panel"><div class="id-list-head"><h2>${t('id_list_h')}</h2><input type="search" class="search" data-in="ideas-q" value="${esc(s.q)}" placeholder="${esc(t('id_search'))}" aria-label="${t('id_search')}"></div>
       <div id="ideas-body">${body}</div></section>`;
 }
 PAGES.ideas = pageIdeas;
+/* the demonstration in this browser: a ready test student, the students' page, and a clean start */
+function ideasDemoHTML() {
+  if (!demoMode()) return '';
+  return `<section class="panel id-demo"><div class="id-page-head"><h2>${t('id_demo_h')}</h2>${chip(t('id_demo_chip'), 'risk')}</div>
+    <p class="small">${t('id_demo_p')}</p>
+    <div class="row-btns"><button class="btn small primary" data-act="demo-student">${icon('user')}<span>${t('id_demo_student')}</span></button>
+      <a class="btn small ghost" href="#students" target="_blank" rel="noopener">${icon('eye')}<span>${t('id_demo_open')}</span></a>
+      <button class="btn small ghost" data-act="demo-reset">${icon('trash')}<span>${t('id_demo_reset')}</span></button></div></section>`;
+}
+ACT['demo-student'] = async el => {
+  const api = portalApi();
+  if (!api) return;
+  el.disabled = true;
+  try {
+    const users = (await api('GET', '/api/admin/users')).users || [];
+    let n = 1;
+    while (users.some(u => u.email === 'student' + n + '@demo.edu')) n++;
+    const email = 'student' + n + '@demo.edu', password = 'demo1234';
+    await api('POST', '/api/admin/users', { email, name: t('id_demo_name', { n }), password, role: 'ideas' });
+    S.ui.accounts = null;
+    openModal(t('id_demo_made_h'), `<p>${t('id_demo_made_p')}</p><dl class="id-cred"><dt>${t('acc_email')}</dt><dd dir="ltr"><code>${esc(email)}</code></dd><dt>${t('id_demo_pw')}</dt><dd dir="ltr"><code>${password}</code></dd></dl><p class="hint">${t('id_demo_made_note')}</p>`,
+      `<button class="btn ghost" data-act="modal-close">${t('close')}</button><a class="btn primary" href="#students" target="_blank" rel="noopener">${t('id_demo_open')}</a>`);
+  } catch (e) { toast(t('acc_err_gen'), 'warn'); }
+  el.disabled = false;
+};
+ACT['demo-reset'] = () => openModal(t('id_demo_reset'), `<p>${t('id_demo_reset_p')}</p>`, `<button class="btn ghost" data-act="modal-close">${t('cancel')}</button><button class="btn danger" data-act="demo-reset-ok">${t('id_demo_reset')}</button>`);
+ACT['demo-reset-ok'] = async () => {
+  closeModal();
+  try { await portalApi()('POST', '/api/demo/reset', {}); S.ui.ideas = null; S.ui.accounts = null; toast(t('id_demo_cleared'), 'ok'); }
+  catch (e) { toast(t('acc_err_gen'), 'warn'); }
+  loadIdeas(); render();
+};
 const ideaById = id => ((S.ui.ideas && S.ui.ideas.list) || []).find(i => i.id === id);
 Object.assign(ACT, {
   'ideas-refresh'() { const s = ideasState(); s.edit = {}; loadIdeas(); render(); },
@@ -8735,7 +9267,7 @@ Object.assign(ACT, {
     const s = ideasState(), pg = Object.assign({ open: true, message: '', signup: 'open' }, s.page || {}, s.pageEdit || {});
     el.disabled = true;
     try {
-      s.page = await window.CF_PLATFORM.api('PUT', '/api/admin/student-page', { open: !!pg.open, message: String(pg.message || ''), signup: pg.signup });
+      s.page = await portalApi()('PUT', '/api/admin/student-page', { open: !!pg.open, message: String(pg.message || ''), signup: pg.signup });
       s.pageEdit = null; toast(t('id_page_saved'), 'ok');
     } catch (e) { toast(t('acc_err_gen'), 'warn'); }
     el.disabled = false; render();
@@ -8747,7 +9279,7 @@ Object.assign(ACT, {
     const ed = s.edit[it.id] || {};
     el.disabled = true;
     try {
-      const r = await window.CF_PLATFORM.api('PATCH', '/api/admin/ideas/' + encodeURIComponent(it.id), { status: ed.status || it.status, reply: ed.reply !== undefined ? ed.reply : (it.reply || '') });
+      const r = await portalApi()('PATCH', '/api/admin/ideas/' + encodeURIComponent(it.id), { status: ed.status || it.status, reply: ed.reply !== undefined ? ed.reply : (it.reply || '') });
       Object.assign(it, r); delete s.edit[it.id];
       toast(t('id_saved'), 'ok');
     } catch (e) { toast(t('id_save_err'), 'warn'); }
@@ -8769,7 +9301,7 @@ Object.assign(ACT, {
   async 'idea-del-ok'(el) {
     const s = ideasState(), id = el.dataset.id;
     closeModal();
-    try { await window.CF_PLATFORM.api('DELETE', '/api/admin/ideas/' + encodeURIComponent(id)); s.list = (s.list || []).filter(i => i.id !== id); toast(t('id_deleted'), 'ok'); }
+    try { await portalApi()('DELETE', '/api/admin/ideas/' + encodeURIComponent(id)); s.list = (s.list || []).filter(i => i.id !== id); toast(t('id_deleted'), 'ok'); }
     catch (e) { toast(t('acc_err_gen'), 'warn'); }
     render();
   }

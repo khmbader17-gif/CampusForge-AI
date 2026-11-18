@@ -21,6 +21,13 @@ A smart bilingual (Arabic and English) university platform that helps students t
 - When the idea already exists, the AI starts by itself to search the web for features that similar projects and products do not offer, shows what it checked and the pages it read, and the engine checks each one before it can be added. "Look for other features" asks again without repeats.
 - The comparison covers only the works that the search found; it is not a full patent search.
 
+## صفحة الطلاب التجريبية / Students' page (demo)
+- رابط الطلاب: رابط الموقع مع ‎`#students`‎ في آخره، مثل `https://khmbader17-gif.github.io/CampusForge-AI/#students`.
+- من صفحة «أفكار الطلاب» ينشئ المسؤول حسابات الطلاب (أو حساب طالب تجريبي جاهز)، ويفتح استقبال الأفكار أو يغلقه، ويكتب رسالة للطلاب، ويراجع الأفكار ويرد عليها.
+- يدخل الطالب فيكتب فكرته ويرسلها، ثم يتابع حالتها والرد عليها.
+- في هذه النسخة تُحفظ الحسابات والأفكار في المتصفح نفسه، فهي للتجربة والعرض على جهاز واحد. وللاستخدام الحقيقي بين أجهزة مختلفة تُستخدم نسخة الخادم.
+- Students sign in at the site's address followed by `#students`. From "Students' ideas" the administrator creates student accounts (or a ready test student), opens or closes the page to new ideas, writes a message to students, and reviews and answers their ideas. In this version accounts and ideas are kept in the same browser, so it is for trying and presenting on one device; the server version is for real use across devices.
+
 ## البيانات / Data
 تُحفظ المشاريع في متصفح كل زائر على جهازه. Projects are saved in each visitor's own browser.
 
