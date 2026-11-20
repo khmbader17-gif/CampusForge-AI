@@ -31,6 +31,30 @@ A smart bilingual (Arabic and English) university platform that helps students t
 - The platform suggests the spare parts that raise the index most, with each one's effect and its cost from the budget, listing first those that keep the project within budget. One click adds a spare and runs the test again; the index appears on the project dashboard, in the report and in the activity log.
 - The index counts only parts whose failure stops a required function: a fix within limits counts in full, a fix that breaks the budget or deadline counts half, and a part with no fix counts zero. It is a planning tool based on catalog prices and lead times; it does not predict failures.
 
+## هامش الأمان / Safety margins
+- في صفحة «صمود المشروع» تبويب ثانٍ اسمه «الميزانية والموعد». يبحث فيه المحرك في الكتالوج عن التصاميم التي تبقى صالحة، ويبيّن إلى أي حد يمكن أن تُخفَّض الميزانية أو ترتفع الأسعار، وإلى أي حد يمكن أن يُقدَّم الموعد أو يتأخر الشحن، قبل أن يفشل المشروع. ويعطي الهامش مرتين: بالتصميم الحالي، وبأفضل تصميم يمكن الانتقال إليه، مع التغييرات اللازمة وزر لاعتماده.
+- إذا وجد المحرك تصميمًا أرخص أو أسرع لا يخسر شيئًا من الوظائف أو الثقة أو التوافق، يعرضه مع ما يوفّره.
+- أداة «ماذا لو؟»: يحرّك الطالب الميزانية والموعد، فيعرف فورًا هل يصمد تصميمه، أو إلى أي تصميم سينتقل، أو ما ينقصه من مال أو وقت. ومعها رسم لكل التصاميم التي وجدها المحرك وخط التصاميم التي لا يتفوق عليها غيرها في التكلفة والمدة معًا.
+- Resilience now has a second tab, Budget and deadline. The engine searches the catalog for the designs that still work and shows how far the budget can be cut or prices rise, and how much earlier the deadline can come or deliveries be late, before the project fails, for the current design and for the best design to switch to, with the changes and a button to adopt it.
+- When the engine finds a design that is cheaper or faster without losing functions, confidence or compatibility, it offers it with the saving.
+- "What if…?": move the budget and the deadline to see at once whether the design holds, which design the engine would switch to, or how much money or time is missing, next to a chart of every design found and the line of designs no other beats on both cost and time.
+
+## احتياط المختبر المشترك / Shared lab spares
+- صفحة للمسؤول والمشرف يختبر فيها المحرك صمود كل المشاريع، ثم يختار القطع الاحتياطية التي تحمي أكبر عدد من المشاريع بميزانية يحددها المختبر. وتكفي وحدة واحدة على الرف لكل المشاريع التي تستخدم القطعة، لأن الأعطال تُختبر واحدًا في كل مرة.
+- تعرض الصفحة متوسط الصمود قبل الاحتياط وبعده، والمشاريع التي تتحسن، وقائمة الشراء (وتُنزَّل ملف CSV)، وأثر الاحتياط على كل مشروع، ونقاط الضعف التي لا تغطيها قطعة احتياطية لأنها خدمات، مثل شبكة الحرم.
+- الاختيار دقيق لميزانية المختبر، ويدفع المختبر ثمن القطع، لا ميزانيات المشاريع.
+- For administrators and supervisors: the engine tests the resilience of every project, then picks the spare parts that protect the most projects for the lab's budget. One unit on the shelf serves every project that uses that part, since failures are tested one at a time.
+- It shows the average resilience before and after, the projects improved, the shopping list (downloadable as CSV), the effect on each project, and the weak points no spare can cover because they are services, such as the campus network.
+- The choice is exact for the lab's budget, and the lab pays for the spares, not the projects' budgets.
+
+## تحضير المناقشة / Defense preparation
+- أسئلة يُتوقع أن تطرحها لجنة المناقشة عن مشروع الطالب، ولكل سؤال إجابة نموذجية مأخوذة من تحليل المحرك لتصميمه نفسه: لماذا اختار كل قطعة مقارنةً بأقرب بديل، وماذا يحدث إذا تعطلت قطعة حرجة، وماذا لو خُفّضت الميزانية أو قُدّم الموعد، وكم يكلف المشروع ويستغرق، وما أقرب عمل مشابه وبماذا يختلف عنه.
+- يتدرّب الطالب بإخفاء الإجابات، ويعلّم كل سؤال بـ«أستطيع الإجابة» أو «أحتاج إلى تدرّب»، ويُحفظ تقدمه مع المشروع، ويمكنه طباعة الأسئلة والإجابات.
+- لا تحتاج هذه الصفحة إلى مفتاح، ولا تخترع معلومات، فكل إجابة مبنية على أرقام المحرك والكتالوج.
+- Questions an examining committee is likely to ask about the student's project, each with a model answer built from the engine's analysis of that design: why each part was chosen against the closest alternative, what happens if a critical part fails, what if the budget is cut or the deadline moves earlier, what the project costs and takes, and the closest similar work and how the project differs.
+- Practice with the answers hidden, mark each question "I can answer it" or "Practice again", keep the progress with the project, and print the questions and answers.
+- It needs no key and invents nothing: every answer comes from the engine's and the catalog's numbers.
+
 ## صفحة الطلاب التجريبية / Students' page (demo)
 - رابط الطلاب: رابط الموقع مع ‎`#students`‎ في آخره، مثل `https://khmbader17-gif.github.io/CampusForge-AI/#students`.
 - من صفحة «أفكار الطلاب» ينشئ المسؤول حسابات الطلاب (أو حساب طالب تجريبي جاهز)، ويفتح استقبال الأفكار أو يغلقه، ويكتب رسالة للطلاب، ويراجع الأفكار ويرد عليها.

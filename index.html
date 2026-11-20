@@ -852,6 +852,97 @@ html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
 .rs-dash{display:flex;align-items:center;gap:12px;margin:6px 0 10px}
 .rs-dash p{margin:2px 0 0}
 @media (prefers-reduced-motion:reduce){.rs-bar span{transition:none}}
+/* resilience tabs and the safety margins */
+.risk-t{color:var(--risk)}
+.rs-tabs button{display:inline-flex;align-items:center;gap:7px}
+.rs-tabs button svg{width:17px;height:17px}
+.rs-bar.indet span{width:34%;animation:rs-indet 1.15s ease-in-out infinite}
+@keyframes rs-indet{0%{transform:translateX(-110%)}100%{transform:translateX(320%)}}
+[dir="rtl"] .rs-bar.indet span{animation-name:rs-indet-r}
+@keyframes rs-indet-r{0%{transform:translateX(110%)}100%{transform:translateX(-320%)}}
+.mg-cards{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(360px,100%),1fr));margin-bottom:16px}
+.mg-card{display:flex;flex-direction:column;gap:6px;margin:0}
+.mg-card h2{margin:0 0 4px}
+.mg-card>p{margin:0;font-size:14.5px}
+.mg-big{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:2px 0 6px}
+.mg-big b{font:600 38px/1.05 var(--font-d);font-variant-numeric:tabular-nums;color:var(--cyan)}
+.mg-big.gap-t b{color:var(--gap)}
+.mg-big span{color:var(--muted);font-size:13.5px}
+.mg-design{border:1px solid var(--line);border-radius:12px;background:var(--panel2);padding:10px 14px;margin-top:6px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.mg-design p{margin:0}
+.mg-design .rs-fix{margin:2px 0 4px;overflow-wrap:anywhere}
+.mg-design .row-btns{margin-top:6px}
+.mg-better{border-inline-start:4px solid var(--ok)}
+.mg-better h2{display:flex;align-items:center;gap:8px}
+.mg-better h2 svg{color:var(--ok)}
+.mg-sl{display:flex;flex-wrap:wrap;gap:14px 26px;align-items:center;margin:6px 0 14px}
+.mg-sl label{display:grid;grid-template-columns:auto minmax(150px,240px) auto;align-items:center;gap:10px;font-weight:600;font-size:14px}
+.mg-sl input[type=range]{width:100%;accent-color:var(--cyan)}
+.mg-sl output{font-variant-numeric:tabular-nums;min-width:76px;color:var(--text)}
+.mg-res{display:flex;gap:8px;align-items:flex-start;margin:0 0 6px;font-size:15px;font-weight:600}
+.mg-res svg{flex:none;width:20px;height:20px;margin-top:1px}
+.mg-res.ok{color:var(--ok)}.mg-res.risk{color:var(--risk)}.mg-res.gap{color:var(--gap)}
+.mg-res span{color:var(--text);font-weight:500}
+.mg-need{margin:4px 0 0;padding-inline-start:20px;font-size:14px}
+.mg-chart{display:block;width:100%;height:auto;max-height:420px;font-family:var(--font-t)}
+.mg-grid{stroke:var(--line);stroke-width:1}
+.mg-axis{stroke:var(--line2);stroke-width:1.2}
+.mg-tick{fill:var(--muted);font-size:11.5px;font-variant-numeric:tabular-nums}
+.mg-axt{fill:var(--muted);font-size:12.5px;font-weight:600}
+.mg-zone{fill:var(--ok-bg);opacity:.75}
+.mg-lim{stroke:var(--ok);stroke-width:1.4;stroke-dasharray:5 4}
+.mg-lim-t{fill:var(--ok);font-size:12px;font-weight:600}
+.mg-front{fill:none;stroke:var(--cyan);stroke-width:2;stroke-linejoin:round}
+.mg-pt{fill:var(--muted);opacity:.38}
+.mg-pt.pick{fill:none;stroke:var(--risk);stroke-width:2.5;opacity:1}
+.mg-fp{fill:var(--panel);stroke:var(--cyan);stroke-width:2.4;cursor:pointer}
+.mg-fp:hover,.mg-fp:focus-visible{fill:var(--cyan);outline:none}
+.mg-fp.sel{fill:var(--cyan)}
+.mg-fp.pick{stroke:var(--risk);stroke-width:3}
+.mg-cur{fill:var(--purple);stroke:var(--panel);stroke-width:2.5}
+.mg-you{fill:var(--purple);font-size:12.5px;font-weight:700}
+.mg-you,.mg-lim-t{paint-order:stroke;stroke:var(--panel);stroke-width:4px;stroke-linejoin:round}
+#mg-sel{margin-top:10px}
+/* shared lab spares */
+.po-sel summary{cursor:pointer;font-size:15.5px;padding:2px 0;list-style-position:inside}
+.po-sel[open] summary{margin-bottom:10px}
+.po-list{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.po-pick{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:13.5px;background:var(--panel2);cursor:pointer;max-width:100%}
+.po-pick span{overflow-wrap:anywhere}
+.po-pick:has(input:checked){border-color:var(--cyan);background:var(--cyan-bg)}
+.po-pick input{accent-color:var(--cyan);margin:0}
+.po-b{margin:6px 0 12px}
+.po-projs{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 0}
+.po-card header .chip{flex:none}
+.po-svc{list-style:none;padding:0;margin:0;display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr))}
+.po-svc li{border:1px solid var(--line);border-inline-start:4px solid var(--gap);border-radius:12px;padding:10px 14px;background:var(--panel)}
+.po-svc li p{margin:4px 0 0}
+.po-tbl td{vertical-align:top}
+/* defense preparation */
+.vv-top{display:grid;gap:10px}
+.vv-prog{display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+.vv-prog b{font:600 18px var(--font-d)}
+.vv-top .rs-bar{margin:0}
+.vv-top .rs-bar span{background:var(--ok)}
+.vv-tabs button .muted{font-weight:500;margin-inline-start:4px}
+.vv-list{display:grid;gap:14px}
+.vv-card{border:1px solid var(--line);border-radius:14px;padding:16px 18px;background:var(--panel);display:flex;flex-direction:column;gap:8px;min-width:0}
+.vv-card[data-mark="ok"]{border-inline-start:4px solid var(--ok)}
+.vv-card[data-mark="again"]{border-inline-start:4px solid var(--risk)}
+.vv-card header{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.vv-n{font:600 13px var(--font-m);color:var(--muted);min-width:22px}
+.vv-card h3{margin:0;font-size:17px;line-height:1.45;overflow-wrap:anywhere}
+.vv-a summary{cursor:pointer;color:var(--cyan);font-weight:600;font-size:14px;width:max-content;max-width:100%}
+.vv-body{border-inline-start:3px solid var(--cyan);padding:4px 14px 2px;margin-top:8px;font-size:14.5px;overflow-wrap:anywhere}
+.vv-body p{margin:0 0 8px}
+.vv-body ul{margin:0 0 8px;padding-inline-start:20px}
+.vv-src{color:var(--muted);font-size:12.5px}
+.vv-print-h{display:none}
+@media print{.vv-top,.vv-tabs,.vv-btns,.vv-a summary,.page-head .lede{display:none!important}.vv-print-h{display:block}.vv-card{break-inside:avoid;border:1px solid #ccd}.vv-body{border:0;padding:0}}
+#mg-sel h3{margin:0 0 4px;font-size:15px}
+.mg-dash{margin:-2px 0 8px}
+@media (max-width:640px){.mg-sl label{grid-template-columns:1fr auto;width:100%}.mg-sl label input{grid-column:1/-1;grid-row:2}.mg-big b{font-size:32px}#mg-chart{overflow-x:auto;margin-inline:-6px;padding-bottom:4px}.mg-chart{min-width:600px}}
+@media (prefers-reduced-motion:reduce){.rs-bar.indet span{animation:none;width:100%;opacity:.5}}
 </style>
 </head>
 <body>
@@ -5418,6 +5509,227 @@ rp_h_novelty:['New feature added after discovery: “{f}” (project cost {c}).'
 
   return { VERSION, PHYSICAL, SCORE, STRONG, MEDIUM, level, signature, baseline, start, test, withSpares, suggestSpares };
 }));
+
+/* =====================================================================
+   Safety margins — how far the budget, the deadline, prices and deliveries
+   can move before the project fails, and which design the engine would use.
+   A pure JavaScript module (no DOM access) used by the browser and by
+   Node.js tests. It collects the designs a global FGAR search finds under
+   several budget and deadline settings (cheap, fast and balanced), keeps
+   those that satisfy every rule except possibly the budget or the deadline,
+   and reads the margins from them:
+     money  how far the budget can fall, or prices rise, while a design still
+            meets the deadline; with the current design, and with the best one;
+     time   how much earlier the deadline can come, or deliveries be late,
+            while a design still fits the budget; now, and with the best one.
+   It also finds a design that is cheaper and faster than the current one
+   while keeping as many functions, and answers "what if the budget were B
+   and the deadline D?". One change at a time, with the catalog's prices and
+   lead times; the designs are the best the engine's search found, not a
+   proof that nothing better exists.
+   ===================================================================== */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  else root.CF_MARGINS = api;
+}(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  const VERSION = '1.0.0';
+  /* budget and deadline scalings that steer the search toward cheap, fast and balanced designs */
+  const SETTINGS = [[3, 3], [3, 0.5], [0.5, 3], [1, 1]];
+  const EPS = 1e-9;
+  const round2 = x => Math.round(x * 100) / 100;
+  const limitsOnly = v => v.violations.length > 0 && v.violations.every(x => x.code === 'V4' || x.code === 'V5');
+
+  function describe(project, item, current) {
+    const fs = item.fnStates || {}, m = item.metrics;
+    return { sig: item.signature, config: item.config, metrics: m, cost: round2(m.cost), days: m.days, maxLead: m.maxLead, effort: m.effort,
+      coverage: m.coverage, confidence: m.confidence, changes: m.changes || [],
+      dropped: project.functions.filter(f => !f.mandatory && fs[f.id] && fs[f.id] !== 'FULL').map(f => f.id), current: !!current };
+  }
+  /* the designs: every configuration the searches found that meets the rules apart from the budget and the deadline */
+  function collect(E, project, catalog, opts) {
+    opts = opts || {};
+    const st = project.current || {}, base = st.config || { assign: {}, aux: [] };
+    const ctx = E.createContext(catalog, { overrides: st.overrides || {}, owned: project.owned || [] });
+    const B = +project.budget || 0, D = +project.deadlineDays || 0;
+    const v = E.validate(project, base, ctx.derive({ skipAlternatives: true }), base);
+    const issues = Array.from(new Set(v.violations.map(x => x.code))).filter(c => c !== 'V4' && c !== 'V5');
+    const seen = new Map();
+    let explored = 0;
+    for (const [bs, ds] of opts.settings || SETTINGS) {
+      const q = Object.assign({}, project, { budget: Math.max(B, 1) * bs, deadlineDays: Math.max(D, 1) * ds });
+      const rc = E.reconfigure(q, base, ctx, { mode: 'global', keep: 100000, maxRejected: 100000, weights: opts.weights });
+      explored += rc.explored;
+      for (const it of rc.valid.concat(rc.rejected.filter(limitsOnly))) if (!seen.has(it.signature)) seen.set(it.signature, describe(project, it, false));
+      if (rc.strategy !== 'beam') break;   // an exhaustive search already found every design, whatever the limits
+    }
+    let cur = null;
+    if (!issues.length) {
+      const sig = E.configSignature(project, base);
+      cur = seen.get(sig) || describe(project, { signature: sig, config: base, metrics: v.metrics, fnStates: v.fnStates }, true);
+      cur.current = true; seen.set(sig, cur);
+    }
+    return { list: Array.from(seen.values()), cur, issues, explored, base: { cost: round2(v.metrics.cost), days: v.metrics.days } };
+  }
+
+  const keepsMost = (a, b) => (b.coverage - a.coverage) || (a.changes.length - b.changes.length);
+  const byCost = (a, b) => (a.cost - b.cost) || (a.days - b.days) || keepsMost(a, b) || (a.sig < b.sig ? -1 : 1);
+  const byDays = (a, b) => (a.days - b.days) || (a.cost - b.cost) || keepsMost(a, b) || (a.sig < b.sig ? -1 : 1);
+  /* the design to switch to when it must change: keeps the most functions, then changes the least, then costs and takes the least */
+  const prefer = (a, b) => keepsMost(a, b) || (a.cost - b.cost) || (a.days - b.days) || (a.sig < b.sig ? -1 : 1);
+  /* the cheapest design for every number of days: no other design is both cheaper and faster */
+  function frontier(list) {
+    const out = [];
+    let best = Infinity;
+    for (const d of list.slice().sort(byCost)) if (d.days < best) { out.push(d); best = d.days; }
+    return out;
+  }
+  const rise = (budget, cost) => (cost > EPS ? budget / cost - 1 : Infinity);
+  /* how late deliveries can be: every bought part with a delivery time arrives later; nothing to wait for means no limit */
+  const delayRoom = (d, D) => (d.maxLead > 0 || d.days > D ? D - d.days : Infinity);
+
+  function analyse(E, project, catalog, opts) {
+    const c = collect(E, project, catalog, opts), B = +project.budget || 0, D = +project.deadlineDays || 0, cur = c.cur;
+    const inTime = c.list.filter(d => d.days <= D), inBudget = c.list.filter(d => d.cost <= B + EPS);
+    const cheapest = inTime.slice().sort(byCost)[0] || null, fastest = inBudget.slice().sort(byDays)[0] || null;
+    const curInTime = !!(cur && cur.days <= D), curInBudget = !!(cur && cur.cost <= B + EPS);
+    const money = {
+      now: curInTime ? round2(B - cur.cost) : null, best: cheapest ? round2(B - cheapest.cost) : null, design: cheapest,
+      riseNow: curInTime ? rise(B, cur.cost) : null, riseBest: cheapest ? rise(B, cheapest.cost) : null,
+      floor: cheapest ? cheapest.cost : null
+    };
+    let delayBest = null, delayDesign = null;
+    for (const d of inBudget) { const r = delayRoom(d, D); if (delayBest === null || r > delayBest || (r === delayBest && prefer(d, delayDesign) < 0)) { delayBest = r; delayDesign = d; } }
+    const time = {
+      now: curInBudget ? D - cur.days : null, best: fastest ? D - fastest.days : null, design: fastest,
+      delayNow: curInBudget ? delayRoom(cur, D) : null, delayBest, delayDesign, floor: fastest ? fastest.days : null
+    };
+    /* a design at least as good on functions that is cheaper and faster, or equal on one and better on the other */
+    /* a design that is cheaper or faster (and neither costlier nor slower) without losing functions, confidence or compatibility */
+    const asGood = d => d.coverage >= cur.coverage - EPS && d.confidence >= cur.confidence - 0.005 && (d.metrics.compatibility || 0) >= (cur.metrics.compatibility || 0) - EPS;
+    const better = cur ? c.list.filter(d => d !== cur && d.cost <= cur.cost + EPS && d.days <= cur.days && (d.cost < cur.cost - EPS || d.days < cur.days) && asGood(d))
+      .sort((a, b) => (a.cost - b.cost) || (a.days - b.days) || prefer(a, b))[0] || null : null;
+    return { version: VERSION, budget: B, deadline: D, current: cur, issues: c.issues, base: c.base, designs: c.list, frontier: frontier(c.list), money, time, better, explored: c.explored };
+  }
+
+  /* what if the budget were B2 and the deadline D2: keep the current design, switch to the design that keeps the most, or say what is missing */
+  function whatIf(result, B2, D2) {
+    const fit = d => d.cost <= B2 + EPS && d.days <= D2;
+    const cur = result.current;
+    if (cur && fit(cur)) return { fits: true, keep: true, design: cur, room: { money: round2(B2 - cur.cost), days: D2 - cur.days } };
+    const ok = result.designs.filter(fit).sort(prefer);
+    if (ok.length) return { fits: true, keep: false, design: ok[0], options: ok.length, room: { money: round2(B2 - ok[0].cost), days: D2 - ok[0].days } };
+    const atD = result.designs.filter(d => d.days <= D2).sort(byCost)[0] || null, atB = result.designs.filter(d => d.cost <= B2 + EPS).sort(byDays)[0] || null;
+    return { fits: false, keep: false, design: null, needMoney: atD ? round2(atD.cost - B2) : null, needDays: atB ? atB.days - D2 : null, atD, atB };
+  }
+
+  return { VERSION, SETTINGS, analyse, whatIf, frontier, rise };
+}));
+
+/* =====================================================================
+   Shared lab spares — the spare parts a lab or a supervisor should keep
+   for many student projects at once. A pure JavaScript module (no DOM
+   access) used by the browser and by Node.js tests.
+   It starts from the resilience test of each project (CF_RESILIENCE).
+   A spare unit of a physical part absorbs that part's failure in every
+   project that uses it: failures are tested one at a time, so one unit
+   on the lab's shelf serves them all, and the lab pays for it, not the
+   projects' budgets. A project's index then rises by exactly
+   (1 − the score of that failure) ÷ its impactful parts × 100. The pool
+   is chosen by an exact 0/1 knapsack on cost (in steps of 0.1 OMR) that
+   maximises the index points gained over all projects; ties go to the
+   lower cost, then to fewer parts. Failures of services (a network, a
+   hosting plan, a message broker) cannot be covered by a spare part and
+   are listed apart.
+   ===================================================================== */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  else root.CF_POOL = api;
+}(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  const VERSION = '1.0.0';
+  const STEP = 10;   // knapsack steps per OMR
+  const EPS = 1e-9;
+  const round2 = x => Math.round(x * 100) / 100;
+
+  /* the exact sum of scores behind a project's index (spares the project keeps itself count as safe) */
+  function scoreSum(result, SCORE) { return result.scenarios.filter(s => s.impact).reduce((a, s) => a + SCORE[s.verdict], 0); }
+
+  /* every spare unit that would help, with the index points it adds to each project */
+  function candidates(entries, catalog, R) {
+    const byId = new Map(catalog.map(r => [r.id, r])), cand = new Map(), services = new Map();
+    for (const e of entries) {
+      const r = e.result;
+      if (!r || !r.impactful) continue;
+      for (const s of r.scenarios) {
+        if (!s.impact || s.spare || s.verdict === 'safe') continue;
+        const res = byId.get(s.rid), gain = 100 * (1 - R.SCORE[s.verdict]) / r.impactful;
+        if (res && R.PHYSICAL.indexOf(res.category) >= 0) {
+          const c = cand.get(s.rid) || { id: s.rid, cost: round2(+res.cost || 0), gains: {}, verdicts: {}, total: 0, projects: [] };
+          c.gains[e.id] = gain; c.verdicts[e.id] = s.verdict; c.total += gain; c.projects.push(e.id);
+          cand.set(s.rid, c);
+        } else {
+          const x = services.get(s.rid) || { id: s.rid, projects: [], verdicts: {} };
+          x.projects.push(e.id); x.verdicts[e.id] = s.verdict;
+          services.set(s.rid, x);
+        }
+      }
+    }
+    const order = (a, b) => (b.total - a.total) || (a.cost - b.cost) || (a.id < b.id ? -1 : 1);
+    return { list: Array.from(cand.values()).sort(order), services: Array.from(services.values()).sort((a, b) => (b.projects.length - a.projects.length) || (a.id < b.id ? -1 : 1)) };
+  }
+
+  /* the best set within the lab's budget: most index points, then lowest cost, then fewest parts */
+  function choose(list, budget) {
+    const cap = Math.max(0, Math.floor((+budget || 0) * STEP + EPS));
+    const better = (a, b) => (a.pts > b.pts + EPS) || (Math.abs(a.pts - b.pts) <= EPS && (a.cost < b.cost - EPS || (Math.abs(a.cost - b.cost) <= EPS && a.ids.length < b.ids.length)));
+    let dp = [];
+    for (let w = 0; w <= cap; w++) dp.push({ pts: 0, cost: 0, ids: [] });
+    for (const c of list) {
+      const wt = Math.round(c.cost * STEP);
+      if (wt > cap) continue;
+      const next = dp.slice();
+      for (let w = wt; w <= cap; w++) {
+        const prev = dp[w - wt], cand = { pts: prev.pts + c.total, cost: prev.cost + c.cost, ids: prev.ids.concat([c.id]) };
+        if (better(cand, next[w])) next[w] = cand;
+      }
+      dp = next;
+    }
+    let best = dp[0];
+    for (const x of dp) if (better(x, best)) best = x;
+    const byId = new Map(list.map(c => [c.id, c]));
+    const picked = best.ids.map(id => byId.get(id)).sort((a, b) => (b.total - a.total) || (a.id < b.id ? -1 : 1));
+    return { ids: picked.map(c => c.id), parts: picked, cost: round2(best.cost), points: best.pts, budget: +budget || 0 };
+  }
+
+  /* each project before and after the pool */
+  function summary(entries, chosen, R) {
+    const set = new Set(chosen.ids), rows = [];
+    for (const e of entries) {
+      const r = e.result;
+      if (!r) continue;
+      const covered = chosen.parts.filter(c => c.gains[e.id] !== undefined);
+      const before = r.index, exact = r.impactful ? scoreSum(r, R.SCORE) : 0;
+      const after = r.impactful ? Math.round(100 * (exact + covered.reduce((a, c) => a + (1 - R.SCORE[c.verdicts[e.id]]), 0)) / r.impactful) : before;
+      const left = r.scenarios.filter(s => s.impact && !s.spare && s.verdict !== 'safe' && !set.has(s.rid)).map(s => s.rid);
+      rows.push({ id: e.id, before, after, level: R.level(after), covered: covered.map(c => c.id), left });
+    }
+    const scored = rows.filter(x => x.before !== null && x.before !== undefined);
+    const avg = k => (scored.length ? Math.round(scored.reduce((a, x) => a + x[k], 0) / scored.length) : null);
+    return { rows, projects: rows.length, improved: rows.filter(x => x.after > x.before).length, avgBefore: avg('before'), avgAfter: avg('after') };
+  }
+
+  function plan(entries, catalog, R, budget) {
+    const c = candidates(entries, catalog, R), chosen = choose(c.list, budget);
+    return { version: VERSION, candidates: c.list, services: c.services, chosen, all: round2(c.list.reduce((a, x) => a + x.cost, 0)), summary: summary(entries, chosen, R) };
+  }
+
+  return { VERSION, STEP, candidates, choose, summary, plan, scoreSum };
+}));
 </script>
 <script>/* =====================================================================
    FGAR validation suite — scenarios, metrics and benchmarks.
@@ -6855,7 +7167,7 @@ function pageDashboard() {
     <section class="panel"><h2>${t('dash_active', { p: esc(tx(p.title)) })}</h2>
       <div class="fn-sum">${['full', 'atRisk', 'partial', 'blocked', 'uncovered'].map(k => `<div class="fs fs-${k}"><b>${num(sum[k], 0)}</b><span>${t('sum_' + k)}</span></div>`).join('')}</div>
       ${gapsTop.length ? `<h3>${t('dash_top_gaps')}</h3><ul class="mini">${gapsTop.map(f => `<li>${esc(fnLabel(p, f.id))} ${fnChip(f.state)}</li>`).join('')}</ul><a class="btn small ghost" href="#gaps">${t('nav_gaps')}</a>` : `<p class="hint">${t('dash_no_gaps')}</p>`}
-      ${rsDashHTML(p)}
+      ${rsDashHTML(p)}${vvDashHTML(p)}
       <h3>${t('dash_rec')}</h3>
       ${top ? `<p>${t('dash_rec_p', { s: num(top.score * 100, 1), c: omr(top.metrics.cost), d: ndays(top.metrics.days), n: num(top.metrics.changes.length, 0) })}</p><a class="btn small primary" href="#reconfig">${t('nav_reconfig')}</a>` : `<p class="hint">${t('dash_rec_none')}</p><button class="btn small ghost" data-act="search" data-v="adaptive">${t('rc_run_adaptive')}</button>`}
     </section>
@@ -7248,7 +7560,7 @@ function reportDocHTML(p) {
       <tr><td>${t('validity')}</td><td>${rpTag(vo.valid ? t('valid') : t('invalid'), vo.valid ? 'ok' : 'gap')}</td><td>${rpTag(v.valid ? t('valid') : t('invalid'), v.valid ? 'ok' : 'gap')}</td></tr>
     </tbody></table>
     ${v.valid ? '' : `<p>${v.violations.slice(0, 6).map(x => violationText(p, x)).join(' ')}</p>`}
-    ${discoveryReportHTML(p)}${resilienceReportHTML(p)}<h2>${t('rp_s6')}</h2><p>${t('rp_method')}</p><p class="rp-note">${t('rp_ip')}</p>
+    ${discoveryReportHTML(p)}${resilienceReportHTML(p)}${marginsReportHTML(p)}<h2>${t('rp_s6')}</h2><p>${t('rp_method')}</p><p class="rp-note">${t('rp_ip')}</p>
   </article>`;
 }
 function pageReport() {
@@ -7392,6 +7704,9 @@ function pageEngine() {
     <h2>${t('doc_rank_h')}</h2><p>${t('doc_rank_p')}</p>
     <h2>${t('doc_exp_h')}</h2><p>${t('doc_exp_p')}</p><a class="btn ghost small" href="#lab">${t('nav_lab')}</a>
     <h2>${t('doc_resil_h')}</h2><p>${t('doc_resil_p')}</p><a class="btn ghost small" href="#resilience">${t('nav_resilience')}</a>
+    <h2>${t('doc_mg_h')}</h2><p>${t('doc_mg_p')}</p>
+    <h2>${t('doc_po_h')}</h2><p>${t('doc_po_p')}</p><a class="btn ghost small" href="#pool">${t('nav_pool')}</a>
+    <h2>${t('doc_vv_h')}</h2><p>${t('doc_vv_p')}</p><a class="btn ghost small" href="#viva">${t('nav_viva')}</a>
     <h2>${t('doc_novel_h')}</h2><p>${t('doc_novel_p')}</p>
     <div class="tbl-wrap"><table class="tbl"><thead><tr><th>${t('doc_est')}</th><th>${t('doc_new')}</th></tr></thead><tbody>${[1, 2, 3, 4, 5, 6].map(i => `<tr><td>${t('doc_est' + i)}</td><td>${t('doc_new' + i)}</td></tr>`).join('')}</tbody></table></div>
     <h2>${t('doc_lim_h')}</h2><ul>${[1, 2, 3, 4, 5].map(i => `<li>${t('doc_lim' + i)}</li>`).join('')}</ul>
@@ -9677,6 +9992,7 @@ function rsResultHTML(p, c) {
 function pageResilience() {
   const p = activeP();
   if (!p) return noProject();
+  if (rsTab() === 'limits') return `<header class="page-head"><div><h1>${t('nav_resilience')}</h1><p class="lede">${t('mg_p')}</p></div></header>${rsTabsHTML()}${mgTabHTML(p)}`;
   const st = rsState(), c = rsFresh(p), saved = p.resilience, running = st.running && st.running.pid === p.id;
   const stale = !!(saved && saved.sig !== rsSig(p));
   /* after a reload the summary is saved but not the details: a test that still matches the project runs again by itself */
@@ -9688,7 +10004,7 @@ function pageResilience() {
   else if (saved) body = `<section class="panel rs-hero${stale ? ' rs-old' : ''}">${rsGauge(saved.index, saved.level)}<div class="rs-sum"><p class="rs-eyebrow">${t('rs_index')}</p><h2>${chip(rsLevel(saved.level), rsTone(saved.level))}</h2>
       <p class="${stale ? 'warnbox' : 'hint'}">${stale ? t('rs_stale', { d: fdate(saved.ts, true) }) : t('rs_last', { d: fdate(saved.ts, true) })}</p></div></section>`;
   else body = `<section class="panel rs-intro"><ol class="rs-how">${[1, 2, 3].map(i => `<li><b>${t('rs_how' + i)}</b><span>${t('rs_how' + i + '_d')}</span></li>`).join('')}</ol><div class="row-btns">${btn}</div></section>`;
-  return `<header class="page-head"><div><h1>${t('nav_resilience')}</h1><p class="lede">${t('rs_p')}</p></div><div class="row-btns">${btn}</div></header>
+  return `<header class="page-head"><div><h1>${t('nav_resilience')}</h1><p class="lede">${t('rs_p')}</p></div><div class="row-btns">${btn}</div></header>${rsTabsHTML()}
     ${st.error && !running ? `<p class="warnbox">${t('rs_error')}</p>` : ''}${body}`;
 }
 PAGES.resilience = pageResilience;
@@ -9714,9 +10030,9 @@ Object.assign(ACT, {
 /* the dashboard card and the report section */
 function rsDashHTML(p) {
   const s = p.resilience, stale = !!(s && s.sig !== rsSig(p));
-  if (!s) return `<h3>${t('dash_resil')}</h3><p class="hint">${t('dash_resil_none')}</p><a class="btn small ghost" href="#resilience">${icon('buoy')}<span>${t('dash_resil_btn')}</span></a>`;
+  if (!s) return `<h3>${t('dash_resil')}</h3><p class="hint">${t('dash_resil_none')}</p>${mgDashLine(p)}<a class="btn small ghost" href="#resilience">${icon('buoy')}<span>${t('dash_resil_btn')}</span></a>`;
   return `<h3>${t('dash_resil')}</h3><div class="rs-dash">${rsGauge(s.index, s.level, true)}<div><b>${rsLevel(s.level)}</b><p class="small muted">${stale ? t('rp_resil_stale') : t('rs_last', { d: fdate(s.ts, true) })}</p></div></div>
-    <a class="btn small ghost" href="#resilience">${t('nav_resilience')}</a>`;
+    ${mgDashLine(p)}<a class="btn small ghost" href="#resilience">${t('nav_resilience')}</a>`;
 }
 function resilienceReportHTML(p) {
   const s = p.resilience;
@@ -9734,6 +10050,680 @@ function rsReportText(h) {
   if (h.kind === 'resilience') return t('rp_h_resil', { i: num(h.index, 0), l: rsLevel(h.level) });
   return t(h.op === 'del' ? 'rp_h_spare_del' : 'rp_h_spare_add', { r: resLabel(h.res) });
 }
+
+/* ---------------- safety margins: how far the budget, the deadline, prices and deliveries can move ---------------- */
+Object.assign(L.S, {
+  rs_tab_parts: ['Part failures', 'تعطّل القطع'], rs_tab_limits: ['Budget and deadline', 'الميزانية والموعد'],
+  mg_p: ['What if the budget is cut, the deadline moves earlier, prices rise or deliveries are late? The FGAR engine searches the catalog for the designs that still work and shows how far each limit can move before the project fails.', 'ماذا لو خُفّضت الميزانية، أو قُدّم موعد التسليم، أو ارتفعت الأسعار، أو تأخر الشحن؟ يبحث محرك FGAR في الكتالوج عن التصاميم التي تبقى صالحة، ويبيّن إلى أي حد يمكن أن يتغير كل منها قبل أن يفشل المشروع.'],
+  mg_busy: ['The engine is looking for the designs that still work…', 'يبحث المحرك عن التصاميم التي تبقى صالحة…'],
+  mg_error: ['The margins could not be calculated. Open the page again.', 'تعذّر حساب الهوامش، فافتح الصفحة مجددًا.'],
+  mg_none: ['The engine found no design that gives every required function. Close the gaps first.', 'لم يجد المحرك تصميمًا يحقق كل الوظائف الأساسية، فعالج الفجوات أولًا.'],
+  mg_issues: ['Your current design does not work as it stands ({v}). The margins below are for the engine’s designs.', 'تصميمك الحالي لا يعمل كما هو ({v})، والهوامش أدناه لتصاميم المحرك.'],
+  mg_money_h: ['Budget and prices', 'الميزانية والأسعار'], mg_money_cap: ['the most the budget can be cut', 'أقصى تخفيض تتحمله الميزانية'], mg_money_cap_over: ['over the budget, even at the cheapest', 'فوق الميزانية حتى بأرخص تصميم'],
+  mg_money_now: ['Your current design ({c}) absorbs a budget cut of {m} ({pc}), or prices rising {r}.', 'يتحمل تصميمك الحالي ({c}) تخفيض الميزانية {m} ({pc})، أو ارتفاع الأسعار {r}.'],
+  mg_money_now_over: ['Your current design ({c}) is already over the budget by {m}.', 'يتجاوز تصميمك الحالي ({c}) الميزانية الآن بمقدار {m}'],
+  mg_money_now_late: ['Your current design misses the deadline, so it has no budget margin.', 'تصميمك الحالي يتجاوز الموعد، فلا هامش له في الميزانية.'],
+  mg_money_best: ['With the cheapest design that keeps the deadline ({c}), the budget can fall by {m} ({pc}), or prices rise {r}.', 'وبأرخص تصميم يلتزم بالموعد ({c}) يمكن أن تنخفض الميزانية {m} ({pc})، أو ترتفع الأسعار {r}.'],
+  mg_money_best_over: ['Even the cheapest design that keeps the deadline costs {c}, {m} over the budget.', 'حتى أرخص تصميم يلتزم بالموعد يكلف {c}، أي أكثر من الميزانية بمقدار {m}'],
+  mg_money_same: ['Your current design is already the cheapest one that keeps the deadline.', 'تصميمك الحالي هو أرخص تصميم يلتزم بالموعد.'],
+  mg_money_none: ['No design the engine found meets the deadline.', 'لم يجد المحرك تصميمًا يلتزم بالموعد.'],
+  mg_time_h: ['Deadline and deliveries', 'الموعد والشحن'], mg_time_cap: ['the most the deadline can move earlier', 'أقصى تقديم يتحمله الموعد'], mg_time_cap_late: ['late, even at the fastest', 'تأخير حتى بأسرع تصميم'],
+  mg_time_now: ['Your current design finishes on day {d} of {D}: the deadline can come {m} earlier, or deliveries be {l} late.', 'ينتهي تصميمك الحالي في اليوم {d} من {D}، فيمكن تقديم الموعد {m}، أو أن يتأخر الشحن {l}.'],
+  mg_time_now_nowait: ['Your current design finishes on day {d} of {D}: the deadline can come {m} earlier, and it waits for no delivery.', 'ينتهي تصميمك الحالي في اليوم {d} من {D}، فيمكن تقديم الموعد {m}، ولا ينتظر أي شحنة.'],
+  mg_time_now_late: ['Your current design finishes on day {d}, {m} after the deadline.', 'ينتهي تصميمك الحالي في اليوم {d}، أي بعد الموعد بـ {m}.'],
+  mg_time_now_over: ['Your current design is over the budget, so it has no time margin.', 'تصميمك الحالي يتجاوز الميزانية، فلا هامش له في الوقت.'],
+  mg_time_best: ['With the fastest design within the budget (day {d}), the deadline can come {m} earlier.', 'وبأسرع تصميم ضمن الميزانية (اليوم {d}) يمكن تقديم الموعد {m}.'],
+  mg_time_best_late: ['Even the fastest design within the budget finishes on day {d}, {m} after the deadline.', 'حتى أسرع تصميم ضمن الميزانية ينتهي في اليوم {d}، أي بعد الموعد بـ {m}.'],
+  mg_time_same: ['Your current design is already the fastest one within the budget.', 'تصميمك الحالي هو أسرع تصميم ضمن الميزانية.'],
+  mg_time_none: ['No design the engine found fits the budget.', 'لم يجد المحرك تصميمًا ضمن الميزانية.'],
+  mg_delay_best: ['Deliveries can then be {l} late.', 'ويمكن عندها أن يتأخر الشحن {l}.'], mg_delay_free: ['A design within the budget waits for no delivery, so late deliveries cannot stop the project.', 'يوجد تصميم ضمن الميزانية لا ينتظر أي شحنة، فلا يوقف تأخر الشحن المشروع.'],
+  mg_free: ['without limit, as nothing is paid', 'بلا حد، إذ لا يُدفع شيء'],
+  mg_design: ['{c} · {d} · confidence {f}', '{c} · {d} · الثقة {f}'], mg_changes: ['Changes from your design:', 'التغييرات عن تصميمك:'], mg_aux_del: ['No longer needs {b}', 'لم يعد يحتاج إلى {b}'],
+  mg_dropped: ['Gives up optional functions: {f}.', 'يتخلى عن وظائف اختيارية: {f}.'], mg_conf_lower: ['Confidence is lower than yours ({a} against {b}).', 'ثقته أقل من تصميمك ({a} مقابل {b}).'],
+  mg_apply: ['Use this design', 'اعتمد هذا التصميم'], mg_applied: ['Design adopted. Changes: {n}.', 'اعتُمد التصميم، وعدد التغييرات: {n}.'], mg_is_current: ['This is your current design.', 'هذا تصميمك الحالي.'],
+  mg_better_h: ['A cheaper or faster design', 'تصميم أرخص أو أسرع'], mg_better_p: ['The engine found a design that saves {s}, while keeping the functions, the confidence and the compatibility of yours.', 'وجد المحرك تصميمًا يوفّر {s}، ويحافظ على وظائف تصميمك وثقته وتوافقه.'], mg_save_both: ['{c} and {d}', '{c} و{d}'],
+  mg_wi_h: ['What if…?', 'ماذا لو…؟'], mg_wi_p: ['Move the budget and the deadline to see whether your design still holds, and which design the engine would switch to.', 'حرّك الميزانية والموعد لترى هل يصمد تصميمك، وإلى أي تصميم سينتقل المحرك.'],
+  mg_wi_b: ['Budget', 'الميزانية'], mg_wi_d: ['Deadline', 'الموعد'], mg_wi_reset: ['Back to your limits', 'العودة إلى حدودك'],
+  mg_wi_keep: ['Your current design still fits, with {m} and {d} to spare.', 'يبقى تصميمك الحالي مناسبًا، ويتبقى {m} و{d}.'],
+  mg_wi_switch: ['Your current design no longer fits. The best design for these limits:', 'لم يعد تصميمك الحالي مناسبًا، وهذا أنسب تصميم لهذين الحدين:'], mg_wi_count: ['Designs that fit: {n}', 'التصاميم المناسبة: {n}'],
+  mg_wi_none: ['No design fits these limits.', 'لا يوجد تصميم يناسب هذين الحدين.'],
+  mg_wi_need_m: ['With this deadline it needs {m} more.', 'بهذا الموعد يحتاج إلى مبلغ إضافي قدره {m}'], mg_wi_need_d: ['With this budget it needs {d} more.', 'وبهذه الميزانية يحتاج إلى مدة إضافية قدرها {d}.'],
+  mg_wi_need_none_m: ['No design meets this deadline at any budget.', 'لا يوجد تصميم يلتزم بهذا الموعد مهما كانت الميزانية.'], mg_wi_need_none_d: ['No design fits this budget at any deadline.', 'لا يوجد تصميم ضمن هذه الميزانية مهما تأخر الموعد.'],
+  mg_chart_h: ['The designs the engine found', 'التصاميم التي وجدها المحرك'],
+  mg_chart_p: ['Each dot is a design that gives every required function. The line joins the designs that no other design beats on both cost and time. Select one to see it.', 'كل نقطة تصميم يحقق كل الوظائف الأساسية، والخط يصل التصاميم التي لا يتفوق عليها تصميم آخر في التكلفة والمدة معًا. اختر أحدها لعرضه.'],
+  mg_ax_days: ['Days', 'الأيام'], mg_ax_cost: ['Cost (OMR)', 'التكلفة (ر.ع.)'], mg_you: ['Your design', 'تصميمك'], mg_sel_h: ['Selected design', 'التصميم المختار'], mg_sel_hint: ['Select a dot on the line to see its design.', 'اختر نقطة على الخط لعرض تصميمها.'],
+  mg_pt: ['{c}, {d}', '{c}، {d}'],
+  mg_method: ['The designs are the best the engine’s global search found in the catalog, at its current prices and lead times. One limit changes at a time, and a late delivery delays every bought part equally.', 'التصاميم هي أفضل ما وجده بحث المحرك الشامل في الكتالوج بأسعاره ومدد توريده الحالية. ويتغير حد واحد في كل مرة، ويُفترض أن تأخر الشحن يؤخر كل قطعة مشتراة بالقدر نفسه.'],
+  mg_over: ['{m} over', 'تجاوز بمقدار {m}'], mg_late: ['{d} late', 'تأخير {d}'],
+  dash_mg: ['Budget margin {m} · deadline margin {d}', 'هامش الميزانية {m} · هامش الموعد {d}'],
+  rp_mg_h: ['Safety margins', 'هامش الأمان'],
+  rp_mg_money: ['Budget cut it absorbs: {a} with the current design, {b} with the cheapest design that keeps the deadline.', 'التخفيض الذي تتحمله الميزانية: {a} بالتصميم الحالي، و{b} بأرخص تصميم يلتزم بالموعد.'],
+  rp_mg_rise: ['Price rise it absorbs: {a} with the current design, {b} with the cheapest one.', 'ارتفاع الأسعار الذي يتحمله: {a} بالتصميم الحالي، و{b} بالتصميم الأرخص.'],
+  rp_mg_time: ['How much earlier the deadline can come: {a} with the current design, {b} with the fastest design within the budget.', 'المدة التي يمكن تقديم الموعد بها: {a} بالتصميم الحالي، و{b} بأسرع تصميم ضمن الميزانية.'],
+  rp_mg_better: ['The engine found a design that saves {s} without losing functions, confidence or compatibility.', 'وجد المحرك تصميمًا يوفّر {s} دون أن يخسر وظائف أو ثقة أو توافقًا.'],
+  doc_mg_h: ['Safety margins', 'هامش الأمان'],
+  doc_mg_p: ['The engine runs up to four global searches on the project with the budget and the deadline scaled (×3 and ×3, ×3 and ×½, ×½ and ×3, ×1 and ×1) to steer the beam toward cheap, fast and balanced designs (one is enough when the search space is small enough to enumerate), and keeps every configuration that satisfies all rules except possibly V4 and V5. The budget margin is the budget minus the cost of the cheapest design that meets the deadline (the equivalent uniform price rise is budget ÷ cost − 1); the deadline margin is the deadline minus the days of the fastest design within the budget; a late delivery adds the same delay to every bought part with a lead time. Both are given for the current design too. A design that is cheaper or faster without losing coverage, confidence or compatibility is offered as an improvement, and “what if” returns the current design when it fits, otherwise the fitting design that keeps the most functions with the fewest changes, otherwise how much money or time is missing.', 'يجري المحرك حتى أربعة بحوث شاملة على المشروع بعد تغيير الميزانية والموعد (×3 و×3، ×3 و×½، ×½ و×3، ×1 و×1) ليوجّه البحث نحو تصاميم رخيصة وسريعة ومتوازنة (ويكفي بحث واحد إذا كان فضاء البحث صغيرًا يمكن استعراضه كله)، ويحتفظ بكل تكوين يستوفي القواعد كلها ما عدا V4 وV5 أحيانًا. هامش الميزانية هو الميزانية ناقص تكلفة أرخص تصميم يلتزم بالموعد (ويقابله ارتفاع موحد في الأسعار قدره الميزانية ÷ التكلفة − 1)، وهامش الموعد هو الموعد ناقص مدة أسرع تصميم ضمن الميزانية، ويضيف تأخر الشحن التأخير نفسه إلى كل قطعة مشتراة لها مدة توريد. ويُحسب الهامشان للتصميم الحالي أيضًا. ويُقترح التصميم الأرخص أو الأسرع إذا لم يخسر شيئًا من التغطية أو الثقة أو التوافق، وتعيد أداة «ماذا لو» التصميم الحالي إذا ناسب الحدين، وإلا التصميم المناسب الذي يحافظ على أكثر الوظائف بأقل التغييرات، وإلا ما ينقص من مال أو وقت.']
+});
+ICONS.gauge = 'M4 17a8 8 0 1 1 16 0M12 17l4-5M3 17h2M19 17h2M12 7v2M6.3 9.3l1.4 1.4M17.7 9.3l-1.4 1.4';
+const MGV = window.CF_MARGINS;
+const MG_CACHE = new Map();   // project id -> { sig, cat, result }
+const mgState = () => S.ui.mg || (S.ui.mg = { busy: null, error: false, pid: null, sig: null, b: 0, d: 0, sel: null });
+const mgSig = p => RSV.signature(p, []);
+function mgFresh(p) { const c = p && MG_CACHE.get(p.id); return c && c.cat === S.catStamp && c.sig === mgSig(p) ? c.result : null; }
+function mgCompute(p) {
+  const result = MGV.analyse(E, p, engineCat(p), { weights: S.ws.weights });
+  MG_CACHE.set(p.id, { sig: mgSig(p), cat: S.catStamp, result });
+  return result;
+}
+function mgGet(p) { if (!MGV || !p) return null; try { return mgFresh(p) || mgCompute(p); } catch (e) { return null; } }
+const rsTab = () => (S.ui.rsTab === 'limits' && MGV ? 'limits' : 'parts');
+function rsTabsHTML() {
+  const k = rsTab();
+  return `<div class="tabs big rs-tabs" role="tablist">${[['parts', 'buoy'], ['limits', 'gauge']].map(([v, ic]) => `<button role="tab" data-act="rs-tab" data-v="${v}" aria-selected="${k === v}">${icon(ic)}<span>${t('rs_tab_' + v)}</span></button>`).join('')}</div>`;
+}
+
+/* words for the margins */
+const mgPc = (r, v) => (r.budget > 0 ? pct(v / r.budget) : '–');
+const mgRise = x => (x === Infinity ? t('mg_free') : pct(x));
+const mgMoneyTxt = (r, v) => (v === null ? '–' : v >= 0 ? omr(v) + ' (' + mgPc(r, v) + ')' : t('mg_over', { m: omr(-v) }));
+const mgDaysTxt = v => (v === null ? '–' : v >= 0 ? ndays(v) : t('mg_late', { d: ndays(-v) }));
+function mgChangeLines(p, d) {
+  const base = p.current.config, lines = E.diffAssign(p, base, d.config).map(ch => ch.to ? t('rs_swap', { c: esc(compLabel(p, ch.comp)), a: ch.from ? resLabel(ch.from) : '–', b: resLabel(ch.to) }) : t('rs_drop', { c: esc(compLabel(p, ch.comp)) }));
+  const aux = E.diffAux(base, d.config);
+  aux.added.forEach(x => lines.push(t('rs_add', { b: resLabel(x) })));
+  aux.removed.forEach(x => lines.push(t('mg_aux_del', { b: resLabel(x) })));
+  return lines;
+}
+function mgDesignHTML(p, r, d, noButton) {
+  if (!d) return '';
+  const cur = r.current, lines = d.current ? [] : mgChangeLines(p, d);
+  const lower = cur && !d.current && d.confidence < cur.confidence - 0.005 ? `<p class="small risk-t">${t('mg_conf_lower', { a: num(d.confidence, 2), b: num(cur.confidence, 2) })}</p>` : '';
+  const dropped = d.dropped.length ? `<p class="small risk-t">${t('mg_dropped', { f: listJoin(d.dropped.map(f => esc(fnLabel(p, f)))) })}</p>` : '';
+  return `<div class="mg-design"><p class="small muted">${t('mg_design', { c: omr(d.cost), d: ndays(d.days), f: num(d.confidence, 2) })}</p>
+    ${d.current ? `<p class="small">${t('mg_is_current')}</p>` : lines.length ? `<p class="rs-k">${t('mg_changes')}</p><ul class="rs-fix">${lines.map(x => `<li>${x}</li>`).join('')}</ul>` : ''}${dropped}${lower}
+    ${d.current || noButton ? '' : `<div class="row-btns"><button class="btn small primary" data-act="mg-apply" data-sig="${esc(d.sig)}">${icon('check')}<span>${t('mg_apply')}</span></button></div>`}</div>`;
+}
+function mgMoneyCard(p, r) {
+  const m = r.money, cur = r.current, over = m.best !== null && m.best < 0;
+  let now = '';
+  if (cur) now = cur.days > r.deadline ? t('mg_money_now_late') : m.now >= 0 ? t('mg_money_now', { c: omr(cur.cost), m: B(omr(m.now)), pc: mgPc(r, m.now), r: B(mgRise(m.riseNow)) }) : t('mg_money_now_over', { c: omr(cur.cost), m: B(omr(-m.now)) });
+  let best = '', design = '';
+  if (!m.design) best = t('mg_money_none');
+  else if (cur && m.design.sig === cur.sig) best = t('mg_money_same');
+  else { best = m.best >= 0 ? t('mg_money_best', { c: omr(m.design.cost), m: B(omr(m.best)), pc: mgPc(r, m.best), r: B(mgRise(m.riseBest)) }) : t('mg_money_best_over', { c: omr(m.design.cost), m: B(omr(-m.best)) }); design = mgDesignHTML(p, r, m.design); }
+  const big = m.best === null ? '–' : over ? omr(-m.best) : mgPc(r, m.best);
+  return `<section class="panel mg-card"><h2>${t('mg_money_h')}</h2><div class="mg-big${over ? ' gap-t' : ''}"><b>${big}</b><span>${t(over ? 'mg_money_cap_over' : 'mg_money_cap')}</span></div>
+    ${now ? `<p>${now}</p>` : ''}<p>${best}</p>${design}</section>`;
+}
+function mgTimeCard(p, r) {
+  const m = r.time, cur = r.current, late = m.best !== null && m.best < 0;
+  let now = '';
+  if (cur) now = cur.cost > r.budget + 1e-9 ? t('mg_time_now_over') : m.now < 0 ? t('mg_time_now_late', { d: num(cur.days, 0), m: B(ndays(-m.now)) })
+    : t(m.delayNow === Infinity ? 'mg_time_now_nowait' : 'mg_time_now', { d: num(cur.days, 0), D: num(r.deadline, 0), m: B(ndays(m.now)), l: B(ndays(m.delayNow)) });
+  let best = '', design = '';
+  if (!m.design) best = t('mg_time_none');
+  else if (cur && m.design.sig === cur.sig) best = t('mg_time_same');
+  else { best = m.best >= 0 ? t('mg_time_best', { d: num(m.design.days, 0), m: B(ndays(m.best)) }) : t('mg_time_best_late', { d: num(m.design.days, 0), m: B(ndays(-m.best)) }); design = mgDesignHTML(p, r, m.design); }
+  const delay = m.delayBest === Infinity ? `<p class="small ok-t">${t('mg_delay_free')}</p>` : m.design && cur && m.design.sig !== cur.sig && m.delayBest !== null && m.delayBest >= 0 ? `<p class="small muted">${t('mg_delay_best', { l: ndays(m.delayBest) })}</p>` : '';
+  const big = m.best === null ? '–' : ndays(Math.abs(m.best));
+  return `<section class="panel mg-card"><h2>${t('mg_time_h')}</h2><div class="mg-big${late ? ' gap-t' : ''}"><b>${big}</b><span>${t(late ? 'mg_time_cap_late' : 'mg_time_cap')}</span></div>
+    ${now ? `<p>${now}</p>` : ''}<p>${best}</p>${delay}${design}</section>`;
+}
+function mgSaving(cur, d) {
+  const c = cur.cost - d.cost > 0.004 ? B(omr(cur.cost - d.cost)) : '', dd = cur.days - d.days > 0 ? B(ndays(cur.days - d.days)) : '';
+  return c && dd ? t('mg_save_both', { c, d: dd }) : c || dd;
+}
+function mgBetterHTML(p, r) {
+  const b = r.better, cur = r.current;
+  if (!b || !cur) return '';
+  return `<section class="panel mg-better"><h2>${icon('spark')}<span>${t('mg_better_h')}</span></h2><p>${t('mg_better_p', { s: mgSaving(cur, b) })}</p>${mgDesignHTML(p, r, b)}</section>`;
+}
+
+/* what if: two sliders, the answer and the chart follow them without redrawing the page */
+function mgRange(r) {
+  return { bMax: Math.ceil(Math.max(r.budget, ...r.designs.map(d => d.cost)) * 1.25 + 1), dMax: Math.ceil(Math.max(r.deadline, ...r.designs.map(d => d.days)) * 1.25 + 1) };
+}
+function mgSliders(r) {
+  const st = mgState(), g = mgRange(r);
+  return `<div class="mg-sl">
+    <label><span>${t('mg_wi_b')}</span><input type="range" min="0" max="${g.bMax}" step="0.1" value="${st.b}" data-in="mg-b"><output id="mg-bv">${omr(st.b)}</output></label>
+    <label><span>${t('mg_wi_d')}</span><input type="range" min="1" max="${g.dMax}" step="1" value="${st.d}" data-in="mg-d"><output id="mg-dv">${ndays(st.d)}</output></label>
+    <button class="btn small ghost" data-act="mg-reset" ${st.b === r.budget && st.d === r.deadline ? 'disabled' : ''}>${icon('reset')}<span>${t('mg_wi_reset')}</span></button></div>`;
+}
+function mgWhatIfHTML(p, r) {
+  const st = mgState(), w = MGV.whatIf(r, st.b, st.d);
+  if (w.fits && w.keep) return `<p class="mg-res ok">${icon('check')}<span>${t('mg_wi_keep', { m: B(omr(w.room.money)), d: B(ndays(w.room.days)) })}</span></p>`;
+  if (w.fits) return `<p class="mg-res risk">${icon('shuffle')}<span>${t('mg_wi_switch')}</span></p><p class="hint">${t('mg_wi_count', { n: num(w.options, 0) })}</p>${mgDesignHTML(p, r, w.design)}`;
+  const need = [w.needMoney !== null ? t('mg_wi_need_m', { m: B(omr(w.needMoney)) }) : t('mg_wi_need_none_m'), w.needDays !== null ? t('mg_wi_need_d', { d: B(ndays(w.needDays)) }) : t('mg_wi_need_none_d')];
+  return `<p class="mg-res gap">${icon('x')}<span>${t('mg_wi_none')}</span></p><ul class="mg-need">${need.map(x => `<li>${x}</li>`).join('')}</ul>`;
+}
+function mgTicks(a, b, n) {
+  const span = b - a;
+  if (!(span > 0)) return [a];
+  const raw = span / n, p10 = Math.pow(10, Math.floor(Math.log10(raw))), m = raw / p10, step = (m < 1.5 ? 1 : m < 3 ? 2 : m < 7 ? 5 : 10) * p10, out = [];
+  for (let v = Math.ceil(a / step) * step; v <= b + 1e-9; v += step) out.push(Math.round(v * 1e6) / 1e6);
+  return out;
+}
+/* cost against days: every design, the line of designs nothing beats on both, the current design and the what-if limits */
+function mgChart(p, r) {
+  const st = mgState(), w = MGV.whatIf(r, st.b, st.d), ds = r.designs, W = 660, H = 320, L = 58, R = 16, T = 16, Bt = 44;
+  const maxC = Math.max(st.b, r.budget, ...ds.map(d => d.cost), 1) * 1.08, minD = Math.min(st.d, ...ds.map(d => d.days)), maxD = Math.max(st.d, ...ds.map(d => d.days));
+  const pad = Math.max(1, (maxD - minD) * 0.06), d0 = Math.max(0, Math.floor(minD - pad)), d1 = Math.ceil(maxD + pad);
+  const x = v => L + (v - d0) / Math.max(1e-9, d1 - d0) * (W - L - R), y = v => T + (1 - v / maxC) * (H - T - Bt), f1 = v => v.toFixed(1);
+  const grid = mgTicks(d0, d1, 6).map(v => `<line class="mg-grid" x1="${f1(x(v))}" x2="${f1(x(v))}" y1="${T}" y2="${H - Bt}"/><text class="mg-tick" x="${f1(x(v))}" y="${H - Bt + 17}" text-anchor="middle">${num(v, 0)}</text>`).join('')
+    + mgTicks(0, maxC, 5).map(v => `<line class="mg-grid" x1="${L}" x2="${W - R}" y1="${f1(y(v))}" y2="${f1(y(v))}"/><text class="mg-tick" x="${L - 8}" y="${f1(y(v) + 4)}" text-anchor="end">${num(v, 0)}</text>`).join('');
+  const zx = Math.min(Math.max(x(st.d), L), W - R), zy = Math.max(y(Math.min(st.b, maxC)), T);
+  const zone = `<rect class="mg-zone" x="${L}" y="${f1(zy)}" width="${f1(Math.max(0, zx - L))}" height="${f1(Math.max(0, y(0) - zy))}"/>`;
+  const lims = `<line class="mg-lim" x1="${L}" x2="${W - R}" y1="${f1(zy)}" y2="${f1(zy)}"/><text class="mg-lim-t" x="${W - R - 4}" y="${f1(zy - 6)}" text-anchor="end">${esc(t('mg_wi_b'))} ${esc(num(st.b, 1))}</text>
+    <line class="mg-lim" x1="${f1(zx)}" x2="${f1(zx)}" y1="${T}" y2="${H - Bt}"/><text class="mg-lim-t" x="${f1(zx + 5)}" y="${T + 12}">${esc(t('mg_wi_d'))} ${esc(num(st.d, 0))}</text>`;
+  const front = r.frontier.slice().sort((a, b) => a.days - b.days), onFront = new Set(front.map(d => d.sig));
+  const line = front.length > 1 ? `<path class="mg-front" d="${front.map((d, i) => (i ? 'L' : 'M') + f1(x(d.days)) + ' ' + f1(y(d.cost))).join(' ')}"/>` : '';
+  const tip = d => `<title>${esc(t('mg_pt', { c: omr(d.cost), d: ndays(d.days) }))}</title>`;
+  const dots = ds.filter(d => !onFront.has(d.sig) && !d.current).map(d => `<circle class="mg-pt" cx="${f1(x(d.days))}" cy="${f1(y(d.cost))}" r="3">${tip(d)}</circle>`).join('');
+  const fdots = front.filter(d => !d.current).map(d => `<circle class="mg-fp${st.sel === d.sig ? ' sel' : ''}${w.design && !w.keep && w.design.sig === d.sig ? ' pick' : ''}" cx="${f1(x(d.days))}" cy="${f1(y(d.cost))}" r="6" data-act="mg-pick" data-sig="${esc(d.sig)}" tabindex="0" role="button" aria-label="${esc(t('mg_pt', { c: omr(d.cost), d: ndays(d.days) }))}">${tip(d)}</circle>`).join('');
+  const pick = w.design && !w.keep && !onFront.has(w.design.sig) ? `<circle class="mg-pt pick" cx="${f1(x(w.design.days))}" cy="${f1(y(w.design.cost))}" r="6">${tip(w.design)}</circle>` : '';
+  const c = r.current, you = c ? `<circle class="mg-cur" cx="${f1(x(c.days))}" cy="${f1(y(c.cost))}" r="7.5">${tip(c)}</circle><text class="mg-you" x="${f1(x(c.days) + 11)}" y="${f1(y(c.cost) - 9)}">${esc(t('mg_you'))}</text>` : '';
+  const axes = `<line class="mg-axis" x1="${L}" x2="${W - R}" y1="${H - Bt}" y2="${H - Bt}"/><line class="mg-axis" x1="${L}" x2="${L}" y1="${T}" y2="${H - Bt}"/>
+    <text class="mg-axt" x="${(L + W - R) / 2}" y="${H - 6}" text-anchor="middle">${esc(t('mg_ax_days'))}</text><text class="mg-axt" transform="translate(15 ${(T + H - Bt) / 2}) rotate(-90)" text-anchor="middle">${esc(t('mg_ax_cost'))}</text>`;
+  return `<svg class="mg-chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(t('mg_chart_h'))}" style="direction:ltr">${zone}${grid}${axes}${lims}${line}${dots}${pick}${fdots}${you}</svg>`;
+}
+function mgSelHTML(p, r) {
+  const st = mgState(), d = st.sel && r.designs.find(x => x.sig === st.sel);
+  return d ? `<h3>${t('mg_sel_h')}</h3>${mgDesignHTML(p, r, d)}` : `<p class="hint">${t('mg_sel_hint')}</p>`;
+}
+function mgLive() {
+  const p = activeP(), r = mgFresh(p), st = mgState();
+  if (!r) return;
+  const bv = $('#mg-bv'), dv = $('#mg-dv'), out = $('#mg-wi-out'), ch = $('#mg-chart'), rs = document.querySelector('[data-act="mg-reset"]');
+  if (bv) bv.textContent = omr(st.b);
+  if (dv) dv.textContent = ndays(st.d);
+  if (out) out.innerHTML = mgWhatIfHTML(p, r);
+  if (ch) ch.innerHTML = mgChart(p, r);
+  if (rs) rs.disabled = st.b === r.budget && st.d === r.deadline;
+}
+
+/* the tab: computed once per state of the project, after the page is drawn */
+function mgTabHTML(p) {
+  const st = mgState(), r = mgFresh(p);
+  if (!r) {
+    if (st.error) return `<p class="warnbox">${t('mg_error')}</p>`;
+    if (st.busy !== p.id) {
+      st.busy = p.id;
+      setTimeout(() => {
+        try { const q = activeP(); if (q && q.id === p.id) mgCompute(q); } catch (e) { st.error = true; }
+        st.busy = null;
+        if (S.route === 'resilience' && rsTab() === 'limits') render();
+      }, 30);
+    }
+    return `<section class="panel" id="mg-busy"><p class="rs-msg">${t('mg_busy')}</p><div class="rs-bar indet"><span></span></div></section>`;
+  }
+  if (st.pid !== p.id || st.sig !== mgSig(p)) Object.assign(st, { pid: p.id, sig: mgSig(p), b: r.budget, d: r.deadline, sel: null });
+  if (!r.designs.length) return `<p class="warnbox">${t('mg_none')} <a href="#gaps">${t('nav_gaps')}</a></p>`;
+  const issues = r.issues.length ? `<p class="warnbox">${t('mg_issues', { v: listJoin(r.issues.map(c => c + ' ' + t('rule_' + c + '_n'))) })}</p>` : '';
+  return `${issues}<div class="mg-cards">${mgMoneyCard(p, r)}${mgTimeCard(p, r)}</div>${mgBetterHTML(p, r)}
+    <section class="panel mg-wi"><h2>${t('mg_wi_h')}</h2><p class="hint">${t('mg_wi_p')}</p>${mgSliders(r)}<div id="mg-wi-out" aria-live="polite">${mgWhatIfHTML(p, r)}</div></section>
+    <section class="panel"><h2>${t('mg_chart_h')}</h2><p class="hint">${t('mg_chart_p')}</p><div id="mg-chart">${mgChart(p, r)}</div><div id="mg-sel">${mgSelHTML(p, r)}</div><p class="note">${t('mg_method')}</p></section>`;
+}
+
+Object.assign(ACT, {
+  'rs-tab'(el) { S.ui.rsTab = el.dataset.v === 'limits' ? 'limits' : 'parts'; render(); },
+  'mg-pick'(el) {
+    const p = activeP(), r = mgFresh(p);
+    if (!r) return;
+    mgState().sel = el.dataset.sig;
+    const s = $('#mg-sel'), ch = $('#mg-chart');
+    if (s) { s.innerHTML = mgSelHTML(p, r); }
+    if (ch) ch.innerHTML = mgChart(p, r);
+  },
+  'mg-reset'() { const p = activeP(), r = mgFresh(p), st = mgState(); if (!r) return; st.b = r.budget; st.d = r.deadline; render(); },
+  'mg-apply'(el) {
+    const p = activeP(), r = mgFresh(p), d = r && r.designs.find(x => x.sig === el.dataset.sig);
+    if (!d || d.current) return;
+    applyConfig(p, { config: d.config, metrics: d.metrics, score: 0 });
+    toast(t('mg_applied', { n: num(d.changes.length, 0) }), 'ok');
+    render();
+  }
+});
+/* the points on the chart answer the keyboard like buttons */
+document.addEventListener('keydown', e => {
+  const el = e.target;
+  if ((e.key === 'Enter' || e.key === ' ') && el && el.classList && el.classList.contains('mg-fp')) { e.preventDefault(); el.dispatchEvent(new MouseEvent('click', { bubbles: true })); }
+});
+Object.assign(IN, {
+  'mg-b'(el) { mgState().b = +el.value; mgLive(); },
+  'mg-d'(el) { mgState().d = +el.value; mgLive(); }
+});
+
+/* the dashboard line, the report section */
+function mgDashLine(p) {
+  const r = mgFresh(p);
+  if (!r || !r.current) return '';
+  return `<p class="small muted mg-dash">${t('dash_mg', { m: mgMoneyTxt(r, r.money.now), d: mgDaysTxt(r.time.now) })}</p>`;
+}
+function marginsReportHTML(p) {
+  const r = mgGet(p);
+  if (!r || !r.designs.length) return '';
+  const m = r.money, tm = r.time, cur = r.current;
+  return `<h2>${t('rp_mg_h')}</h2><p>${t('rp_mg_money', { a: mgMoneyTxt(r, m.now), b: mgMoneyTxt(r, m.best) })}</p>
+    <p>${t('rp_mg_rise', { a: m.riseNow === null ? '–' : mgRise(m.riseNow), b: m.riseBest === null ? '–' : mgRise(m.riseBest) })}</p>
+    <p>${t('rp_mg_time', { a: mgDaysTxt(tm.now), b: mgDaysTxt(tm.best) })}</p>
+    ${r.better && cur ? `<p>${t('rp_mg_better', { s: mgSaving(cur, r.better) })}</p>` : ''}<p class="rp-meta">${t('mg_method')}</p>`;
+}
+
+/* ---------------- shared lab spares: the spare parts that protect the most projects for the lab's budget ---------------- */
+Object.assign(L.S, {
+  nav_pool: ['Lab spares', 'احتياط المختبر'],
+  po_p: ['For supervisors and lab managers: the engine tests every project in your workspace part by part, then picks the spare parts that protect the most projects for the lab’s budget. One unit on the shelf serves every project that uses that part, since failures are tested one at a time.', 'للمشرفين ومسؤولي المختبر: يختبر المحرك كل مشروع في مساحة عملك قطعةً قطعة، ثم يختار القطع الاحتياطية التي تحمي أكبر عدد من المشاريع بميزانية المختبر. وتكفي وحدة واحدة على الرف لكل المشاريع التي تستخدم القطعة، لأن الأعطال تُختبر واحدًا في كل مرة.'],
+  po_projects: ['Projects in the analysis', 'المشاريع في التحليل'], po_all: ['Select all', 'اختر الكل'], po_clear: ['Clear', 'إلغاء الكل'],
+  po_none_sel: ['Choose at least one project.', 'اختر مشروعًا واحدًا على الأقل.'], po_empty: ['No projects to analyse yet. Create a project or add the examples.', 'لا توجد مشاريع لتحليلها بعد. أنشئ مشروعًا أو أضف الأمثلة.'],
+  po_budget: ['Lab budget for spares', 'ميزانية المختبر للقطع الاحتياطية'],
+  po_run: ['Analyse the projects', 'حلّل المشاريع'], po_rerun: ['Analyse again', 'أعد التحليل'],
+  po_running: ['Testing project {i} of {n}: {p}', 'يُختبر المشروع {i} من {n}: {p}'],
+  po_stale: ['The projects or the selection changed since the analysis. Analyse again to update the results.', 'تغيّرت المشاريع أو اختيارها منذ التحليل، فأعد التحليل لتحديث النتائج.'],
+  po_error: ['The analysis could not finish. Try again.', 'تعذّر إكمال التحليل، فحاول مجددًا.'],
+  po_k_avg: ['Average resilience', 'متوسط الصمود'], po_k_avg_v: ['{a} → {b}', '{a} ← {b}'], po_k_avg_s: ['now → with the lab spares', 'الآن ← مع احتياط المختبر'],
+  po_k_imp: ['Projects improved', 'المشاريع التي تتحسن'], po_k_imp_s: ['of {n} tested', 'من المشاريع المختبرة ({n})'],
+  po_k_cost: ['Spares to buy', 'القطع الاحتياطية'], po_k_cost_s: ['{n} parts, budget {b}', 'عدد القطع {n}، والميزانية {b}'],
+  po_k_all: ['To cover every part', 'لتغطية كل القطع'], po_k_all_s: ['parts that a spare can cover: {n}', 'القطع التي تغطيها قطعة احتياطية: {n}'],
+  po_pick_h: ['Spares to keep in the lab', 'قطع احتياطية يحتفظ بها المختبر'], po_pick_none: ['No spare part fits this budget. Raise it to see the first one.', 'لا توجد قطعة احتياطية ضمن هذه الميزانية، فارفعها لترى أولها.'],
+  po_nothing: ['No tested project has a part failure that a spare unit can absorb.', 'لا يوجد في المشاريع المختبرة عطل قطعة تمتصه قطعة احتياطية.'],
+  po_gain_t: ['Index points it adds over all projects', 'النقاط التي تضيفها إلى مؤشرات المشاريع كلها'], po_protects: ['Projects it protects: {n}', 'المشاريع التي تحميها: {n}'],
+  po_csv: ['Download the list (CSV)', 'نزّل القائمة (CSV)'], po_csv_head: ['Part,Category,Unit cost (OMR),Projects protected,Index points added', 'القطعة,الفئة,سعر الوحدة (ر.ع.),المشاريع المحمية,النقاط المضافة إلى المؤشرات'],
+  po_tbl_h: ['Each project', 'كل مشروع'], po_th_p: ['Project', 'المشروع'], po_th_b: ['Now', 'الآن'], po_th_a: ['With the lab spares', 'مع احتياط المختبر'], po_th_cov: ['Protected by the lab', 'يحميه المختبر'], po_th_left: ['Still weak', 'ما زال ضعيفًا'],
+  po_untested: ['no parts to test', 'لا قطع لاختبارها'],
+  po_svc_h: ['Weak points no spare part can cover', 'نقاط ضعف لا تغطيها قطعة احتياطية'],
+  po_svc_p: ['These are services or software. Keep a plan B for them: a second provider in the catalog, or another way to deliver the function.', 'هذه خدمات أو برمجيات، فجهّز لها خطة بديلة: مزوّدًا ثانيًا في الكتالوج، أو طريقة أخرى لتحقيق الوظيفة.'],
+  po_svc_n: ['Weak in {n} projects:', 'ضعيفة في {n} من المشاريع:'],
+  po_method: ['Each project’s own resilience test, one failure at a time, at catalog prices. A lab spare is paid by the lab, not from the project’s budget, and covers only the failure of the same part. The choice is exact for the budget, in steps of 0.1 OMR.', 'يعتمد التحليل على اختبار الصمود لكل مشروع، عطلًا واحدًا في كل مرة وبأسعار الكتالوج. ويدفع المختبر ثمن القطعة الاحتياطية لا ميزانية المشروع، وهي لا تغطي إلا تعطل القطعة نفسها. والاختيار دقيق لهذه الميزانية بخطوات قدرها 0.1 ر.ع.'],
+  doc_po_h: ['Shared lab spares', 'احتياط المختبر المشترك'],
+  doc_po_p: ['The resilience test runs on every selected project. Each failure of a physical part that is not safe becomes a candidate spare unit; one unit serves every project that uses that part, because failures are tested one at a time, and the lab pays for it, so the projects’ budgets do not change. A spare raises a project’s index by exactly 100 × (1 − the failure’s score) ÷ the number of the project’s impactful parts. The pool is an exact 0/1 knapsack on cost in steps of 0.1 OMR that maximises the points gained over all projects; ties go to the lower cost, then to fewer parts. Failures of services and software cannot be absorbed by a spare unit and are listed with the projects they affect.', 'يجري اختبار الصمود على كل مشروع مختار، ويصبح كل تعطل غير آمن لقطعة مادية مرشحًا لقطعة احتياطية. وتكفي وحدة واحدة لكل المشاريع التي تستخدم القطعة لأن الأعطال تُختبر واحدًا في كل مرة، ويدفع المختبر ثمنها فلا تتغير ميزانيات المشاريع. وترفع القطعة الاحتياطية مؤشر المشروع بمقدار 100 × (1 − درجة ذلك التعطل) ÷ عدد قطع المشروع المؤثرة بالضبط. ويُختار الاحتياط بحل دقيق لمسألة حقيبة الظهر (0/1) على التكلفة بخطوات 0.1 ر.ع. يعظّم مجموع النقاط المضافة لكل المشاريع، وعند التساوي يُفضَّل الأقل تكلفة ثم الأقل عددًا. أما أعطال الخدمات والبرمجيات فلا تمتصها قطعة احتياطية، فتُعرض مع المشاريع التي تتأثر بها.']
+});
+ICONS.box = 'M3 7.5l9-4.5 9 4.5-9 4.5zM3 7.5V17l9 4.5 9-4.5V7.5M12 12v9.5M7.5 5.25l9 4.5';
+ROUTES.splice(ROUTES.indexOf('resilience') + 1, 0, 'pool');
+NAV.splice(NAV.findIndex(x => x[0] === 'resilience') + 1, 0, ['pool', 'box']);
+const POV = window.CF_POOL;
+const poState = () => S.ui.pool || (S.ui.pool = { running: null, entries: null, stamp: null, sel: null, budget: 10, error: false });
+/* what the analysis ran on: each selected project's state and the catalog */
+const poStamp = ids => S.catStamp + '|' + ids.map(id => { const p = S.ws.projects[id]; return p ? id + ':' + RSV.signature(p, p.spares || []) : id; }).join(',');
+function poSelected() {
+  const st = poState(), all = projectList().map(p => p.id);
+  return st.sel ? all.filter(id => st.sel.has(id)) : all;
+}
+async function poRun() {
+  const st = poState();
+  if (st.running || !POV || !RSV) return;
+  const ids = poSelected();
+  if (!ids.length) { toast(t('po_none_sel'), 'warn'); return; }
+  st.error = false; st.running = { i: 0, n: ids.length, name: '' };
+  render(); await rsTick();
+  const entries = [];
+  try {
+    for (const id of ids) {
+      const p = S.ws.projects[id];
+      st.running.name = p ? tx(p.title) : id; poProgress(); await rsTick();
+      if (p) { const c = rsFresh(p); entries.push({ id, result: c ? c.result : RSV.test(E, p, engineCat(p), { spares: p.spares || [], weights: S.ws.weights }) }); }
+      st.running.i++;
+    }
+    st.entries = entries; st.stamp = poStamp(ids);
+    const all = POV.candidates(entries, S.ws.catalog.concat(poSalvaged(ids)), RSV).list.reduce((a, c) => a + c.cost, 0);
+    if (st.budget > all && all > 0) st.budget = Math.ceil(all);
+  } catch (e) { st.error = true; }
+  st.running = null;
+  if (S.route === 'pool') render();
+}
+/* salvaged parts are known to the project that carries them: the pool needs their categories and costs too */
+function poSalvaged(ids) { const out = []; for (const id of ids) { const p = S.ws.projects[id]; if (p && Array.isArray(p.salvage) && p.salvage.length) for (const r of engineCat(p)) if (r.salvaged) out.push(r); } return out; }
+function poProgress() {
+  const r = poState().running, el = $('#po-prog');
+  if (!el || !r) return;
+  el.querySelector('.rs-bar span').style.width = Math.round((r.n ? r.i / r.n : 1) * 100) + '%';
+  el.querySelector('.rs-msg').textContent = t('po_running', { i: num(Math.min(r.i + 1, r.n), 0), n: num(r.n, 0), p: r.name });
+}
+const poName = id => { const p = S.ws.projects[id]; return p ? esc(tx(p.title)) : esc(id); };
+function poPlan() {
+  const st = poState();
+  if (!st.entries) return null;
+  const ids = st.entries.map(e => e.id);
+  return POV.plan(st.entries, S.ws.catalog.concat(poSalvaged(ids)), RSV, st.budget);
+}
+function poResultsHTML() {
+  const st = poState(), pl = poPlan();
+  if (!pl) return '';
+  const s = pl.summary, ch = pl.chosen;
+  const kpis = `<section class="kpis">${kpi(t('po_k_avg'), s.avgBefore === null ? '–' : t('po_k_avg_v', { a: num(s.avgBefore, 0), b: num(s.avgAfter, 0) }), t('po_k_avg_s'), s.avgAfter > s.avgBefore ? 'ok' : '')}
+    ${kpi(t('po_k_imp'), num(s.improved, 0), t('po_k_imp_s', { n: num(s.projects, 0) }))}${kpi(t('po_k_cost'), omr(ch.cost), t('po_k_cost_s', { n: num(ch.ids.length, 0), b: omr(st.budget) }))}${kpi(t('po_k_all'), omr(pl.all), t('po_k_all_s', { n: num(pl.candidates.length, 0) }))}</section>`;
+  const cards = !pl.candidates.length ? `<p class="hint">${t('po_nothing')}</p>` : !ch.parts.length ? `<p class="hint">${t('po_pick_none')}</p>`
+    : `<div class="rs-grid">${ch.parts.map(c => `<article class="rs-spare po-card"><header><div class="rs-ch"><h3>${resLabel(c.id)}</h3><p class="muted small">${esc(rsCat(c.id))} · ${omr(c.cost)}</p></div><span class="chip ok" dir="ltr" title="${esc(t('po_gain_t'))}">+${num(c.total, 1)}</span></header>
+        <p class="rs-k">${t('po_protects', { n: num(c.projects.length, 0) })}</p><p class="po-projs">${c.projects.map(id => chip(poName(id) + ' <b dir="ltr">+' + num(c.gains[id], 1) + '</b>', 'cyan')).join(' ')}</p></article>`).join('')}</div>
+      <div class="row-btns"><a class="btn small ghost" download="lab-spares.csv" href="${poCSV(pl)}">${icon('download')}<span>${t('po_csv')}</span></a></div>`;
+  const rows = s.rows.map(x => `<tr><td>${poName(x.id)}</td><td>${x.before === null || x.before === undefined ? `<span class="muted">${t('po_untested')}</span>` : num(x.before, 0)}</td>
+      <td>${x.after === null || x.after === undefined ? '–' : `<b class="${x.after > x.before ? 'ok-t' : ''}">${num(x.after, 0)}</b> ${chip(rsLevel(x.level), rsTone(x.level))}`}</td>
+      <td class="small">${x.covered.length ? listJoin(x.covered.map(resLabel)) : '–'}</td><td class="small">${x.left.length ? listJoin(x.left.map(resLabel)) : '–'}</td></tr>`).join('');
+  const table = `<section class="panel"><h2>${t('po_tbl_h')}</h2><div class="tbl-wrap"><table class="tbl po-tbl"><thead><tr><th>${t('po_th_p')}</th><th>${t('po_th_b')}</th><th>${t('po_th_a')}</th><th>${t('po_th_cov')}</th><th>${t('po_th_left')}</th></tr></thead><tbody>${rows}</tbody></table></div></section>`;
+  const svc = pl.services.length ? `<section class="panel"><h2>${t('po_svc_h')}</h2><p class="hint">${t('po_svc_p')}</p><ul class="po-svc">${pl.services.map(x => `<li><b>${resLabel(x.id)}</b> <span class="muted small">${esc(rsCat(x.id))}</span><p class="small">${t('po_svc_n', { n: num(x.projects.length, 0) })} ${listJoin(x.projects.map(poName))}</p></li>`).join('')}</ul></section>` : '';
+  return `${kpis}<section class="panel"><h2>${t('po_pick_h')}</h2>${cards}</section>${table}${svc}<p class="note">${t('po_method')}</p>`;
+}
+function poCSV(pl) {
+  const q = x => '"' + String(x).replace(/"/g, '""') + '"';
+  const lines = [t('po_csv_head')].concat(pl.chosen.parts.map(c => [resName(c.id), rsCat(c.id), c.cost, c.projects.map(id => { const p = S.ws.projects[id]; return p ? tx(p.title) : id; }).join(' | '), num(c.total, 1)].map(q).join(',')));
+  return 'data:text/csv;charset=utf-8,' + encodeURIComponent('﻿' + lines.join('\r\n'));
+}
+function pagePool() {
+  const st = poState(), list = projectList();
+  if (!list.length) return `<header class="page-head"><div><h1>${t('nav_pool')}</h1><p class="lede">${t('po_p')}</p></div></header><p class="hint">${t('po_empty')}</p>`;
+  const ids = poSelected(), stale = !!(st.entries && st.stamp !== poStamp(ids));
+  const all = st.entries ? POV.candidates(st.entries, S.ws.catalog.concat(poSalvaged(st.entries.map(e => e.id))), RSV).list.reduce((a, c) => a + c.cost, 0) : 0;
+  const bMax = Math.max(10, Math.ceil(all) || 0, Math.ceil(st.budget));
+  const btn = `<button class="btn primary" data-act="po-run" ${st.running || !ids.length ? 'disabled' : ''}>${icon('box')}<span>${t(st.entries ? 'po_rerun' : 'po_run')}</span></button>`;
+  const setup = `<section class="panel po-setup"><details class="po-sel"${st.open ? ' open' : ''}><summary><b>${t('po_projects')}</b> <span class="muted small">(${num(ids.length, 0)}/${num(list.length, 0)})</span></summary>
+      <div class="row-btns"><button class="btn small ghost" data-act="po-all" data-v="1">${t('po_all')}</button><button class="btn small ghost" data-act="po-all" data-v="0">${t('po_clear')}</button></div>
+    <div class="po-list">${list.map(p => `<label class="po-pick"><input type="checkbox" data-on="po-p" value="${esc(p.id)}" ${ids.indexOf(p.id) >= 0 ? 'checked' : ''}><span>${esc(tx(p.title))}</span></label>`).join('')}</div></details>
+    <div class="mg-sl po-b"><label><span>${t('po_budget')}</span><input type="range" min="0" max="${bMax}" step="0.5" value="${st.budget}" data-in="po-b"><output id="po-bv">${omr(st.budget)}</output></label></div>
+    <div class="row-btns">${btn}</div></section>`;
+  let body = '';
+  if (st.running) body = `<section class="panel" id="po-prog"><p class="rs-msg">${t('po_running', { i: num(Math.min(st.running.i + 1, st.running.n), 0), n: num(st.running.n, 0), p: esc(st.running.name) })}</p><div class="rs-bar"><span style="width:${Math.round(st.running.i / Math.max(1, st.running.n) * 100)}%"></span></div></section>`;
+  else if (st.entries) body = `${stale ? `<p class="warnbox">${t('po_stale')}</p>` : ''}<div id="po-res">${poResultsHTML()}</div>`;
+  return `<header class="page-head"><div><h1>${t('nav_pool')}</h1><p class="lede">${t('po_p')}</p></div></header>${st.error ? `<p class="warnbox">${t('po_error')}</p>` : ''}${setup}${body}`;
+}
+PAGES.pool = pagePool;
+/* the project list stays open across redraws once the user opens it */
+document.addEventListener('toggle', e => { if (e.target && e.target.classList && e.target.classList.contains('po-sel')) poState().open = e.target.open; }, true);
+Object.assign(ACT, {
+  'po-run'() { poRun(); },
+  'po-all'(el) { const st = poState(); st.sel = el.dataset.v === '1' ? null : new Set(); st.open = true; render(); }
+});
+Object.assign(ON, {
+  'po-p'(el) {
+    const st = poState();
+    if (!st.sel) st.sel = new Set(projectList().map(p => p.id));
+    if (el.checked) st.sel.add(el.value); else st.sel.delete(el.value);
+    if (st.sel.size === projectList().length) st.sel = null;
+    st.open = true; render();
+  }
+});
+Object.assign(IN, {
+  'po-b'(el) {
+    const st = poState(); st.budget = +el.value;
+    const v = $('#po-bv'), box = $('#po-res');
+    if (v) v.textContent = omr(st.budget);
+    if (box) box.innerHTML = poResultsHTML();
+  }
+});
+
+/* ---------------- defense preparation: the questions a committee is likely to ask, answered from the engine's analysis ---------------- */
+Object.assign(L.S, {
+  nav_viva: ['Defense prep', 'تحضير المناقشة'],
+  vv_p: ['Questions an examining committee is likely to ask about this project, with model answers taken from the engine’s analysis of your own design: its choices, failures, margins and plan. Practice until you can answer each one in your own words.', 'أسئلة يُتوقع أن تطرحها لجنة المناقشة عن هذا المشروع، مع إجابات نموذجية مأخوذة من تحليل المحرك لتصميمك نفسه: اختياراته وأعطاله وهوامشه وخطته. تدرّب حتى تستطيع الإجابة عن كل سؤال بكلماتك.'],
+  vv_busy: ['Preparing the questions from the engine’s analysis…', 'تُجهَّز الأسئلة من تحليل المحرك…'], vv_error: ['The questions could not be prepared. Open the page again.', 'تعذّر تجهيز الأسئلة، فافتح الصفحة مجددًا.'],
+  vv_ready: ['Ready: {a} of {n}', 'جاهز: {a} من {n}'], vv_again_n: ['To practice again: {n}', 'للتدرّب مجددًا: {n}'],
+  vv_cat_all: ['All', 'الكل'], vv_cat_design: ['Design choices', 'اختيارات التصميم'], vv_cat_risk: ['Risks and failures', 'المخاطر والأعطال'], vv_cat_limits: ['Budget and time', 'الميزانية والوقت'], vv_cat_novelty: ['Novelty', 'الجِدّة'], vv_cat_method: ['Method', 'المنهجية'],
+  vv_show: ['Model answer', 'الإجابة النموذجية'], vv_ok: ['I can answer it', 'أستطيع الإجابة'], vv_again: ['Practice again', 'أحتاج إلى تدرّب'],
+  vv_st_ok: ['Ready', 'جاهز'], vv_st_again: ['Practice', 'للتدرّب'], vv_st_todo: ['To do first', 'يحتاج إلى خطوة'],
+  vv_open_all: ['Show all answers', 'اعرض كل الإجابات'], vv_close_all: ['Hide the answers', 'أخفِ الإجابات'], vv_print: ['Print questions and answers', 'اطبع الأسئلة والإجابات'], vv_reset: ['Start over', 'ابدأ من جديد'],
+  vv_src: ['From: {s}', 'المصدر: {s}'], vv_src_graph: ['the functions graph', 'مخطط الوظائف'], vv_src_catalog: ['the catalog', 'الكتالوج'], vv_src_resil: ['the resilience test', 'اختبار الصمود'], vv_src_margins: ['the safety margins', 'هامش الأمان'],
+  vv_src_plan: ['the project plan', 'خطة المشروع'], vv_src_validate: ['the validation', 'التحقق'], vv_src_discovery: ['the global discovery', 'الاكتشاف الدولي'], vv_src_engine: ['the FGAR engine', 'محرك FGAR'],
+  vv_note: ['The model answers come from the engine’s analysis of the current design and the catalog, and change when the project changes. Say them in your own words, and add what only you know: why you chose the idea, what you tested and what you learned.', 'تأتي الإجابات النموذجية من تحليل المحرك للتصميم الحالي والكتالوج، وتتغير إذا تغيّر المشروع. قلها بكلماتك، وأضف ما لا يعرفه غيرك: لماذا اخترت الفكرة، وماذا جرّبت، وماذا تعلمت.'],
+  vv_print_h: ['Defense preparation: {p}', 'تحضير المناقشة: {p}'],
+  /* the questions */
+  vq_scope: ['What must your project do, and what is optional?', 'ما الذي يجب أن يفعله مشروعك، وما الاختياري فيه؟'],
+  va_scope: ['It has {n} required functions: {req}.', 'له من الوظائف الأساسية {n}: {req}.'], va_scope_opt: ['And {m} optional ones: {o}.', 'وله من الوظائف الاختيارية {m}: {o}.'], va_scope_noopt: ['It has no optional functions.', 'وليس فيه وظائف اختيارية.'],
+  vq_cover: ['Does your design cover every function?', 'هل يغطي تصميمك كل الوظائف؟'],
+  va_cover_all: ['Yes. The FGAR analysis finds all {n} functions fully covered by the chosen parts.', 'نعم. يجد تحليل FGAR أن الوظائف كلها ({n}) مغطاة كليًا بالقطع المختارة.'],
+  vq_gaps: ['Which parts of your design are at risk, and why?', 'أي أجزاء تصميمك معرّضة للخطر، ولماذا؟'],
+  va_gaps: ['Not every function is fully covered:', 'ليست كل الوظائف مغطاة كليًا:'], va_gaps_tip: ['Say what you will do about each one: the gap analysis lists the alternatives.', 'قل ماذا ستفعل في كل منها، فصفحة تحليل الفجوات تعرض البدائل.'],
+  vq_backbone: ['Which function is the backbone of your design?', 'ما الوظيفة التي يقوم عليها تصميمك؟'],
+  va_backbone: ['{f}: {n} other functions depend on it ({list}). It runs on {parts}.', '{f}: تعتمد عليها {n} من الوظائف الأخرى ({list})، وتعمل على {parts}.'],
+  vq_choice: ['Why did you choose {r} as “{c}”?', 'لماذا اخترت {r} في دور «{c}»؟'],
+  va_choice_me: ['{r}: {cost}, delivered in {lead}, confidence {conf}.', '{r}: السعر {cost}، والتوريد {lead}، والثقة {conf}.'], va_choice_owned: ['You already have it, so it costs nothing and needs no delivery.', 'وهي متوفرة لديك، فلا تكلف شيئًا ولا تحتاج إلى توريد.'],
+  va_choice_alt: ['The closest alternative in the catalog is {a}: {cost}, delivered in {lead}, confidence {conf}.', 'وأقرب بديل في الكتالوج {a}: السعر {cost}، والتوريد {lead}، والثقة {conf}.'],
+  va_choice_pros: ['What favours your choice: {x}.', 'ما يرجّح اختيارك: {x}'], va_choice_cons: ['Where the alternative is better: {x}. Have your reason ready.', 'ما يتفوق فيه البديل: {x}، فجهّز سببك.'],
+  va_choice_only: ['It is the only provider of {cap} in the catalog, so there is no alternative, which also makes it a single point of failure.', 'وهي المزوّد الوحيد لـ«{cap}» في الكتالوج، فلا بديل لها، وهذا يجعلها أيضًا نقطة فشل منفردة.'],
+  va_choice_serves: ['It serves: {f}.', 'وتخدم: {f}.'],
+  vv_pro_cheaper: ['{x} cheaper', 'أرخص بمقدار {x}'], vv_pro_sooner: ['arrives {x} sooner', 'تصل أسرع بـ {x}'], vv_pro_conf: ['more reliable ({a} against {b})', 'أعلى ثقة ({a} مقابل {b})'], vv_pro_owned: ['already in your hands', 'متوفرة لديك'],
+  vv_con_costlier: ['the alternative is {x} cheaper', 'البديل أرخص بمقدار {x}'], vv_con_later: ['the alternative arrives {x} sooner', 'البديل يصل أسرع بـ {x}'], vv_con_conf: ['the alternative is more reliable ({a} against {b})', 'البديل أعلى ثقة ({a} مقابل {b})'],
+  vq_better: ['Is there a cheaper or faster design than yours?', 'هل يوجد تصميم أرخص أو أسرع من تصميمك؟'],
+  va_better_yes: ['Yes. The engine found one that saves {s} without losing functions, confidence or compatibility:', 'نعم، وجد المحرك تصميمًا يوفّر {s} دون أن يخسر وظائف أو ثقة أو توافقًا:'], va_better_tip: ['If you keep yours, have a clear reason ready, such as parts the lab already has or your experience with them.', 'وإن احتفظت بتصميمك فجهّز سببًا واضحًا، مثل توفر القطع في المختبر أو خبرتك بها.'],
+  va_better_no: ['No. Among the designs the engine found, none is cheaper or faster without losing functions, confidence or compatibility.', 'لا، فمن بين التصاميم التي وجدها المحرك لا يوجد تصميم أرخص أو أسرع دون أن يخسر وظائف أو ثقة أو توافقًا.'],
+  vq_robust: ['How robust is your design?', 'ما مدى صمود تصميمك؟'],
+  va_robust: ['Its resilience index is {i} of 100 ({l}). Of the {h} parts whose failure stops a required function, {s} can be fixed within budget and deadline, {c} only beyond them, and {k} not at all.', 'مؤشر صموده {i} من 100 ({l}). فمن القطع الـ {h} التي يوقف تعطلها وظيفة أساسية، يمكن إصلاح {s} ضمن الميزانية والموعد، و{c} بتجاوزهما فقط، و{k} لا إصلاح لها.'],
+  va_robust_all: ['No single failure stops a required function: its resilience index is 100.', 'لا يوقف تعطل أي قطعة وحدها وظيفة أساسية، فمؤشر صموده 100.'],
+  va_robust_sp: ['Keeping these spares would raise it to {j} for {c}: {r}.', 'والاحتفاظ بهذه القطع الاحتياطية يرفعه إلى {j} بتكلفة {c}: {r}.'],
+  va_robust_sp1: ['A spare {r} ({c}) would raise it to {j}, within the budget.', 'وقطعة احتياطية من {r} ({c}) ترفعه إلى {j} ضمن الميزانية.'],
+  dash_vv: ['Defense prep', 'تحضير المناقشة'], dash_vv_p: ['Questions you can answer: {a} of {n}.', 'الأسئلة التي تستطيع الإجابة عنها: {a} من {n}.'], dash_vv_none: ['Practice the questions a committee is likely to ask, with answers from the engine.', 'تدرّب على الأسئلة المتوقعة من لجنة المناقشة، بإجابات من تحليل المحرك.'],
+  vq_fail: ['What happens if {r} fails?', 'ماذا يحدث إذا تعطلت القطعة {r}؟'],
+  va_fail_lost: ['These required functions stop: {f}.', 'تتوقف هذه الوظائف الأساسية: {f}.'],
+  va_fail_none: ['Nothing else in the catalog can replace it, so it is a single point of failure.', 'ولا يوجد في الكتالوج ما يحل محلها، فهي نقطة فشل منفردة.'],
+  va_fail_unit: ['Plan: keep a spare unit ({c}).', 'والخطة: الاحتفاظ بقطعة احتياطية منها ({c}).'], va_fail_service: ['Plan: add a second provider to the catalog, or prepare another way to deliver the function.', 'والخطة: إضافة مزوّد ثانٍ إلى الكتالوج، أو تجهيز طريقة أخرى لتحقيق الوظيفة.'],
+  va_fail_fix: ['The engine’s fix:', 'وإصلاح المحرك:'], va_fail_ok: ['The project then costs {c} and takes {d}, still within budget and deadline.', 'فيصبح المشروع بتكلفة {c} ومدة {d}، ويبقى ضمن الميزانية والموعد.'],
+  va_fail_over: ['But it then costs {c} and takes {d}, beyond the {x}.', 'لكنه يصبح بتكلفة {c} ومدة {d}، فيتجاوز {x}.'], vv_lim_b: ['budget', 'الميزانية'], vv_lim_d: ['deadline', 'الموعد'], vv_lim_bd: ['budget and the deadline', 'الميزانية والموعد'],
+  va_fail_spare: ['You keep a spare unit of it, so the project carries on.', 'ولديك قطعة احتياطية منها، فيستمر المشروع.'],
+  vq_cost: ['What does the project cost, and where does the money go?', 'كم يكلف المشروع، وأين تذهب الميزانية؟'],
+  va_cost: ['{c} of a budget of {b} ({pc}). The largest items: {top}.', 'التكلفة {c} من ميزانية {b} ({pc}). وأكبر البنود: {top}.'], va_cost_free: ['Nothing needs to be bought: every part is free or already in your hands.', 'لا يلزم شراء شيء، فكل القطع مجانية أو متوفرة لديك.'],
+  vq_time: ['How long will the project take, and what sets the timeline?', 'كم يستغرق المشروع، وما الذي يحدد مدته؟'],
+  va_time: ['It finishes on day {d} of {D}. The longest delivery is {r} ({l}), then {e} of building and integration.', 'ينتهي في اليوم {d} من {D}. أطول توريد هو {r} ({l})، ثم {e} من البناء والدمج.'],
+  va_time_nolead: ['It finishes on day {d} of {D}: nothing has to be delivered, so the {e} of building and integration set the timeline.', 'ينتهي في اليوم {d} من {D}، فلا شيء ينتظر التوريد، والمدة هي {e} من البناء والدمج.'],
+  va_time_left: ['That leaves {b} before the deadline.', 'فيبقى {b} قبل الموعد.'], va_time_late: ['That is {b} after the deadline.', 'أي بعد الموعد بـ {b}.'],
+  vq_cut: ['What if your budget were cut by 20%, to {b}?', 'ماذا لو خُفّضت ميزانيتك 20% إلى {b}؟'],
+  vq_early: ['What if the deadline came {n} earlier?', 'ماذا لو قُدّم الموعد {n}؟'],
+  va_wi_keep: ['Your design still fits: it costs {c} and takes {d}.', 'يبقى تصميمك مناسبًا، فتكلفته {c} ومدته {d}.'],
+  va_wi_switch: ['Your design would no longer fit, but the engine has one that does ({c}, {d}):', 'لن يبقى تصميمك مناسبًا، لكن لدى المحرك تصميمًا يناسب ({c}، {d}):'],
+  va_wi_none_b: ['No design fits: the cheapest one that meets the deadline costs {c}. Be ready to say what you would drop or postpone.', 'لا يوجد تصميم مناسب، إذ يكلف أرخص تصميم يلتزم بالموعد {c}، فكن مستعدًا لتقول ماذا ستؤجل أو تحذف.'],
+  va_wi_none_d: ['No design fits: the fastest one within the budget takes {d}. Be ready to say what you would drop or postpone.', 'لا يوجد تصميم مناسب، إذ يستغرق أسرع تصميم ضمن الميزانية {d}، فكن مستعدًا لتقول ماذا ستؤجل أو تحذف.'],
+  vq_prices: ['Prices change. How much can they rise before you go over budget?', 'الأسعار تتغير، فكم يمكن أن ترتفع قبل أن تتجاوز الميزانية؟'],
+  va_prices: ['{r} with your current design, and {r2} with the cheapest design that meets the deadline.', '{r} بتصميمك الحالي، و{r2} بأرخص تصميم يلتزم بالموعد.'],
+  vq_owned: ['Which parts do you already have, and what do they save?', 'ما القطع المتوفرة لديك، وكم توفّر؟'],
+  va_owned: ['{list}. They cost nothing and need no delivery, which saves {s} at catalog prices.', '{list}. لا تكلف شيئًا ولا تحتاج إلى توريد، فتوفّر {s} بأسعار الكتالوج.'],
+  vq_novel: ['Has this been done before? How is yours different?', 'هل نُفّذت هذه الفكرة من قبل؟ وبماذا يختلف مشروعك؟'],
+  va_novel: ['The closest work found is “{w}”{m}, which covers {s} of your project’s {n} capabilities ({pc}).', 'أقرب عمل وُجد هو «{w}»{m}، ويغطي {s} من قدرات مشروعك الـ {n} ({pc}).'],
+  va_novel_lack: ['It lacks: {x}.', 'ولا يتضمن: {x}.'], va_novel_feat: ['You added features none of the found works uses: {x}.', 'وأضفت ميزات لا يستخدمها أي من الأعمال التي وُجدت: {x}.'],
+  va_novel_tip: ['The comparison covers only the works the search found; it is not a patent search.', 'تشمل المقارنة الأعمال التي وجدها البحث فقط، وليست بحثًا في براءات الاختراع.'],
+  va_novel_todo: ['Run the global discovery first: it finds similar work worldwide and measures how much of your project each one covers.', 'شغّل الاكتشاف الدولي أولًا، فهو يجد الأعمال المشابهة حول العالم ويقيس ما يغطيه كل منها من مشروعك.'],
+  vq_method: ['How did you choose and check your design?', 'كيف اخترت تصميمك وتحققت منه؟'],
+  va_method: ['With the FGAR engine. The project is a graph of functions, components and parts; rules R1–R9 decide whether each function is covered, and V1–V6 check availability, support, required functions, budget, deadline and compatibility. Designs are ranked by {w}.', 'باستخدام محرك FGAR. فالمشروع مخطط من الوظائف والمكونات والقطع، وتحدد القواعد R1–R9 هل كل وظيفة مغطاة، وتتحقق V1–V6 من التوفر والدعم والوظائف الأساسية والميزانية والموعد والتوافق. وتُرتَّب التصاميم حسب {w}.'],
+  va_method_ok: ['For this design every rule passes: {c} of {b}, day {d} of {D}.', 'وفي هذا التصميم كل القواعد متحققة: {c} من {b}، واليوم {d} من {D}.'],
+  va_method_bad: ['For this design these checks fail: {v}.', 'وفي هذا التصميم لا تتحقق هذه الفحوص: {v}.'],
+  vv_w: ['{k} {v}', '{k} {v}'],
+  doc_vv_h: ['Defense preparation', 'تحضير المناقشة'],
+  doc_vv_p: ['Each question is generated only when the engine has the facts to answer it, and its model answer is built from them: the functions and their states (gap report), the chosen parts against the closest provider of the same capability (owned first, then cost, lead time and confidence), the backbone function with the most dependants, the cost lines and the timeline (validation metrics), the resilience test (critical parts, the best fix of a weak point, the index and spares), the safety margins (a 20% budget cut, an earlier deadline, price rises, a better design), the parts already owned, the global discovery (closest work, the capabilities it lacks, features added) and the validation rules. Progress is kept per project.', 'لا يُولَّد سؤال إلا إذا كانت لدى المحرك الحقائق اللازمة للإجابة عنه، وتُبنى إجابته النموذجية منها: الوظائف وحالاتها (تقرير الفجوات)، والقطع المختارة مقارنةً بأقرب مزوّد للقدرة نفسها (المملوك أولًا ثم التكلفة ومدة التوريد والثقة)، والوظيفة التي يعتمد عليها أكبر عدد من الوظائف، وبنود التكلفة والمدة (مقاييس التحقق)، واختبار الصمود (القطع الحرجة، وأفضل إصلاح لنقطة ضعف، والمؤشر والقطع الاحتياطية)، وهامش الأمان (تخفيض الميزانية 20%، وتقديم الموعد، وارتفاع الأسعار، والتصميم الأفضل)، والقطع المتوفرة، والاكتشاف الدولي (أقرب عمل، وما ينقصه من قدرات، والميزات المضافة)، وقواعد التحقق. ويُحفظ التقدم لكل مشروع.']
+});
+ICONS.cap = 'M2 9.5l10-5 10 5-10 5-10-5zM6 11.5v4.5c0 1.6 2.7 3 6 3s6-1.4 6-3v-4.5M22 9.5v5.5';
+ROUTES.splice(ROUTES.indexOf('report') + 1, 0, 'viva');
+NAV.splice(NAV.findIndex(x => x[0] === 'report') + 1, 0, ['viva', 'cap']);
+const VV_CACHE = new Map();   // project id -> { sig, res, mg }
+const VV_CATS = ['design', 'risk', 'limits', 'novelty', 'method'];
+const vvState = () => S.ui.viva || (S.ui.viva = { busy: null, error: false, f: 'all', open: false, printing: false });
+const vvSig = p => [S.catStamp, RSV.signature(p, p.spares || []), p.discovery ? p.discovery.ts : 0, (p.features || []).length, JSON.stringify(S.ws.weights)].join('|');
+function vvFresh(p) { const c = VV_CACHE.get(p.id); return c && c.sig === vvSig(p) ? c : null; }
+function vvCompute(p) {
+  const rc = rsFresh(p), cat = engineCat(p), res = rc ? rc.result : RSV.test(E, p, cat, { spares: p.spares || [], weights: S.ws.weights });
+  const sug = rc ? rc.sug : res.impactful && res.safe < res.impactful ? RSV.suggestSpares(E, p, cat, res, { weights: S.ws.weights }) : null;
+  const c = { sig: vvSig(p), res, sug, mg: mgGet(p) };
+  VV_CACHE.set(p.id, c);
+  return c;
+}
+
+/* ---- facts the answers use ---- */
+const vvFns = (p, ids) => listJoin(ids.map(f => esc(fnLabel(p, f))));
+const vvConf = id => { const r = S.byId.get(id); return r ? num(r.confidence || 0, 2) : '–'; };
+function vvAlt(p, c, rid, ctx) {
+  const qty = c.qty || 1, owned = id => ctx.owned.has(id);
+  return ctx.providers(c.capability).filter(r => r.id !== rid && ctx.available(r.id)).sort((a, b) => (owned(a.id) ? 0 : 1) - (owned(b.id) ? 0 : 1) || ctx.unitCost(a.id) * qty - ctx.unitCost(b.id) * qty
+    || ctx.leadDays(a.id) - ctx.leadDays(b.id) || (b.confidence || 0) - (a.confidence || 0) || (a.id < b.id ? -1 : 1))[0] || null;
+}
+function vvDesignLines(p, d) { return `<ul class="rs-fix">${mgChangeLines(p, d).map(x => `<li>${x}</li>`).join('')}</ul>`; }
+function vvWhatIf(p, r, w) {
+  if (w.fits && w.keep) return `<p>${t('va_wi_keep', { c: omr(w.design.cost), d: ndays(w.design.days) })}</p>`;
+  if (w.fits) return `<p>${t('va_wi_switch', { c: omr(w.design.cost), d: ndays(w.design.days) })}</p>${vvDesignLines(p, w.design)}${w.design.dropped.length ? `<p>${t('mg_dropped', { f: vvFns(p, w.design.dropped) })}</p>` : ''}`;
+  return '';
+}
+
+/* every question comes with the facts it was built from; none is asked when those facts are missing */
+function vvQuestions(p, c) {
+  const out = [], add = (id, cat, q, a, src, todo) => out.push({ id, cat, q, a, src, todo: !!todo });
+  const st = statusOf(p), v = st.v, m = v.metrics, r = rt(p), ctx = r.ctx, B = +p.budget || 0, Dl = +p.deadlineDays || 0;
+  const req = p.functions.filter(f => f.mandatory), opt = p.functions.filter(f => !f.mandatory), assign = p.current.config.assign || {};
+  // design: scope, coverage, backbone, part choices, a better design
+  add('scope', 'design', t('vq_scope'), `<p>${t('va_scope', { n: num(req.length, 0), req: vvFns(p, req.map(f => f.id)) })} ${opt.length ? t('va_scope_opt', { m: num(opt.length, 0), o: vvFns(p, opt.map(f => f.id)) }) : t('va_scope_noopt')}</p>`, ['graph']);
+  const notFull = st.rep.fns.filter(f => f.state !== 'FULL');
+  if (!notFull.length) add('cover', 'design', t('vq_cover'), `<p>${t('va_cover_all', { n: num(p.functions.length, 0) })}</p>`, ['graph']);
+  else add('gaps', 'risk', t('vq_gaps'), `<p>${t('va_gaps')}</p><ul>${notFull.map(f => `<li>${esc(fnLabel(p, f.id))}: <b>${stLabel(f.state)}</b>${f.mandatory ? '' : ' <span class="muted">(' + t('optional') + ')</span>'}</li>`).join('')}</ul><p>${t('va_gaps_tip')}</p>`, ['graph']);
+  const dependants = new Map(p.functions.map(f => [f.id, new Set()]));
+  for (const f of p.functions) { const seen = new Set(), stack = (f.dependsOn || []).slice(); while (stack.length) { const g = stack.pop(); if (seen.has(g)) continue; seen.add(g); if (dependants.has(g)) dependants.get(g).add(f.id); const gf = p.functions.find(x => x.id === g); if (gf) stack.push(...(gf.dependsOn || [])); } }
+  const bb = p.functions.map(f => ({ f, n: dependants.get(f.id).size })).sort((a, b) => b.n - a.n || (b.f.mandatory - a.f.mandatory))[0];
+  if (bb && bb.n >= 2) {
+    const parts = uniqA((bb.f.requires || []).map(cid => assign[cid]).filter(Boolean));
+    add('backbone', 'design', t('vq_backbone'), `<p>${t('va_backbone', { f: '<b>' + esc(fnLabel(p, bb.f.id)) + '</b>', n: num(bb.n, 0), list: vvFns(p, Array.from(dependants.get(bb.f.id))), parts: parts.length ? listJoin(parts.map(resLabel)) : '–' })}</p>`, ['graph']);
+  }
+  const lines = (m.lines || []).filter(l => !l.aux), pickComp = rid => p.components.find(cc => assign[cc.id] === rid);
+  const picks = [];
+  const byCost = lines.filter(l => l.total > 0).sort((a, b) => b.total - a.total)[0], byLead = lines.filter(l => l.lead > 0).sort((a, b) => b.lead - a.lead)[0];
+  const byUse = p.components.filter(cc => assign[cc.id]).map(cc => ({ cc, n: p.functions.filter(f => (f.requires || []).indexOf(cc.id) >= 0).length })).sort((a, b) => b.n - a.n)[0];
+  [byCost && pickComp(byCost.rid), byLead && pickComp(byLead.rid), byUse && byUse.cc].forEach(cc => { if (cc && picks.indexOf(cc) < 0) picks.push(cc); });
+  for (const cc of picks) {
+    const rid = assign[cc.id], alt = vvAlt(p, cc, rid, ctx), qty = cc.qty || 1, mine = ctx.owned.has(rid);
+    let a = `<p>${t('va_choice_me', { r: resLabel(rid), cost: omr(ctx.unitCost(rid) * qty), lead: ndays(ctx.leadDays(rid)), conf: vvConf(rid) })}${mine ? ' ' + t('va_choice_owned') : ''}</p>`;
+    if (!alt) a += `<p>${t('va_choice_only', { cap: esc(tagLabel(cc.capability)) })}</p>`;
+    else {
+      a += `<p>${t('va_choice_alt', { a: resLabel(alt.id), cost: omr(ctx.unitCost(alt.id) * qty), lead: ndays(ctx.leadDays(alt.id)), conf: vvConf(alt.id) })}</p>`;
+      const pros = [], cons = [], dc = ctx.unitCost(alt.id) * qty - ctx.unitCost(rid) * qty, dl = ctx.leadDays(alt.id) - ctx.leadDays(rid), cf = (S.byId.get(rid).confidence || 0) - (alt.confidence || 0);
+      if (mine && !ctx.owned.has(alt.id)) pros.push(t('vv_pro_owned'));
+      if (dc > 0.004) pros.push(t('vv_pro_cheaper', { x: omr(dc) })); else if (dc < -0.004) cons.push(t('vv_con_costlier', { x: omr(-dc) }));
+      if (dl > 0) pros.push(t('vv_pro_sooner', { x: ndays(dl) })); else if (dl < 0) cons.push(t('vv_con_later', { x: ndays(-dl) }));
+      if (cf > 0.005) pros.push(t('vv_pro_conf', { a: vvConf(rid), b: vvConf(alt.id) })); else if (cf < -0.005) cons.push(t('vv_con_conf', { a: vvConf(alt.id), b: vvConf(rid) }));
+      if (pros.length) a += `<p>${t('va_choice_pros', { x: listJoin(pros) })}</p>`;
+      if (cons.length) a += `<p>${t('va_choice_cons', { x: listJoin(cons) })}</p>`;
+    }
+    const serves = p.functions.filter(f => (f.requires || []).indexOf(cc.id) >= 0).map(f => f.id);
+    if (serves.length) a += `<p>${t('va_choice_serves', { f: vvFns(p, serves) })}</p>`;
+    add('choice:' + cc.id, 'design', t('vq_choice', { r: resLabel(rid), c: esc(compLabel(p, cc.id)) }), a, ['catalog', 'graph']);
+  }
+  const mg = c.mg;
+  if (mg && mg.current) {
+    add('better', 'design', t('vq_better'), mg.better ? `<p>${t('va_better_yes', { s: mgSaving(mg.current, mg.better) })}</p>${vvDesignLines(p, mg.better)}<p>${t('va_better_tip')}</p>` : `<p>${t('va_better_no')}</p>`, ['margins']);
+  }
+  // risks: the index, the worst failures, a failure the engine can fix
+  const res = c.res;
+  if (res && res.parts) {
+    let a = res.impactful ? `<p>${t('va_robust', { i: num(res.index, 0), l: rsLevel(res.level), h: num(res.impactful, 0), s: num(res.safe, 0), c: num(res.costly, 0), k: num(res.critical, 0) })}</p>` : `<p>${t('va_robust_all')}</p>`;
+    const tg = c.sug && c.sug.together;
+    const one = c.sug && c.sug.list && c.sug.list[0];
+    if (tg && tg.withinBudget) a += `<p>${t('va_robust_sp', { j: num(tg.index, 0), c: omr(tg.cost), r: listJoin(tg.ids.map(resLabel)) })}</p>`;
+    else if (one && one.withinBudget) a += `<p>${t('va_robust_sp1', { r: resLabel(one.id), c: omr(one.cost), j: num(one.index, 0) })}</p>`;
+    add('robust', 'risk', t('vq_robust'), a, ['resil']);
+    const crit = res.scenarios.filter(s => s.impact && s.verdict === 'critical').sort((a2, b2) => b2.lost.length - a2.lost.length).slice(0, 2);
+    for (const s of crit) {
+      const rr = S.byId.get(s.rid), physical = !!(rr && RSV.PHYSICAL.indexOf(rr.category) >= 0);
+      add('fail:' + s.rid, 'risk', t('vq_fail', { r: resLabel(s.rid) }), `<p>${t('va_fail_lost', { f: vvFns(p, s.lost) })} ${t('va_fail_none')}</p><p>${physical ? t('va_fail_unit', { c: omr(+rr.cost || 0) }) : t('va_fail_service')}</p>`, ['resil']);
+    }
+    const fixable = res.scenarios.filter(s => s.impact && !s.spare && s.fix && (s.verdict === 'costly' || s.fix.changes.length || s.fix.added.length)).sort((a2, b2) => (a2.verdict === 'costly' ? 0 : 1) - (b2.verdict === 'costly' ? 0 : 1) || b2.lost.length - a2.lost.length)[0];
+    if (fixable) {
+      const f = fixable.fix, lim = f.overBudget && f.overDeadline ? 'vv_lim_bd' : f.overBudget ? 'vv_lim_b' : 'vv_lim_d';
+      add('fail:' + fixable.rid, 'risk', t('vq_fail', { r: resLabel(fixable.rid) }), `<p>${t('va_fail_lost', { f: vvFns(p, fixable.lost) })} ${t('va_fail_fix')}</p><ul class="rs-fix">${rsFixLines(p, fixable).map(x => `<li>${x}</li>`).join('')}</ul>
+        <p>${fixable.verdict === 'costly' ? t('va_fail_over', { c: omr(f.cost), d: ndays(f.days), x: t(lim) }) : t('va_fail_ok', { c: omr(f.cost), d: ndays(f.days) })}</p>`, ['resil']);
+    }
+    const kept = res.scenarios.find(s => s.impact && s.spare);
+    if (kept && !out.some(q => q.id === 'fail:' + kept.rid)) add('fail:' + kept.rid, 'risk', t('vq_fail', { r: resLabel(kept.rid) }), `<p>${t('va_fail_lost', { f: vvFns(p, kept.lost) })} ${t('va_fail_spare')}</p>`, ['resil']);
+  }
+  // budget and time: cost, timeline, a cut, an earlier deadline, prices, parts in hand
+  const top = lines.filter(l => l.total > 0).sort((a2, b2) => b2.total - a2.total).slice(0, 3);
+  add('cost', 'limits', t('vq_cost'), m.cost > 0 ? `<p>${t('va_cost', { c: omr(m.cost), b: omr(B), pc: B > 0 ? pct(m.cost / B) : '–', top: listJoin(top.map(l => resLabel(l.rid) + ' (' + omr(l.total) + ')')) })}</p>` : `<p>${t('va_cost_free')}</p>`, ['validate']);
+  const longest = lines.filter(l => l.lead > 0).sort((a2, b2) => b2.lead - a2.lead)[0];
+  add('time', 'limits', t('vq_time'), `<p>${longest ? t('va_time', { d: num(m.days, 0), D: num(Dl, 0), r: resLabel(longest.rid), l: ndays(longest.lead), e: ndays(m.effort) }) : t('va_time_nolead', { d: num(m.days, 0), D: num(Dl, 0), e: ndays(m.effort) })} ${m.days <= Dl ? t('va_time_left', { b: ndays(Dl - m.days) }) : t('va_time_late', { b: ndays(m.days - Dl) })}</p>`, ['plan']);
+  if (mg && mg.designs.length) {
+    const B2 = Math.round(B * 0.8 * 100) / 100, w1 = MGV.whatIf(mg, B2, Dl);
+    add('cut', 'limits', t('vq_cut', { b: omr(B2) }), vvWhatIf(p, mg, w1) || `<p>${mg.money.design ? t('va_wi_none_b', { c: omr(mg.money.design.cost) }) : t('mg_money_none')}</p>`, ['margins']);
+    const early = Dl > 21 ? 14 : Math.max(1, Math.round(Dl / 4)), w2 = MGV.whatIf(mg, B, Dl - early);
+    add('early', 'limits', t('vq_early', { n: ndays(early) }), vvWhatIf(p, mg, w2) || `<p>${mg.time.design ? t('va_wi_none_d', { d: ndays(mg.time.design.days) }) : t('mg_time_none')}</p>`, ['margins']);
+    if (mg.money.riseNow !== null || mg.money.riseBest !== null) add('prices', 'limits', t('vq_prices'), `<p>${t('va_prices', { r: B_(mgRiseTxt(mg.money.riseNow)), r2: B_(mgRiseTxt(mg.money.riseBest)) })}</p>`, ['margins']);
+  }
+  const ownedUsed = (m.lines || []).filter(l => l.owned);
+  if (ownedUsed.length) {
+    const saved = ownedUsed.reduce((a2, l) => a2 + ((S.byId.get(l.rid) || {}).cost || 0) * (l.qty || 1), 0);
+    add('owned', 'limits', t('vq_owned'), `<p>${t('va_owned', { list: listJoin(ownedUsed.map(l => resLabel(l.rid))), s: omr(saved) })}</p>`, ['catalog']);
+  }
+  // novelty
+  const dc = p.discovery;
+  if (dc && dc.items && dc.items.length && window.CF_NOVELTY) {
+    const NVm = window.CF_NOVELTY, works = dc.items.map(it => NVm.itemCaps(it, E, D.LEXICON)), vd = NVm.verdict(p, dc.items, works), b = vd.best;
+    if (b) {
+      const it = dc.items[b.index], caps = it.capabilities && it.capabilities.length ? it.capabilities : works[b.index] || [], lack = NVm.projectCaps(p).filter(x => caps.indexOf(x) < 0);
+      const meta = [it.organization, it.year].filter(Boolean).map(x => esc(String(x))).join(S.lang === 'ar' ? '، ' : ', ');
+      let a = `<p>${t('va_novel', { w: '<bdi>' + esc(it.title) + '</bdi>', m: meta ? ' (' + meta + ')' : '', s: num(b.shared, 0), n: num(b.total, 0), pc: pct(b.ratio) })}`;
+      if (lack.length) a += ' ' + t('va_novel_lack', { x: listJoin(lack.map(x => esc(tagLabel(x)))) });
+      if ((p.features || []).length) a += ' ' + t('va_novel_feat', { x: listJoin(p.features.map(f => esc(tx(f.name)))) });
+      add('novel', 'novelty', t('vq_novel'), a + `</p><p class="muted small">${t('va_novel_tip')}</p>`, ['discovery']);
+    }
+  } else add('novel', 'novelty', t('vq_novel'), `<p>${t('va_novel_todo')}</p><div class="row-btns"><a class="btn small ghost" href="#discover">${icon('globe')}<span>${t('nav_discover')}</span></a></div>`, ['discovery'], true);
+  // method
+  const W = S.ws.weights, wl = listJoin(E.OBJECTIVES.filter(k => (W[k] || 0) > 0).map(k => t('vv_w', { k: t('obj_' + k), v: num(W[k], 0) })));
+  const bad = uniqA(v.violations.map(x => x.code));
+  add('method', 'method', t('vq_method'), `<p>${t('va_method', { w: wl })}</p><p>${v.valid ? t('va_method_ok', { c: omr(m.cost), b: omr(B), d: num(m.days, 0), D: num(Dl, 0) }) : t('va_method_bad', { v: listJoin(bad.map(k => k + ' ' + t('rule_' + k + '_n'))) })}</p>`, ['engine', 'validate']);
+  return out.sort((a2, b2) => VV_CATS.indexOf(a2.cat) - VV_CATS.indexOf(b2.cat));
+}
+const B_ = s => '<b>' + s + '</b>';
+const mgRiseTxt = x => (x === null || x === undefined ? '–' : mgRise(x));
+
+function vvCard(p, q, i, marks) {
+  const st = vvState(), mk = q.todo ? 'todo' : marks[q.id] || '';
+  const status = mk === 'ok' ? chip(t('vv_st_ok'), 'ok') : mk === 'again' ? chip(t('vv_st_again'), 'risk') : mk === 'todo' ? chip(t('vv_st_todo'), 'info') : '';
+  const src = listJoin(q.src.map(s => t('vv_src_' + s)));
+  return `<article class="vv-card" data-mark="${mk}"><header><span class="vv-n">${num(i + 1, 0)}</span>${chip(t('vv_cat_' + q.cat), 'cyan')}${status}</header>
+    <h3>${q.q}</h3>
+    <details class="vv-a"${st.open || st.printing ? ' open' : ''}><summary>${t('vv_show')}</summary><div class="vv-body">${q.a}<p class="vv-src">${t('vv_src', { s: src })}</p></div></details>
+    ${q.todo ? '' : `<div class="row-btns vv-btns"><button class="btn small ${mk === 'ok' ? 'primary' : 'ghost'}" data-act="vv-mark" data-q="${esc(q.id)}" data-v="ok" aria-pressed="${mk === 'ok'}">${icon('check')}<span>${t('vv_ok')}</span></button><button class="btn small ${mk === 'again' ? 'primary' : 'ghost'}" data-act="vv-mark" data-q="${esc(q.id)}" data-v="again" aria-pressed="${mk === 'again'}">${icon('reset')}<span>${t('vv_again')}</span></button></div>`}</article>`;
+}
+function pageViva() {
+  const p = activeP();
+  if (!p) return noProject();
+  const st = vvState(), head = `<header class="page-head"><div><h1>${t('nav_viva')}</h1><p class="lede">${t('vv_p')}</p></div></header>`;
+  let c = vvFresh(p);
+  if (!c) {
+    if (st.error) return head + `<p class="warnbox">${t('vv_error')}</p>`;
+    if (st.busy !== p.id) {
+      st.busy = p.id;
+      setTimeout(() => {
+        try { const q = activeP(); if (q && q.id === p.id) vvCompute(q); } catch (e) { st.error = true; }
+        st.busy = null;
+        if (S.route === 'viva') render();
+      }, 30);
+    }
+    return head + `<section class="panel"><p class="rs-msg">${t('vv_busy')}</p><div class="rs-bar indet"><span></span></div></section>`;
+  }
+  const qs = vvQuestions(p, c), marks = (p.viva && p.viva.marks) || {}, real = qs.filter(q => !q.todo);
+  const ready = real.filter(q => marks[q.id] === 'ok').length, again = real.filter(q => marks[q.id] === 'again').length;
+  const shown = st.f === 'all' ? qs : qs.filter(q => q.cat === st.f);
+  const cats = ['all'].concat(VV_CATS.filter(k => qs.some(q => q.cat === k)));
+  const bar = `<section class="panel vv-top"><div class="vv-prog"><b>${t('vv_ready', { a: num(ready, 0), n: num(real.length, 0) })}</b>${again ? `<span class="risk-t">${t('vv_again_n', { n: num(again, 0) })}</span>` : ''}</div>
+    <div class="rs-bar"><span style="width:${real.length ? Math.round(ready / real.length * 100) : 0}%"></span></div>
+    <div class="row-btns"><button class="btn small ghost" data-act="vv-open">${t(st.open ? 'vv_close_all' : 'vv_open_all')}</button><button class="btn small ghost" data-act="vv-print">${icon('download')}<span>${t('vv_print')}</span></button>${ready || again ? `<button class="btn small ghost" data-act="vv-reset">${icon('reset')}<span>${t('vv_reset')}</span></button>` : ''}</div></section>`;
+  const tabs = `<div class="tabs big vv-tabs" role="tablist">${cats.map(k => `<button role="tab" data-act="vv-f" data-v="${k}" aria-selected="${st.f === k}">${t('vv_cat_' + k)} <span class="muted">${num(k === 'all' ? qs.length : qs.filter(q => q.cat === k).length, 0)}</span></button>`).join('')}</div>`;
+  return `${head}<h2 class="vv-print-h">${t('vv_print_h', { p: esc(tx(p.title)) })}</h2>${bar}${tabs}<div class="vv-list">${shown.map(q => vvCard(p, q, qs.indexOf(q), marks)).join('')}</div><p class="note">${t('vv_note')}</p>`;
+}
+PAGES.viva = pageViva;
+/* the dashboard line: how many questions the student can already answer */
+function vvDashHTML(p) {
+  const marks = (p.viva && p.viva.marks) || {}, ok = Object.keys(marks).filter(k => marks[k] === 'ok').length, c = vvFresh(p);
+  const n = c ? vvQuestions(p, c).filter(q => !q.todo).length : null;
+  return `<h3>${t('dash_vv')}</h3><p class="hint">${n !== null && (ok || Object.keys(marks).length) ? t('dash_vv_p', { a: num(Math.min(ok, n), 0), n: num(n, 0) }) : t('dash_vv_none')}</p><a class="btn small ghost" href="#viva">${icon('cap')}<span>${t('nav_viva')}</span></a>`;
+}
+Object.assign(ACT, {
+  'vv-f'(el) { vvState().f = el.dataset.v; render(); },
+  'vv-open'() { const st = vvState(); st.open = !st.open; render(); },
+  'vv-mark'(el) {
+    const p = activeP();
+    if (!p) return;
+    p.viva = p.viva || { marks: {} };
+    const id = el.dataset.q, v = el.dataset.v;
+    if (p.viva.marks[id] === v) delete p.viva.marks[id]; else p.viva.marks[id] = v;
+    p.viva.ts = Date.now();
+    saveProject(p); render();
+  },
+  'vv-reset'() { const p = activeP(); if (!p) return; p.viva = { marks: {}, ts: Date.now() }; saveProject(p); render(); },
+  'vv-print'() {
+    const st = vvState(); st.printing = true; render();
+    setTimeout(() => { try { window.print(); } finally { st.printing = false; render(); } }, 60);
+  }
+});
 
 /* ---------------- students' ideas: what students send from their page, and the page itself (server only) ---------------- */
 Object.assign(L.S, {
@@ -10058,7 +11048,7 @@ function permOk(need) {
 }
 
 /* pages */
-const ROUTE_PERM = { dashboard: 'projects', new: 'projects', graph: 'projects', gaps: 'projects', reconfig: 'projects', resilience: 'projects', planner: 'projects', report: 'projects', lab: 'projects', discover: 'discover', sustain: 'sustain' };
+const ROUTE_PERM = { dashboard: 'projects', new: 'projects', graph: 'projects', gaps: 'projects', reconfig: 'projects', resilience: 'projects', pool: 'projects', viva: 'projects', planner: 'projects', report: 'projects', lab: 'projects', discover: 'discover', sustain: 'sustain' };
 function adminTabs() {
   if (!isStaff()) return [];
   return ['resources', 'categories', 'projects', 'submissions', 'accounts', 'quality'].filter(k =>
@@ -10081,7 +11071,7 @@ function noAccessHTML(r) {
 
 /* what each action needs; the server checks the same on its side */
 const ACT_PERM = {
-  'rs-run': 'projects', 'rs-show': 'projects', 'rs-spare-add': 'projects', 'rs-spare-del': 'projects',
+  'rs-run': 'projects', 'rs-show': 'projects', 'rs-spare-add': 'projects', 'rs-spare-del': 'projects', 'rs-tab': 'projects', 'mg-pick': 'projects', 'mg-reset': 'projects', 'mg-apply': 'projects', 'po-run': 'projects', 'po-all': 'projects', 'vv-f': 'projects', 'vv-open': 'projects', 'vv-mark': 'projects', 'vv-reset': 'projects', 'vv-print': 'projects',
   'load-examples': 'projects', 'remove-examples': 'projects', 'open-example': 'projects', 'idea-start': 'projects', 'pj-dup': 'projects', 'pj-del': 'projects', 'pj-restore': 'projects',
   'np-llm': 'ai', 'ai-parts': 'ai', 'aip-run': 'ai', 'aip-add': 'ai', 'dc-run': 'discover', 'nv-ai': 'discover', 'su-run': 'sustain', 'up-run': 'sustain', 'up-find': 'sustain', 'sd-make': 'sustain',
   'sub-refresh': 'submissions', 'sub-open': ['submissions', 'projects'],
@@ -10092,8 +11082,8 @@ const ACT_PERM = {
   'csv-open': 'catalog', 'cat-add': 'catalog', 'cat-del': 'catalog',
   'team-add': 'owner', 'team-create': 'owner', 'team-perms': 'owner', 'team-perms-ok': 'owner', 'team-status': 'owner', 'team-del': 'owner', 'team-del-ok': 'owner', 'pm-preset': 'owner'
 };
-const ON_PERM = { 'idea-status': 'ideas_review', 'idp-open': 'student_page', 'idp-signup': 'student_page', 'acc-role': 'students', 'acc-status': 'students', 'res-status': 'catalog', 'csv-file': 'catalog', 'pm-perm': 'owner', 'pj-num': 'projects' };
-const IN_PERM = { 'idea-reply': 'ideas_review', 'idp-msg': 'student_page', 'cat-name': 'catalog', 'pj-title': 'projects' };
+const ON_PERM = { 'idea-status': 'ideas_review', 'idp-open': 'student_page', 'idp-signup': 'student_page', 'acc-role': 'students', 'acc-status': 'students', 'res-status': 'catalog', 'csv-file': 'catalog', 'pm-perm': 'owner', 'pj-num': 'projects', 'po-p': 'projects' };
+const IN_PERM = { 'idea-reply': 'ideas_review', 'idp-msg': 'student_page', 'cat-name': 'catalog', 'pj-title': 'projects', 'mg-b': 'projects', 'mg-d': 'projects', 'po-b': 'projects' };
 
 /* ---------------- the supervisors page (the owner only) ---------------- */
 const teamState = () => S.ui.team || (S.ui.team = { list: null, loading: false, error: false });
