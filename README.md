@@ -21,6 +21,16 @@ A smart bilingual (Arabic and English) university platform that helps students t
 - When the idea already exists, the AI starts by itself to search the web for features that similar projects and products do not offer, shows what it checked and the pages it read, and the engine checks each one before it can be added. "Look for other features" asks again without repeats.
 - The comparison covers only the works that the search found; it is not a full patent search.
 
+## صمود المشروع / Project resilience
+- قبل أن يشتري الطالب القطع، يعطّل محرك FGAR كل قطعة في المشروع واحدة بعد الأخرى، ويبحث لكل تعطّل عن أفضل إصلاح ضمن الميزانية والموعد: بديل من الكتالوج أو تغيير في التصميم.
+- النتيجة «مؤشر الصمود» من 100 ومستوى المشروع (صامد، فيه نقاط ضعف، هش)، ثم نقاط الضعف: ما يتوقف إذا تعطلت كل قطعة، وأفضل إصلاح لها أو سبب عدم وجوده. وزر «شاهد التعطل في المخطط» يعرض أثر التعطل على مخطط الوظائف.
+- تقترح المنصة القطع الاحتياطية التي ترفع المؤشر أكثر، مع أثر كل قطعة وتكلفتها من الميزانية، وتُقدَّم القطع التي تبقى ضمن الميزانية. تُضاف القطعة الاحتياطية بضغطة فيُعاد الاختبار، ويظهر المؤشر في لوحة المشروع والتقرير وسجل النشاط.
+- يُحسب المؤشر على القطع التي يوقف تعطّلها وظيفة أساسية: الإصلاح ضمن الحدود بدرجة كاملة، والإصلاح الذي يتجاوز الميزانية أو الموعد بنصف درجة، والقطعة التي لا إصلاح لها بصفر. وهو أداة تخطيط تعتمد على أسعار الكتالوج ومدد توريده، ولا يتنبأ بالأعطال.
+- Before the parts are bought, the FGAR engine makes each part of the project fail in turn and looks for the best fix within budget and deadline: an alternative from the catalog or a change of design.
+- The result is a resilience index out of 100, a level (resilient, has weak points, fragile) and the weak points: what stops if each part fails, and its best fix or why there is none. "See the failure in the graph" shows the failure on the functions graph.
+- The platform suggests the spare parts that raise the index most, with each one's effect and its cost from the budget, listing first those that keep the project within budget. One click adds a spare and runs the test again; the index appears on the project dashboard, in the report and in the activity log.
+- The index counts only parts whose failure stops a required function: a fix within limits counts in full, a fix that breaks the budget or deadline counts half, and a part with no fix counts zero. It is a planning tool based on catalog prices and lead times; it does not predict failures.
+
 ## صفحة الطلاب التجريبية / Students' page (demo)
 - رابط الطلاب: رابط الموقع مع ‎`#students`‎ في آخره، مثل `https://khmbader17-gif.github.io/CampusForge-AI/#students`.
 - من صفحة «أفكار الطلاب» ينشئ المسؤول حسابات الطلاب (أو حساب طالب تجريبي جاهز)، ويفتح استقبال الأفكار أو يغلقه، ويكتب رسالة للطلاب، ويراجع الأفكار ويرد عليها.

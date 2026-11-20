@@ -632,6 +632,13 @@ fieldset.dc-types legend{font-size:13px;color:var(--muted);font-weight:500;paddi
   .topbar .proj-sel select{max-width:100%;width:100%}
   .id-chip bdi{display:none}
 }
+/* the demo owner's links to the students' and supervisors' sign-in pages take a row of their own on phones */
+.lp-demo{display:flex;flex-wrap:wrap;gap:8px}
+@media (max-width:640px){
+  .lp-top{flex-wrap:wrap;row-gap:10px}
+  .lp-demo{order:10;flex:1 1 100%}
+  .lp-demo .btn{flex:1 1 auto}
+}
 /* panels the app scrolls to (novelty verdict, salvage, designs) start below the sticky top bar, not under it */
 html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
 @media (max-width:520px){html{scroll-padding-top:calc(112px + env(safe-area-inset-top,0px))}}
@@ -781,6 +788,70 @@ html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
 .perm-empty>.ic{width:36px;height:36px;color:var(--faint);margin-bottom:6px}
 .row-btns.center{justify-content:center}
 .id-card .st-reply{margin-top:12px}
+/* resilience: the index ring, weak points and spare parts */
+.rs-hero{display:flex;align-items:center;gap:28px;flex-wrap:wrap}
+.rs-hero.rs-old{opacity:.8}
+.rs-sum{flex:1;min-width:min(260px,100%)}
+.rs-sum h2{margin:2px 0 8px}
+.rs-sum p{margin:0 0 10px;max-width:68ch}
+.rs-eyebrow{font:600 12.5px/1 var(--font-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
+[dir="rtl"] .rs-eyebrow{letter-spacing:0;font:600 13.5px/1.2 var(--font-t)}
+.rs-gauge{flex:none;overflow:visible}
+.rs-track{fill:none;stroke:var(--line)}
+.rs-fill{fill:none;stroke-linecap:round}
+.rs-gauge.tone-ok .rs-fill{stroke:var(--ok)}.rs-gauge.tone-risk .rs-fill{stroke:var(--risk)}.rs-gauge.tone-gap .rs-fill{stroke:var(--gap)}
+.rs-gn{font:600 46px var(--font-d);fill:var(--text);font-variant-numeric:tabular-nums}
+.rs-gauge.sm .rs-gn{font-size:21px}
+.rs-gd{font:500 13px var(--font-t);fill:var(--muted)}
+.fs-none b{color:var(--muted)}
+.rs-grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(min(330px,100%),1fr))}
+.rs-card,.rs-spare{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--panel);min-width:0;display:flex;flex-direction:column;gap:4px}
+.rs-card[data-v="critical"]{border-inline-start:4px solid var(--gap)}
+.rs-card[data-v="costly"]{border-inline-start:4px solid var(--risk)}
+.rs-card header,.rs-spare header{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.rs-ch{min-width:0}
+.rs-card h3,.rs-spare h3{margin:0;font-size:16px;overflow-wrap:anywhere}
+.rs-ch p{margin:2px 0 0}
+.rs-k{margin:8px 0 2px;font-size:12.5px;font-weight:600;color:var(--muted)}
+.rs-fns,.rs-fix{margin:0;padding-inline-start:18px;font-size:14px}
+.rs-fns li::marker{color:var(--gap)}
+.rs-fix li::marker{color:var(--ok)}
+.rs-chips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 0}
+.rs-nofix{margin:0;color:var(--gap);font-size:14px}
+.rs-card .row-btns,.rs-spare .row-btns{margin-top:auto;padding-top:8px}
+.rs-gain{display:flex;gap:12px;align-items:center;margin-top:6px}
+.rs-gain p{margin:4px 0 0}
+.ok-t{color:var(--ok)}.gap-t{color:var(--gap)}
+.rs-together{margin:14px 0 0;font-size:14px}
+.rs-mine{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+.rs-tbl td{vertical-align:top}
+.rs-tbl tr.rs-quiet td{color:var(--muted)}
+.rs-tbl .rs-ts{white-space:nowrap}
+/* phone width: each part becomes a short block (name and result on one line, then what stops, then the fix) instead of a four-column table */
+@media (max-width:640px){
+  .tbl.rs-tbl thead{display:none}
+  .tbl.rs-tbl,.tbl.rs-tbl tbody{display:block}
+  .tbl.rs-tbl tr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;padding:11px 0;border-bottom:1px solid var(--line)}
+  .tbl.rs-tbl tr:last-child{border-bottom:0}
+  .tbl.rs-tbl td{display:block;padding:0;border:0;min-width:0}
+  .tbl.rs-tbl .rs-tp{grid-column:1;grid-row:1;overflow-wrap:anywhere;font-weight:600}
+  .tbl.rs-tbl .rs-tp small{font-weight:400}
+  .tbl.rs-tbl .rs-tv{grid-column:2;grid-row:1}
+  .tbl.rs-tbl .rs-ts,.tbl.rs-tbl .rs-tf{grid-column:1/-1;white-space:normal}
+  .tbl.rs-tbl .rs-tf::before{content:attr(data-l);display:block;font-size:12.5px;font-weight:600;color:var(--muted);margin-bottom:2px}
+  .tbl.rs-tbl .rs-tf.rs-empty{display:none}
+}
+.rs-bar{height:10px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);overflow:hidden;margin-top:10px}
+.rs-bar span{display:block;height:100%;background:var(--cyan);transition:width .2s}
+.rs-msg{margin:0}
+.rs-how{list-style:none;padding:0;margin:0 0 6px;display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));counter-reset:how}
+.rs-how li{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--panel2);display:flex;flex-direction:column;gap:4px;counter-increment:how;min-width:0}
+.rs-how li::before{content:counter(how);font:600 22px var(--font-d);color:var(--cyan)}
+.rs-how b{font-family:var(--font-d)}
+.rs-how span{font-size:13.5px;color:var(--muted)}
+.rs-dash{display:flex;align-items:center;gap:12px;margin:6px 0 10px}
+.rs-dash p{margin:2px 0 0}
+@media (prefers-reduced-motion:reduce){.rs-bar span{transition:none}}
 </style>
 </head>
 <body>
@@ -5159,6 +5230,194 @@ rp_h_novelty:['New feature added after discovery: “{f}” (project cost {c}).'
 
   return { VERSION, LIBRARY, SENSE, FOUND, CLOSE, itemCaps, verdict, usedBy, withFeature, feasibility, libraryCandidates, suggest, aiPrompt, fromAI, evaluateAI, projectCaps, rank: order };
 }));
+
+/* =====================================================================
+   Resilience test — what happens to a project if one of its parts fails
+   A pure JavaScript module (no DOM access) used by the browser and by
+   Node.js tests. For every resource the current configuration uses, it
+   marks that resource unavailable, records which functions the project
+   must have stop working, and asks the FGAR engine for the best
+   reconfiguration. Each part is then:
+     safe      the failure stops nothing the project must have, or the
+               engine finds a fix within budget and deadline;
+     costly    a fix exists but breaks the budget or the deadline;
+     critical  no valid fix exists with the catalog.
+   The resilience index is the share of the parts whose failure stops a
+   required function that can be fixed within budget and deadline (a
+   costly fix counts half). It then tries spare parts: a spare unit of a
+   part absorbs that part's failure, and a replacement kept at hand costs
+   nothing more and arrives at once. Spares are paid from the budget, so
+   every fix must fit in what is left. One failure at a time, with the
+   catalog's prices and lead times: a planning aid, not a reliability
+   prediction.
+   ===================================================================== */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  else root.CF_RESILIENCE = api;
+}(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  const VERSION = '1.0.0';
+  /* parts that can be bought and kept as a spare unit; software, hosting, databases and AI services cannot */
+  const PHYSICAL = ['sensor', 'mcu', 'processing', 'comm', 'actuation', 'display', 'adapter', 'hmi', 'power', 'mechanical'];
+  const SCORE = { safe: 1, costly: 0.5, critical: 0 };
+  const STRONG = 85, MEDIUM = 60;
+  const MAX_CANDIDATES = 10;
+  const uniq = a => Array.from(new Set(a));
+  const round2 = x => Math.round(x * 100) / 100;
+
+  function hash(s) { let h = 5381; for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) >>> 0; return h.toString(36); }
+  /* identifies what a test ran on: the configuration, statuses, owned parts, spares, limits and structure */
+  function signature(project, spares) {
+    const st = project.current || {};
+    return hash(JSON.stringify([st.config, st.overrides || {}, (project.owned || []).slice().sort(), uniq(spares || []).sort(), +project.budget || 0, +project.deadlineDays || 0,
+      project.functions.map(f => [f.id, !!f.mandatory, f.requires || []]), project.components.map(c => [c.id, c.capability, c.qty || 1])]));
+  }
+  function level(index) { return index === null ? null : index >= STRONG ? 'strong' : index >= MEDIUM ? 'medium' : 'fragile'; }
+  function unitCost(catalog, id) { const r = catalog.find(x => x.id === id); return r ? (+r.cost || 0) : 0; }
+
+  /* the parts the current configuration uses, and what the project costs and takes as it stands */
+  function baseline(E, project, catalog) {
+    const st = project.current || {}, cfg = st.config || { assign: {}, aux: [] };
+    const ctx = E.createContext(catalog, { overrides: st.overrides || {}, owned: project.owned || [] });
+    const v = E.validate(project, cfg, ctx, null), g = E.buildGraph(project, cfg, ctx);
+    return { cfg, valid: v.valid, violations: uniq(v.violations.map(x => x.code)), cost: v.metrics.cost, days: v.metrics.days,
+      parts: g.memberIds.filter(rid => ctx.available(rid)), down: g.memberIds.filter(rid => !ctx.available(rid)) };
+  }
+
+  /* the best fix the engine finds once a part is unavailable: adaptive first, then a global search */
+  function bestFix(E, project, cfg, fctx, A, weights) {
+    const opts = { weights, keep: 3, maxRejected: 60 };
+    const run = mode => E.reconfigure(project, cfg, fctx, mode === 'global' ? Object.assign({ mode, maxDomain: 6 }, opts) : Object.assign({ mode, analysis: A }, opts));
+    const limitsOnly = x => x.violations.length > 0 && x.violations.every(v => v.code === 'V4' || v.code === 'V5');
+    let rc = run('adaptive'), mode = 'adaptive';
+    if (!rc.validCount) {
+      const rg = run('global');
+      if (rg.validCount || (!rc.rejected.some(limitsOnly) && rg.rejected.some(limitsOnly))) { rc = rg; mode = 'global'; }
+    }
+    if (rc.validCount) return { kind: 'safe', item: rc.valid[0], mode };
+    const costly = rc.rejected.filter(limitsOnly).sort((a, b) => a.metrics.cost - b.metrics.cost || a.metrics.days - b.metrics.days)[0];
+    if (costly) return { kind: 'costly', item: costly, mode };
+    return { kind: 'critical', item: null, mode, unresolved: rc.unresolved.map(u => u.cap) };
+  }
+  function describe(E, project, base, item, failed) {
+    const changes = E.diffAssign(project, base.cfg, item.config), aux = E.diffAux(base.cfg, item.config);
+    const codes = (item.violations || []).map(v => v.code);
+    return { changes, added: uniq(changes.map(c => c.to).filter(Boolean).concat(aux.added)).filter(x => x !== failed), auxRemoved: aux.removed,
+      cost: round2(item.metrics.cost), days: item.metrics.days, extraCost: round2(item.metrics.cost - base.cost), extraDays: item.metrics.days - base.days,
+      overBudget: codes.indexOf('V4') >= 0, overDeadline: codes.indexOf('V5') >= 0 };
+  }
+
+  /* one failure: what stops, and the best fix with the spares at hand and the budget that is left */
+  function scenario(E, project, catalog, base, rid, setup, weights) {
+    const cfg = base.cfg, st = project.current || {};
+    const out = { rid, comps: project.components.filter(c => (cfg.assign || {})[c.id] === rid).map(c => c.id),
+      aux: uniq((cfg.aux || []).filter(a => a.res === rid).map(a => a.tag)), lost: [], weakened: [], impact: false, verdict: 'safe', fix: null, spare: false };
+    const overrides = Object.assign({}, st.overrides || {}); overrides[rid] = 'UNAVAILABLE';
+    const fctx = E.createContext(catalog, { overrides, owned: setup.owned });
+    const A = E.analyze(E.buildGraph(project, cfg, fctx), fctx);
+    for (const f of project.functions) {
+      const s = A.states.get('F:' + f.id), state = s ? s.state : 'UNKNOWN';
+      if (state !== 'FULL') (f.mandatory ? out.lost : out.weakened).push(f.id);
+    }
+    out.impact = out.lost.length > 0;
+    if (!out.impact) return out;
+    if (setup.spares.indexOf(rid) >= 0) { out.spare = true; return out; }   // a spare unit is at hand
+    const fx = bestFix(E, setup.project, cfg, fctx, A, weights);
+    out.verdict = fx.kind; out.mode = fx.mode;
+    if (fx.item) out.fix = describe(E, project, base, fx.item, rid);
+    if (fx.unresolved) out.unresolved = fx.unresolved;
+    return out;
+  }
+
+  /* spares: a unit of a part in use only absorbs that part's failure (it is not free for the project itself);
+     a replacement not in use is owned, so any fix that uses it costs nothing more and needs no delivery */
+  function setupFor(project, catalog, base, spares) {
+    spares = uniq(spares || []);
+    const inUse = new Set(base.parts.concat(base.down));
+    const cost = round2(spares.reduce((s, id) => s + unitCost(catalog, id), 0));
+    return { spares, cost, owned: uniq((project.owned || []).concat(spares.filter(id => !inUse.has(id)))),
+      project: Object.assign({}, project, { budget: (+project.budget || 0) - cost }) };   // below zero when spares alone break the budget: then no fix fits
+  }
+  function summarise(project, base, setup, scenarios) {
+    const hit = scenarios.filter(s => s.impact), count = k => hit.filter(s => s.verdict === k).length;
+    const index = hit.length ? Math.round(100 * hit.reduce((a, s) => a + SCORE[s.verdict], 0) / hit.length) : (scenarios.length ? 100 : null);
+    return { index, level: level(index), parts: scenarios.length, impactful: hit.length, safe: count('safe'), costly: count('costly'), critical: count('critical'),
+      absorbed: hit.filter(s => s.spare).length, critical_parts: hit.filter(s => s.verdict === 'critical').map(s => s.rid),
+      spares: setup.spares, sparesCost: setup.cost, baseCost: base.cost, totalCost: round2(base.cost + setup.cost), budget: +project.budget || 0,
+      overBudgetWithSpares: base.cost + setup.cost > (+project.budget || 0) + 1e-9 };
+  }
+
+  /* the whole test, one part per step so a page can show progress: run.step() until it returns true, then run.result() */
+  function start(E, project, catalog, opts) {
+    opts = opts || {};
+    const base = baseline(E, project, catalog), setup = setupFor(project, catalog, base, opts.spares || project.spares), scenarios = [];
+    let i = 0;
+    return {
+      total: base.parts.length, parts: base.parts.slice(),
+      next: () => base.parts[i] || null,
+      step() { if (i < base.parts.length) { scenarios.push(scenario(E, project, catalog, base, base.parts[i], setup, opts.weights)); i++; } return i >= base.parts.length; },
+      result() {
+        const order = { critical: 0, costly: 1, safe: 2 };
+        scenarios.sort((a, b) => (b.impact - a.impact) || (order[a.verdict] - order[b.verdict]) || (b.lost.length - a.lost.length) || (a.rid < b.rid ? -1 : 1));
+        return Object.assign(summarise(project, base, setup, scenarios), { version: VERSION, signature: signature(project, setup.spares), baseValid: base.valid, baseViolations: base.violations,
+          down: base.down, scenarios });
+      }
+    };
+  }
+  function test(E, project, catalog, opts) { const run = start(E, project, catalog, opts); while (!run.step()) { /* next part */ } return run.result(); }
+
+  /* what the index becomes with more spares: only the scenarios a spare can change are run again */
+  function withSpares(E, project, catalog, result, extra, weights) {
+    const base = baseline(E, project, catalog), setup = setupFor(project, catalog, base, result.spares.concat(extra));
+    const scenarios = result.scenarios.map(s => {
+      if (!s.impact) return s;
+      const keeps = s.verdict === 'safe' && (s.spare || !s.fix || s.fix.cost <= setup.project.budget + 1e-9);
+      if (keeps && extra.indexOf(s.rid) < 0) return s;
+      return scenario(E, project, catalog, base, s.rid, setup, weights);
+    });
+    return Object.assign(summarise(project, base, setup, scenarios), { scenarios });
+  }
+
+  /* spare parts worth keeping: a unit of each physical part whose failure is not safe, and the replacements the
+     fixes use or could use; each is scored by how much it raises the index on its own */
+  function suggestSpares(E, project, catalog, result, opts) {
+    opts = opts || {};
+    const ctx = E.createContext(catalog, { overrides: (project.current || {}).overrides || {}, owned: project.owned || [] });
+    const cand = new Map();
+    const add = (id, kind, protects) => {
+      if (!id || result.spares.indexOf(id) >= 0 || !ctx.byId.get(id) || !ctx.available(id)) return;
+      const c = cand.get(id) || { id, kind, protects: [] };
+      if (kind === 'unit') c.kind = 'unit';
+      if (c.protects.indexOf(protects) < 0) c.protects.push(protects);
+      cand.set(id, c);
+    };
+    for (const s of result.scenarios) {
+      if (!s.impact || s.verdict === 'safe') continue;
+      const r = ctx.byId.get(s.rid);
+      if (r && PHYSICAL.indexOf(r.category) >= 0) add(s.rid, 'unit', s.rid);
+      if (s.fix) s.fix.added.forEach(a => add(a, 'alt', s.rid));
+      const caps = s.comps.map(cid => (project.components.find(x => x.id === cid) || {}).capability).concat(s.aux, s.unresolved || []).filter(Boolean);
+      for (const cap of uniq(caps)) ctx.providers(cap).filter(p => p.id !== s.rid && ctx.available(p.id)).sort((a, b) => (+a.cost || 0) - (+b.cost || 0)).slice(0, 2).forEach(p => add(p.id, 'alt', s.rid));
+    }
+    const out = [];
+    for (const c of Array.from(cand.values()).slice(0, opts.max || MAX_CANDIDATES)) {
+      const after = withSpares(E, project, catalog, result, [c.id], opts.weights);
+      const gain = (after.index || 0) - (result.index || 0);
+      const fixed = after.scenarios.filter((s, i) => s.impact && s.verdict === 'safe' && result.scenarios.find(x => x.rid === s.rid).verdict !== 'safe').map(s => s.rid);
+      if (gain > 0 || fixed.length) out.push({ id: c.id, kind: c.kind, cost: round2(unitCost(catalog, c.id)), index: after.index, gain, fixes: fixed, protects: c.protects,
+        withinBudget: !after.overBudgetWithSpares, totalCost: after.totalCost });
+    }
+    out.sort((a, b) => (b.withinBudget - a.withinBudget) || b.gain - a.gain || b.fixes.length - a.fixes.length || a.cost - b.cost || (a.id < b.id ? -1 : 1));   // spares the budget allows come first
+    const top = out.slice(0, opts.top || 3);
+    let together = null;
+    if (top.length > 1) { const t = withSpares(E, project, catalog, result, top.map(x => x.id), opts.weights); together = { ids: top.map(x => x.id), index: t.index, cost: round2(top.reduce((s, x) => s + x.cost, 0)), withinBudget: !t.overBudgetWithSpares }; }
+    return { list: top, together, considered: cand.size };
+  }
+
+  return { VERSION, PHYSICAL, SCORE, STRONG, MEDIUM, level, signature, baseline, start, test, withSpares, suggestSpares };
+}));
 </script>
 <script>/* =====================================================================
    FGAR validation suite — scenarios, metrics and benchmarks.
@@ -6370,7 +6629,7 @@ function landingHTML() {
     <span class="grow"></span>
     ${langSeg()}
     <button class="icon-btn" data-act="theme" aria-label="${t('theme_toggle')}" title="${t('theme_toggle')}">${icon(isDark() ? 'sun' : 'moon')}</button>
-    ${demoMode() && isOwner() ? `<a class="btn ghost small" href="#students">${t('lp_students')}</a><a class="btn ghost small" href="#supervisor">${t('lp_staff')}</a>` : ''}
+    ${demoMode() && isOwner() ? `<span class="lp-demo"><a class="btn ghost small" href="#students">${t('lp_students')}</a><a class="btn ghost small" href="#supervisor">${t('lp_staff')}</a></span>` : ''}
     <a class="btn ghost small" href="#dashboard">${t('open_app')}</a>
   </header>
   <section class="hero">
@@ -6552,6 +6811,7 @@ function activityHTML(list, limit) {
     else if (h.kind === 'novelty') txt = t('act_novelty', { p: pn, f: esc(tx(h.name || {})) }) + `<small class="d-block muted">${t(h.unused ? 'nv_unused' : 'nv_used', { k: num(h.used || 0, 0), n: num(h.of || 0, 0) })} · ${nvDelta(h.dc || 0, 'cost')} · ${nvDelta(h.dd || 0, 'days')}</small>`;
     else if (h.kind === 'novelty-search') txt = t(h.web ? 'act_nvsearch_web' : 'act_nvsearch', { p: pn, n: num(h.n || 0, 0) });
     else if (h.kind === 'salvage') txt = t('act_salvage', { p: pn, x: esc(h.item ? (S.lang === 'ar' ? h.item.ar : h.item.en) : ''), k: num(h.used || 0, 0) }) + (h.ref != null ? `<small class="d-block muted">${t('act_salvage_meta', { a: omr(h.ref), b: omr(h.cost) })}</small>` : '');
+    else if (h.kind === 'resilience' || h.kind === 'spare') txt = rsActText(h, pn);
     else txt = t('act_edit', { p: pn });
     return `<li class="act-${h.kind}"><span class="dot"></span><div>${txt}<time class="d-block muted small">${fdate(h.ts, true)}</time></div></li>`;
   }).join('')}</ul>`;
@@ -6595,6 +6855,7 @@ function pageDashboard() {
     <section class="panel"><h2>${t('dash_active', { p: esc(tx(p.title)) })}</h2>
       <div class="fn-sum">${['full', 'atRisk', 'partial', 'blocked', 'uncovered'].map(k => `<div class="fs fs-${k}"><b>${num(sum[k], 0)}</b><span>${t('sum_' + k)}</span></div>`).join('')}</div>
       ${gapsTop.length ? `<h3>${t('dash_top_gaps')}</h3><ul class="mini">${gapsTop.map(f => `<li>${esc(fnLabel(p, f.id))} ${fnChip(f.state)}</li>`).join('')}</ul><a class="btn small ghost" href="#gaps">${t('nav_gaps')}</a>` : `<p class="hint">${t('dash_no_gaps')}</p>`}
+      ${rsDashHTML(p)}
       <h3>${t('dash_rec')}</h3>
       ${top ? `<p>${t('dash_rec_p', { s: num(top.score * 100, 1), c: omr(top.metrics.cost), d: ndays(top.metrics.days), n: num(top.metrics.changes.length, 0) })}</p><a class="btn small primary" href="#reconfig">${t('nav_reconfig')}</a>` : `<p class="hint">${t('dash_rec_none')}</p><button class="btn small ghost" data-act="search" data-v="adaptive">${t('rc_run_adaptive')}</button>`}
     </section>
@@ -6962,7 +7223,7 @@ function reportDocHTML(p) {
   const ctxO = E.createContext(engineCat(p), { overrides: p.original.overrides, owned: p.owned });
   const vo = E.validate(p, p.original.config, ctxO, null);
   const hist = (p.history || []).slice().reverse().slice(0, 25);
-  const histTxt = h => h.kind === 'event' ? t('rp_h_event', { ch: listJoin((h.changes || []).map(c => resLabel(c.res) + ' → ' + stLabel(c.to))), e: num(h.evaluated, 0), n: num(h.total, 0), u: num(h.unresolved, 0), a: num(h.atRisk, 0) })
+  const histTxt = h => h.kind === 'resilience' || h.kind === 'spare' ? rsReportText(h) : h.kind === 'event' ? t('rp_h_event', { ch: listJoin((h.changes || []).map(c => resLabel(c.res) + ' → ' + stLabel(c.to))), e: num(h.evaluated, 0), n: num(h.total, 0), u: num(h.unresolved, 0), a: num(h.atRisk, 0) })
     : h.kind === 'apply' ? t('rp_h_apply', { ch: listJoin((h.changes || []).map(c => esc(compLabel(p, c.comp)) + ': ' + (c.from ? resLabel(c.from) : '–') + ' → ' + (c.to ? resLabel(c.to) : '–'))) || t('no_changes'), c: omr(h.cost) })
       : h.kind === 'reset' ? t('rp_h_reset') : h.kind === 'salvage' ? t('rp_h_salvage', { x: esc(h.item ? (S.lang === 'ar' ? h.item.ar : h.item.en) : ''), k: num(h.used || 0, 0), a: h.ref != null ? omr(h.ref) : '–', b: omr(h.cost) }) : h.kind === 'discover' ? t('rp_h_discover', { n: num(h.n, 0) }) : h.kind === 'novelty' ? t('rp_h_novelty', { f: esc(tx(h.name || {})), c: omr(h.cost || 0) }) : h.kind === 'novelty-search' ? t(h.web ? 'rp_h_nvsearch_web' : 'rp_h_nvsearch', { n: num(h.n || 0, 0) }) : h.kind === 'edit' ? t('act_edit', { p: esc(tx(p.title)) }) : t('rp_h_create');
   return `<article id="report-doc" class="paper" lang="${S.lang}" dir="${S.lang === 'ar' ? 'rtl' : 'ltr'}">
@@ -6987,7 +7248,7 @@ function reportDocHTML(p) {
       <tr><td>${t('validity')}</td><td>${rpTag(vo.valid ? t('valid') : t('invalid'), vo.valid ? 'ok' : 'gap')}</td><td>${rpTag(v.valid ? t('valid') : t('invalid'), v.valid ? 'ok' : 'gap')}</td></tr>
     </tbody></table>
     ${v.valid ? '' : `<p>${v.violations.slice(0, 6).map(x => violationText(p, x)).join(' ')}</p>`}
-    ${discoveryReportHTML(p)}<h2>${t('rp_s6')}</h2><p>${t('rp_method')}</p><p class="rp-note">${t('rp_ip')}</p>
+    ${discoveryReportHTML(p)}${resilienceReportHTML(p)}<h2>${t('rp_s6')}</h2><p>${t('rp_method')}</p><p class="rp-note">${t('rp_ip')}</p>
   </article>`;
 }
 function pageReport() {
@@ -7130,6 +7391,7 @@ function pageEngine() {
     <h2>${t('doc_gen_h')}</h2><p>${t('doc_gen_p')}</p>
     <h2>${t('doc_rank_h')}</h2><p>${t('doc_rank_p')}</p>
     <h2>${t('doc_exp_h')}</h2><p>${t('doc_exp_p')}</p><a class="btn ghost small" href="#lab">${t('nav_lab')}</a>
+    <h2>${t('doc_resil_h')}</h2><p>${t('doc_resil_p')}</p><a class="btn ghost small" href="#resilience">${t('nav_resilience')}</a>
     <h2>${t('doc_novel_h')}</h2><p>${t('doc_novel_p')}</p>
     <div class="tbl-wrap"><table class="tbl"><thead><tr><th>${t('doc_est')}</th><th>${t('doc_new')}</th></tr></thead><tbody>${[1, 2, 3, 4, 5, 6].map(i => `<tr><td>${t('doc_est' + i)}</td><td>${t('doc_new' + i)}</td></tr>`).join('')}</tbody></table></div>
     <h2>${t('doc_lim_h')}</h2><ul>${[1, 2, 3, 4, 5].map(i => `<li>${t('doc_lim' + i)}</li>`).join('')}</ul>
@@ -9250,6 +9512,229 @@ function noveltyReportHTML(p) {
   return `<h3>${t('rp_nv_h')}</h3><p class="rp-meta">${t('rp_nv_p')}</p><table><thead><tr><th>${t('np_fn_name')}</th><th>${t('rp_nv_found')}</th><th>${t('cost')}</th><th>${t('nv_time')}</th></tr></thead><tbody>${p.features.map(f => `<tr><td>${esc(tx(f.name))}${how(f)}</td><td>${f.unused ? t('nv_unused', { n: num(f.of, 0) }) : t('nv_used', { k: num(f.used, 0), n: num(f.of, 0) })}</td><td>${nvDelta(f.dc, 'cost')}</td><td>${nvDelta(f.dd, 'days')}</td></tr>`).join('')}</tbody></table>`;
 }
 
+/* ---------------- resilience: each part of the project fails in turn, the engine looks for the best fix ---------------- */
+Object.assign(L.S, {
+  nav_resilience: ['Resilience', 'صمود المشروع'],
+  rs_p: ['Before you buy the parts, the FGAR engine makes each part of your project fail in turn, looks for the best fix within budget and deadline, and shows your weak points and the spare parts that protect the project most.', 'قبل أن تشتري القطع، يعطّل محرك FGAR كل قطعة في مشروعك واحدة بعد الأخرى، ويبحث عن أفضل إصلاح ضمن الميزانية والموعد، ثم يريك نقاط الضعف والقطع الاحتياطية التي تحمي مشروعك أكثر.'],
+  rs_run: ['Run the resilience test', 'شغّل اختبار الصمود'], rs_rerun: ['Run again', 'أعد الاختبار'],
+  rs_how1: ['Each part fails, one at a time', 'تتعطل كل قطعة، واحدة في كل مرة'], rs_how1_d: ['The engine marks the part unavailable and finds the functions that stop.', 'يجعل المحرك القطعة غير متوفرة، ويحدد الوظائف التي تتوقف.'],
+  rs_how2: ['The engine looks for a fix', 'يبحث المحرك عن إصلاح'], rs_how2_d: ['It searches the catalog for a configuration that keeps every required function within budget and deadline.', 'يبحث في الكتالوج عن تكوين يُبقي كل الوظائف الأساسية ضمن الميزانية والموعد.'],
+  rs_how3: ['You get an index and spares', 'تحصل على مؤشر وقطع احتياطية'], rs_how3_d: ['A resilience index out of 100, your weak points, and the spare parts worth buying.', 'مؤشر صمود من 100، ونقاط ضعف مشروعك، والقطع الاحتياطية التي تستحق الشراء.'],
+  rs_running: ['Testing part {i} of {n}: {r}', 'جارٍ اختبار القطعة {i} من {n}: {r}'], rs_spares_busy: ['Looking for the spare parts that protect the project most…', 'جارٍ البحث عن القطع الاحتياطية الأنفع لمشروعك…'],
+  rs_index: ['Resilience index', 'مؤشر الصمود'], rs_lv_strong: ['Resilient', 'صامد'], rs_lv_medium: ['Has weak points', 'فيه نقاط ضعف'], rs_lv_fragile: ['Fragile', 'هش'],
+  rs_summary: ['{h} of your {n} parts stop a required function if they fail. The index is the share of them the engine can fix within budget and deadline.', 'يوقف تعطّل {h} من قطعك الـ {n} وظيفةً أساسية، والمؤشر هو نسبة ما يستطيع المحرك إصلاحه منها ضمن الميزانية والموعد.'],
+  rs_summary_all: ['No single failure stops a required function: every part has a fix or is not essential.', 'لا يوقف تعطّل أي قطعة وحدها وظيفةً أساسية، فلكل قطعة إصلاح أو أنها غير أساسية.'],
+  rs_c_safe: ['Safe', 'آمنة'], rs_c_costly: ['Costly fix', 'إصلاح مكلف'], rs_c_critical: ['Critical', 'حرجة'], rs_c_none: ['No effect', 'بلا تأثير'],
+  rs_weak_h: ['Weak points', 'نقاط الضعف'], rs_weak_none: ['No weak points: the engine can fix the failure of any single part within budget and deadline.', 'لا توجد نقاط ضعف: يستطيع المحرك إصلاح تعطّل أي قطعة وحدها ضمن الميزانية والموعد.'],
+  rs_v_safe: ['Safe', 'آمنة'], rs_v_costly: ['Costly fix', 'إصلاح مكلف'], rs_v_critical: ['Critical', 'حرجة'], rs_v_spare: ['Spare at hand', 'لديك قطعة احتياطية'], rs_v_none: ['No effect', 'بلا تأثير'],
+  rs_if: ['If it fails, these stop:', 'إذا تعطلت تتوقف:'], rs_fix: ['Best fix', 'أفضل إصلاح'], rs_used: ['Used for', 'تُستخدم في'],
+  rs_swap: ['{c}: {b} takes the place of {a}', '{c}: يحل {b} محل {a}'], rs_drop: ['{c}: leave it out', '{c}: يُستغنى عنه'], rs_add: ['Add {b}', 'أضف {b}'],
+  rs_over_b: ['Over the budget', 'يتجاوز الميزانية'], rs_over_d: ['Past the deadline', 'يتجاوز الموعد'], rs_same: ['No extra cost or time', 'دون تكلفة أو وقت إضافي'],
+  rs_nofix: ['No valid fix in the catalog.', 'لا يوجد إصلاح صالح في الكتالوج.'], rs_nofix_caps: ['Nothing else in the catalog provides: {t}.', 'لا يوجد في الكتالوج غيرها يوفّر: {t}.'],
+  rs_hint_unit: ['Keep a spare unit of it, or add an alternative to the catalog.', 'احتفظ بقطعة احتياطية منها، أو أضف بديلًا لها إلى الكتالوج.'],
+  rs_hint_service: ['A service cannot be kept as a spare: add another provider to the catalog, or prepare a plan B.', 'لا يمكن الاحتفاظ بخدمة احتياطية: أضف إلى الكتالوج مزوّدًا آخر، أو جهّز خطة بديلة.'],
+  rs_show: ['See the failure in the graph', 'شاهد التعطل في المخطط'],
+  rs_sp_h: ['Spare parts worth buying', 'قطع احتياطية تستحق الشراء'],
+  rs_sp_p: ['A spare unit absorbs its own part’s failure. A ready replacement makes a fix cost nothing more and arrive at once. Every spare is paid from your budget.', 'القطعة الاحتياطية من نفس القطعة تمتص تعطّلها، والبديل الجاهز يجعل الإصلاح بلا تكلفة إضافية ودون انتظار التوريد. وتُدفع كل قطعة احتياطية من ميزانيتك.'],
+  rs_sp_unit: ['Spare unit', 'وحدة احتياطية'], rs_sp_alt: ['Ready replacement', 'بديل جاهز'],
+  rs_sp_gain: ['Index {a} → {b}', 'المؤشر من {a} إلى {b}'], rs_sp_protects: ['Protects against the failure of: {r}', 'يحميك من تعطّل: {r}'],
+  rs_sp_ok: ['Stays within budget: {c} of {b}', 'ضمن الميزانية: {c} من {b}'], rs_sp_over: ['Goes over budget: {c} of {b}', 'تتجاوز الميزانية: {c} من {b}'],
+  rs_sp_add: ['Add to my spares', 'أضِفها إلى قطعي الاحتياطية'], rs_sp_together: ['With these together the index reaches {i}, for {c}.', 'وبهذه القطع معًا يصل المؤشر إلى {i}، بتكلفة {c}'], rs_sp_together_over: ['Together they go over the budget.', 'ومعًا تتجاوز الميزانية.'],
+  rs_sp_none: ['No spare part raises the index: the weak points are services, or nothing in the catalog can replace them.', 'لا توجد قطعة احتياطية ترفع المؤشر، فنقاط الضعف خدمات أو لا يوجد في الكتالوج ما يحل محلها.'],
+  rs_mine_h: ['Your spare parts', 'قطعك الاحتياطية'], rs_mine_total: ['Spares cost {c}; with the project, {t} of a {b} budget.', 'تكلفة القطع الاحتياطية {c}، ومع المشروع {t} من ميزانية {b}'], rs_mine_del: ['Remove', 'إزالة'],
+  rs_all_h: ['Every part', 'كل القطع'], rs_th_part: ['Part', 'القطعة'], rs_th_stops: ['If it fails', 'إذا تعطلت'], rs_th_verdict: ['Result', 'النتيجة'],
+  rs_stops_n: ['{n} of {m} required functions stop', 'الوظائف الأساسية المتوقفة: {n} من {m}'], rs_stops_none: ['Nothing required stops', 'لا تتوقف وظيفة أساسية'],
+  rs_optional: ['Optional functions affected: {f}', 'وظائف اختيارية تتأثر: {f}'],
+  rs_down: ['Already unavailable in your project, and left out of the test: {r}. Reset the project in the graph to bring them back.', 'قطع معطلة الآن في مشروعك ولا يشملها الاختبار: {r}. أعد ضبط المشروع من المخطط لإرجاعها.'],
+  rs_invalid: ['Your current configuration does not pass validation, so a fix within budget and deadline may be impossible. Fix it first in Reconfiguration.', 'تكوينك الحالي لا يجتاز التحقق، فقد يتعذر أي إصلاح ضمن الميزانية والموعد. أصلحه أولًا من «إعادة التكوين».'],
+  rs_stale: ['Your project changed since the last test on {d}. Run it again to update the results.', 'تغيّر مشروعك منذ آخر اختبار في {d}، فأعد الاختبار لتحديث النتائج.'],
+  rs_last: ['Last test {d}', 'آخر اختبار {d}'], rs_error: ['The test could not finish. Try again.', 'تعذّر إكمال الاختبار، فحاول مجددًا.'],
+  rs_method: ['One failure at a time, with the catalog’s prices and lead times: a planning aid, not a prediction of failures. A costly fix counts half in the index.', 'يختبر المحرك تعطّل قطعة واحدة في كل مرة بأسعار الكتالوج ومدد توريده، فهو أداة تخطيط لا تنبؤ بالأعطال. ويُحسب الإصلاح المكلف بنصف درجة في المؤشر.'],
+  rs_none: ['This project has no parts to test yet.', 'لا توجد في هذا المشروع قطع لاختبارها بعد.'],
+  doc_resil_h: ['Resilience test', 'اختبار الصمود'],
+  doc_resil_p: ['Before the parts are bought, the engine marks each part in use as unavailable, one at a time, and analyses the project again. If a required function stops, it looks for the best fix: adaptive reconfiguration first, then global reconfiguration with up to six providers per component. A valid fix is safe (score 1), a fix that breaks only the budget or the deadline (V4 or V5) is costly (½), and a part with neither is critical (0). The resilience index is 100 × the mean score over the parts whose failure stops a required function. A spare unit absorbs its own part’s failure; spares count as owned and are paid from the budget, and the suggested ones are those that raise the index most, within budget first.', 'قبل شراء القطع، يجعل المحرك كل قطعة مستخدمة غير متاحة، واحدة في كل مرة، ثم يحلل المشروع من جديد. فإذا توقفت وظيفة أساسية بحث عن أفضل إصلاح: إعادة التكوين التكيفية أولًا، ثم الشاملة بما يصل إلى ستة موردين لكل مكوّن. الإصلاح الصالح آمن (درجة 1)، والإصلاح الذي لا يخالف إلا الميزانية أو الموعد (V4 أو V5) مكلف (نصف درجة)، والقطعة التي لا إصلاح لها حرجة (صفر). ومؤشر الصمود هو 100 × متوسط الدرجات على القطع التي يوقف تعطّلها وظيفة أساسية. والقطعة الاحتياطية من الوحدة نفسها تمتص تعطّلها، وتُعامل القطع الاحتياطية كأنها مملوكة وتُدفع تكلفتها من الميزانية، والمقترح منها ما يرفع المؤشر أكثر، مع تقديم ما يبقى ضمن الميزانية.'],
+  act_resil: ['{p}: resilience test, index {i} ({l})', '{p}: اختبار الصمود، المؤشر {i} ({l})'],
+  act_spare_add: ['{p}: spare part added: {r}', '{p}: أُضيفت قطعة احتياطية: {r}'], act_spare_del: ['{p}: spare part removed: {r}', '{p}: أُزيلت قطعة احتياطية: {r}'],
+  rp_h_resil: ['Resilience test: index {i} ({l})', 'اختبار الصمود: المؤشر {i} ({l})'], rp_h_spare_add: ['Spare part added: {r}', 'أُضيفت قطعة احتياطية: {r}'], rp_h_spare_del: ['Spare part removed: {r}', 'أُزيلت قطعة احتياطية: {r}'],
+  rp_resil_h: ['Resilience', 'صمود المشروع'],
+  rp_resil_p: ['Resilience index {i} out of 100 ({l}), tested on {d}. {h} of the {n} parts stop a required function if they fail: {s} safe, {c} with a costly fix, {k} critical.', 'مؤشر الصمود {i} من 100 ({l})، بتاريخ {d}. يوقف تعطّل {h} من القطع الـ {n} وظيفةً أساسية: آمنة {s}، وإصلاحها مكلف {c}، وحرجة {k}.'],
+  rp_resil_crit: ['Critical parts: {r}.', 'القطع الحرجة: {r}.'], rp_resil_spares: ['Spare parts: {r}, for {c}.', 'القطع الاحتياطية: {r}، بتكلفة {c}'], rp_resil_stale: ['The project changed after this test.', 'تغيّر المشروع بعد هذا الاختبار.'],
+  dash_resil: ['Resilience', 'صمود المشروع'], dash_resil_none: ['Not tested yet. Find out what happens if one part fails.', 'لم يُختبر بعد. اعرف ماذا يحدث لو تعطلت قطعة واحدة.'], dash_resil_btn: ['Test resilience', 'اختبر الصمود']
+});
+ICONS.buoy = 'M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18M12 8a4 4 0 1 0 0 8a4 4 0 1 0 0-8M5.64 5.64l3.53 3.53M14.83 14.83l3.53 3.53M18.36 5.64l-3.53 3.53M9.17 14.83l-3.53 3.53';
+ROUTES.splice(ROUTES.indexOf('reconfig') + 1, 0, 'resilience');
+NAV.splice(NAV.findIndex(x => x[0] === 'reconfig') + 1, 0, ['resilience', 'buoy']);
+const RSV = window.CF_RESILIENCE;
+const RS_CACHE = new Map();   // project id -> { result, sug, cat }: the details of the last test in this tab
+const rsState = () => S.ui.rs || (S.ui.rs = { running: null, auto: new Set(), error: false });
+const rsTick = () => new Promise(r => setTimeout(r, 0));
+const rsSig = p => RSV.signature(p, p.spares || []);
+function rsFresh(p) { const c = RS_CACHE.get(p.id); return c && c.cat === S.catStamp && c.result.signature === rsSig(p) ? c : null; }
+const RS_TONE = { safe: 'ok', costly: 'risk', critical: 'gap' };
+const rsLevel = lv => t('rs_lv_' + (lv || 'fragile'));
+const rsTone = lv => (lv === 'strong' ? 'ok' : lv === 'medium' ? 'risk' : 'gap');
+const signed = (x, f) => (x > 0 ? '+' : x < 0 ? '−' : '') + f(Math.abs(x));
+
+/* the test runs one part per step so the page shows its progress */
+async function rsRun(p) {
+  const st = rsState();
+  if (st.running || !RSV) return;
+  const cat = engineCat(p), run = RSV.start(E, p, cat, { spares: p.spares || [], weights: S.ws.weights });
+  st.error = false; st.running = { pid: p.id, i: 0, n: run.total, part: run.next(), phase: 'parts' };
+  if (S.route === 'resilience') render();
+  await rsTick();
+  try {
+    while (!run.step()) { st.running.i++; st.running.part = run.next(); rsProgress(); await rsTick(); }
+    st.running.i = run.total; st.running.phase = 'spares'; rsProgress(); await rsTick();
+    const result = run.result(), sug = RSV.suggestSpares(E, p, cat, result, { weights: S.ws.weights });
+    RS_CACHE.set(p.id, { result, sug, cat: S.catStamp });
+    const prev = p.resilience;
+    p.resilience = { ts: Date.now(), sig: result.signature, version: result.version, index: result.index, level: result.level, parts: result.parts, impactful: result.impactful,
+      safe: result.safe, costly: result.costly, critical: result.critical, criticalParts: result.critical_parts, spares: result.spares, sparesCost: result.sparesCost };
+    if (!prev || prev.sig !== result.signature || prev.index !== result.index) p.history.push({ ts: Date.now(), kind: 'resilience', index: result.index, level: result.level, critical: result.critical });
+    saveProject(p);
+  } catch (e) { st.error = true; }
+  st.running = null;
+  if (S.route === 'resilience' || S.route === 'dashboard') render();
+}
+function rsProgress() {
+  const r = rsState().running, el = $('#rs-prog');
+  if (!el || !r) return;
+  el.querySelector('.rs-bar span').style.width = Math.round((r.n ? r.i / r.n : 1) * 100) + '%';
+  el.querySelector('.rs-msg').innerHTML = r.phase === 'spares' ? t('rs_spares_busy') : t('rs_running', { i: num(Math.min(r.i + 1, r.n), 0), n: num(r.n, 0), r: r.part ? resLabel(r.part) : '' });
+}
+
+/* a ring that fills with the index, in the reading direction */
+function rsGauge(index, lv, small) {
+  const s = small ? 72 : 168, R = small ? 29 : 68, w = small ? 7 : 14, C = 2 * Math.PI * R, f = index === null || index === undefined ? 0 : index / 100, c = s / 2;
+  const turn = S.lang === 'ar' ? `translate(${s} 0) scale(-1 1) rotate(-90 ${c} ${c})` : `rotate(-90 ${c} ${c})`;
+  return `<svg class="rs-gauge${small ? ' sm' : ''} tone-${rsTone(lv)}" viewBox="0 0 ${s} ${s}" width="${s}" height="${s}" role="img" aria-label="${esc(t('rs_index'))}: ${index === null || index === undefined ? '–' : num(index, 0)}">
+    <circle cx="${c}" cy="${c}" r="${R}" class="rs-track" stroke-width="${w}"/>
+    <circle cx="${c}" cy="${c}" r="${R}" class="rs-fill" stroke-width="${w}" stroke-dasharray="${(C * f).toFixed(1)} ${C.toFixed(1)}" transform="${turn}"/>
+    <text x="${c}" y="${small ? c + 1 : c - 6}" class="rs-gn" text-anchor="middle" dominant-baseline="central">${index === null || index === undefined ? '–' : num(index, 0)}</text>
+    ${small ? '' : `<text x="${c}" y="${c + 30}" class="rs-gd" text-anchor="middle" dominant-baseline="central">${t('rs_of100')}</text>`}</svg>`;
+}
+L.S.rs_of100 = ['of 100', 'من 100'];
+
+const rsCat = rid => { const r = S.byId.get(rid); return r ? catLabel(r.category) : ''; };
+function rsUsedFor(p, s) { return listJoin(s.comps.map(c => esc(compLabel(p, c))).concat(s.aux.map(x => esc(tagLabel(x))))); }
+function rsFixLines(p, s) {
+  const lines = s.fix.changes.map(ch => ch.to ? t('rs_swap', { c: esc(compLabel(p, ch.comp)), a: ch.from ? resLabel(ch.from) : '–', b: resLabel(ch.to) }) : t('rs_drop', { c: esc(compLabel(p, ch.comp)) }));
+  const swapped = new Set(s.fix.changes.map(ch => ch.to));
+  s.fix.added.filter(x => !swapped.has(x)).forEach(x => lines.push(t('rs_add', { b: resLabel(x) })));
+  return lines;
+}
+function rsFixChips(s) {
+  const f = s.fix, out = [];
+  if (!f.extraCost && !f.extraDays) out.push(chip(t('rs_same'), 'ok'));
+  if (f.extraCost) out.push(chip(signed(f.extraCost, omr), f.overBudget ? 'gap' : 'info'));
+  if (f.extraDays) out.push(chip(signed(f.extraDays, x => ndays(x)), f.overDeadline ? 'gap' : 'info'));
+  if (f.overBudget) out.push(chip(t('rs_over_b'), 'gap'));
+  if (f.overDeadline) out.push(chip(t('rs_over_d'), 'gap'));
+  return out.join(' ');
+}
+function rsNoFixHTML(s) {
+  const r = S.byId.get(s.rid), physical = !!(r && RSV.PHYSICAL.indexOf(r.category) >= 0);
+  const caps = uniqA((s.unresolved || []).concat(s.unresolved && s.unresolved.length ? [] : s.aux));
+  return `<p class="rs-nofix">${t('rs_nofix')}${caps.length ? ' ' + t('rs_nofix_caps', { t: listJoin(caps.map(x => esc(tagLabel(x)))) }) : ''}</p><p class="hint">${t(physical ? 'rs_hint_unit' : 'rs_hint_service')}</p>`;
+}
+function rsWeakCard(p, s) {
+  const opt = s.weakened.length ? `<p class="hint">${t('rs_optional', { f: listJoin(s.weakened.map(f => esc(fnLabel(p, f)))) })}</p>` : '';
+  return `<article class="rs-card" data-v="${s.verdict}"><header><div class="rs-ch"><h3>${resLabel(s.rid)}</h3><p class="muted small">${esc(rsCat(s.rid))}${rsUsedFor(p, s) ? ' · ' + t('rs_used') + ': ' + rsUsedFor(p, s) : ''}</p></div>${chip(t('rs_v_' + s.verdict), RS_TONE[s.verdict])}</header>
+    <p class="rs-k">${t('rs_if')}</p><ul class="rs-fns">${s.lost.map(f => `<li>${esc(fnLabel(p, f))}</li>`).join('')}</ul>${opt}
+    <p class="rs-k">${t('rs_fix')}</p>${s.fix ? `<ul class="rs-fix">${rsFixLines(p, s).map(x => `<li>${x}</li>`).join('')}</ul><p class="rs-chips">${rsFixChips(s)}</p>` : rsNoFixHTML(s)}
+    <div class="row-btns"><button class="btn small ghost" data-act="rs-show" data-id="${esc(s.rid)}">${icon('graph')}<span>${t('rs_show')}</span></button></div></article>`;
+}
+function rsSpareCard(p, sp, base) {
+  return `<article class="rs-spare"><header><div class="rs-ch"><h3>${resLabel(sp.id)}</h3><p class="muted small">${esc(rsCat(sp.id))} · ${omr(sp.cost)}</p></div>${chip(t(sp.kind === 'unit' ? 'rs_sp_unit' : 'rs_sp_alt'), 'cyan')}</header>
+    <div class="rs-gain">${rsGauge(sp.index, RSV.level(sp.index), true)}<div><b>${t('rs_sp_gain', { a: num(base, 0), b: num(sp.index, 0) })}</b>
+      <p class="small">${t('rs_sp_protects', { r: listJoin(sp.protects.map(resLabel)) })}</p>
+      <p class="small ${sp.withinBudget ? 'ok-t' : 'gap-t'}">${t(sp.withinBudget ? 'rs_sp_ok' : 'rs_sp_over', { c: omr(sp.totalCost), b: omr(p.budget) })}</p></div></div>
+    <div class="row-btns"><button class="btn small primary" data-act="rs-spare-add" data-id="${esc(sp.id)}">${icon('plus')}<span>${t('rs_sp_add')}</span></button></div></article>`;
+}
+function rsResultHTML(p, c) {
+  const r = c.result, sug = c.sug, weak = r.scenarios.filter(s => s.impact && s.verdict !== 'safe');
+  const head = `<section class="panel rs-hero">${rsGauge(r.index, r.level)}<div class="rs-sum"><p class="rs-eyebrow">${t('rs_index')}</p><h2>${chip(rsLevel(r.level), rsTone(r.level))}</h2>
+      <p>${r.impactful ? t('rs_summary', { h: num(r.impactful, 0), n: num(r.parts, 0) }) : t('rs_summary_all')}</p>
+      <div class="fn-sum">${[['safe', 'full', r.safe], ['costly', 'atRisk', r.costly], ['critical', 'blocked', r.critical], ['none', 'none', r.parts - r.impactful]].map(([k, cls, n]) => `<div class="fs fs-${cls}"><b>${num(n, 0)}</b><span>${t('rs_c_' + k)}</span></div>`).join('')}</div>
+      <p class="hint">${t('rs_last', { d: fdate(p.resilience ? p.resilience.ts : Date.now(), true) })}</p></div></section>`;
+  const warn = (!r.baseValid ? `<p class="warnbox">${t('rs_invalid')} <a href="#reconfig">${t('nav_reconfig')}</a></p>` : '') + (r.down.length ? `<p class="warnbox">${t('rs_down', { r: listJoin(r.down.map(resLabel)) })}</p>` : '');
+  const weakSec = `<section class="panel"><h2>${t('rs_weak_h')}</h2>${weak.length ? `<div class="rs-grid">${weak.map(s => rsWeakCard(p, s)).join('')}</div>` : `<p class="check ok">${icon('check')}<span>${t('rs_weak_none')}</span></p>`}</section>`;
+  const mine = (p.spares || []).length ? `<section class="panel"><h2>${t('rs_mine_h')}</h2><div class="rs-mine">${p.spares.map(id => `<span class="chip ok">${resLabel(id)} <button class="chip-x" data-act="rs-spare-del" data-id="${esc(id)}" aria-label="${t('rs_mine_del')}: ${esc(resName(id))}" title="${t('rs_mine_del')}">×</button></span>`).join(' ')}</div>
+      <p class="small ${r.overBudgetWithSpares ? 'gap-t' : 'muted'}">${t('rs_mine_total', { c: omr(r.sparesCost), t: omr(r.totalCost), b: omr(r.budget) })}</p></section>` : '';
+  const spareSec = weak.length ? `<section class="panel"><h2>${t('rs_sp_h')}</h2><p class="hint">${t('rs_sp_p')}</p>
+      ${sug.list.length ? `<div class="rs-grid">${sug.list.map(sp => rsSpareCard(p, sp, r.index)).join('')}</div>${sug.together ? `<p class="rs-together">${t('rs_sp_together', { i: B(num(sug.together.index, 0)), c: omr(sug.together.cost) })}${sug.together.withinBudget ? '' : ` <span class="gap-t">${t('rs_sp_together_over')}</span>`}</p>` : ''}` : `<p class="hint">${t('rs_sp_none')}</p>`}</section>` : '';
+  const rows = r.scenarios.map(s => {
+    const v = !s.impact ? `<span class="muted">${t('rs_v_none')}</span>` : s.spare ? chip(t('rs_v_spare'), 'ok') : chip(t('rs_v_' + s.verdict), RS_TONE[s.verdict]);
+    const fix = s.fix ? rsFixLines(p, s).join('<br>') + `<div class="rs-chips">${rsFixChips(s)}</div>` : s.impact && !s.spare ? `<span class="gap-t">${t('rs_nofix')}</span>` : '–';
+    return `<tr class="${s.impact ? '' : 'rs-quiet'}"><td class="rs-tp">${resLabel(s.rid)}<small class="d-block muted">${esc(rsCat(s.rid))}${rsUsedFor(p, s) ? ' · ' + rsUsedFor(p, s) : ''}</small></td>
+      <td class="rs-ts">${s.impact ? t('rs_stops_n', { n: num(s.lost.length, 0), m: num(p.functions.filter(f => f.mandatory).length, 0) }) : `<span class="muted">${t('rs_stops_none')}</span>`}</td><td class="rs-tv">${v}</td><td class="small rs-tf${s.fix || (s.impact && !s.spare) ? '' : ' rs-empty'}" data-l="${t('rs_fix')}">${fix}</td></tr>`;
+  }).join('');
+  const all = `<section class="panel"><h2>${t('rs_all_h')}</h2><div class="tbl-wrap"><table class="tbl rs-tbl"><thead><tr><th>${t('rs_th_part')}</th><th>${t('rs_th_stops')}</th><th>${t('rs_th_verdict')}</th><th>${t('rs_fix')}</th></tr></thead><tbody>${rows}</tbody></table></div>
+    <p class="note">${t('rs_method')}</p></section>`;
+  return head + warn + weakSec + mine + spareSec + all;
+}
+function pageResilience() {
+  const p = activeP();
+  if (!p) return noProject();
+  const st = rsState(), c = rsFresh(p), saved = p.resilience, running = st.running && st.running.pid === p.id;
+  const stale = !!(saved && saved.sig !== rsSig(p));
+  /* after a reload the summary is saved but not the details: a test that still matches the project runs again by itself */
+  if (!c && !st.running && saved && !stale && !st.auto.has(p.id) && RSV) { st.auto.add(p.id); setTimeout(() => rsRun(p), 0); }
+  const btn = `<button class="btn primary" data-act="rs-run" ${st.running ? 'disabled' : ''}>${icon('buoy')}<span>${t(saved || c ? 'rs_rerun' : 'rs_run')}</span></button>`;
+  let body;
+  if (running) body = `<section class="panel" id="rs-prog"><p class="rs-msg">${t('rs_running', { i: num(Math.min(st.running.i + 1, st.running.n || 1), 0), n: num(st.running.n, 0), r: st.running.part ? resLabel(st.running.part) : '' })}</p><div class="rs-bar"><span style="width:${Math.round((st.running.n ? st.running.i / st.running.n : 0) * 100)}%"></span></div></section>`;
+  else if (c) body = c.result.parts ? rsResultHTML(p, c) : `<p class="hint">${t('rs_none')}</p>`;
+  else if (saved) body = `<section class="panel rs-hero${stale ? ' rs-old' : ''}">${rsGauge(saved.index, saved.level)}<div class="rs-sum"><p class="rs-eyebrow">${t('rs_index')}</p><h2>${chip(rsLevel(saved.level), rsTone(saved.level))}</h2>
+      <p class="${stale ? 'warnbox' : 'hint'}">${stale ? t('rs_stale', { d: fdate(saved.ts, true) }) : t('rs_last', { d: fdate(saved.ts, true) })}</p></div></section>`;
+  else body = `<section class="panel rs-intro"><ol class="rs-how">${[1, 2, 3].map(i => `<li><b>${t('rs_how' + i)}</b><span>${t('rs_how' + i + '_d')}</span></li>`).join('')}</ol><div class="row-btns">${btn}</div></section>`;
+  return `<header class="page-head"><div><h1>${t('nav_resilience')}</h1><p class="lede">${t('rs_p')}</p></div><div class="row-btns">${btn}</div></header>
+    ${st.error && !running ? `<p class="warnbox">${t('rs_error')}</p>` : ''}${body}`;
+}
+PAGES.resilience = pageResilience;
+Object.assign(ACT, {
+  'rs-run'() { const p = activeP(); if (p) rsRun(p); },
+  'rs-show'(el) { const p = activeP(); if (p) triggerEvent(p, [{ res: el.dataset.id, to: 'UNAVAILABLE' }]); },
+  'rs-spare-add'(el) {
+    const p = activeP(), id = el.dataset.id;
+    if (!p || !id) return;
+    p.spares = uniqA((p.spares || []).concat([id]));
+    p.history.push({ ts: Date.now(), kind: 'spare', op: 'add', res: id });
+    saveProject(p); rsRun(p);
+  },
+  'rs-spare-del'(el) {
+    const p = activeP(), id = el.dataset.id;
+    if (!p || !id) return;
+    p.spares = (p.spares || []).filter(x => x !== id);
+    p.history.push({ ts: Date.now(), kind: 'spare', op: 'del', res: id });
+    saveProject(p); rsRun(p);
+  }
+});
+
+/* the dashboard card and the report section */
+function rsDashHTML(p) {
+  const s = p.resilience, stale = !!(s && s.sig !== rsSig(p));
+  if (!s) return `<h3>${t('dash_resil')}</h3><p class="hint">${t('dash_resil_none')}</p><a class="btn small ghost" href="#resilience">${icon('buoy')}<span>${t('dash_resil_btn')}</span></a>`;
+  return `<h3>${t('dash_resil')}</h3><div class="rs-dash">${rsGauge(s.index, s.level, true)}<div><b>${rsLevel(s.level)}</b><p class="small muted">${stale ? t('rp_resil_stale') : t('rs_last', { d: fdate(s.ts, true) })}</p></div></div>
+    <a class="btn small ghost" href="#resilience">${t('nav_resilience')}</a>`;
+}
+function resilienceReportHTML(p) {
+  const s = p.resilience;
+  if (!s) return '';
+  const crit = (s.criticalParts || []).map(resLabel), sp = (s.spares || []).map(resLabel);
+  return `<h2>${t('rp_resil_h')}</h2><p>${t('rp_resil_p', { i: num(s.index, 0), l: rsLevel(s.level), d: fdate(s.ts, true), h: num(s.impactful, 0), n: num(s.parts, 0), s: num(s.safe, 0), c: num(s.costly, 0), k: num(s.critical, 0) })}</p>
+    ${crit.length ? `<p>${t('rp_resil_crit', { r: listJoin(crit) })}</p>` : ''}${sp.length ? `<p>${t('rp_resil_spares', { r: listJoin(sp), c: omr(s.sparesCost || 0) })}</p>` : ''}
+    ${s.sig !== rsSig(p) ? `<p class="rp-meta">${t('rp_resil_stale')}</p>` : ''}<p class="rp-meta">${t('rs_method')}</p>`;
+}
+function rsActText(h, pn) {
+  if (h.kind === 'resilience') return t('act_resil', { p: pn, i: num(h.index, 0), l: rsLevel(h.level) });
+  return t(h.op === 'del' ? 'act_spare_del' : 'act_spare_add', { p: pn, r: resLabel(h.res) });
+}
+function rsReportText(h) {
+  if (h.kind === 'resilience') return t('rp_h_resil', { i: num(h.index, 0), l: rsLevel(h.level) });
+  return t(h.op === 'del' ? 'rp_h_spare_del' : 'rp_h_spare_add', { r: resLabel(h.res) });
+}
+
 /* ---------------- students' ideas: what students send from their page, and the page itself (server only) ---------------- */
 Object.assign(L.S, {
   nav_ideas: ['Students’ ideas', 'أفكار الطلاب'],
@@ -9573,7 +10058,7 @@ function permOk(need) {
 }
 
 /* pages */
-const ROUTE_PERM = { dashboard: 'projects', new: 'projects', graph: 'projects', gaps: 'projects', reconfig: 'projects', planner: 'projects', report: 'projects', lab: 'projects', discover: 'discover', sustain: 'sustain' };
+const ROUTE_PERM = { dashboard: 'projects', new: 'projects', graph: 'projects', gaps: 'projects', reconfig: 'projects', resilience: 'projects', planner: 'projects', report: 'projects', lab: 'projects', discover: 'discover', sustain: 'sustain' };
 function adminTabs() {
   if (!isStaff()) return [];
   return ['resources', 'categories', 'projects', 'submissions', 'accounts', 'quality'].filter(k =>
@@ -9596,6 +10081,7 @@ function noAccessHTML(r) {
 
 /* what each action needs; the server checks the same on its side */
 const ACT_PERM = {
+  'rs-run': 'projects', 'rs-show': 'projects', 'rs-spare-add': 'projects', 'rs-spare-del': 'projects',
   'load-examples': 'projects', 'remove-examples': 'projects', 'open-example': 'projects', 'idea-start': 'projects', 'pj-dup': 'projects', 'pj-del': 'projects', 'pj-restore': 'projects',
   'np-llm': 'ai', 'ai-parts': 'ai', 'aip-run': 'ai', 'aip-add': 'ai', 'dc-run': 'discover', 'nv-ai': 'discover', 'su-run': 'sustain', 'up-run': 'sustain', 'up-find': 'sustain', 'sd-make': 'sustain',
   'sub-refresh': 'submissions', 'sub-open': ['submissions', 'projects'],
