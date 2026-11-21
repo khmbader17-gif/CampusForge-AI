@@ -15,11 +15,13 @@ A smart bilingual (Arabic and English) university platform that helps students t
 - تُضاف الميزة بضغطة واحدة، فتظهر في المخطط والتقرير وسجل النشاط.
 - إذا وُجدت الفكرة، يبدأ الذكاء الاصطناعي تلقائيًا البحث في الويب عن ميزات لا تقدمها المشاريع والمنتجات المشابهة، ويعرض ما تحقق منه والصفحات التي راجعها، ثم يفحص المحرك كل ميزة قبل إضافتها. وزر «ابحث عن ميزات أخرى» يأتي بميزات جديدة دون تكرار.
 - المقارنة تشمل الأعمال التي وجدها البحث فقط، وليست بحثًا كاملًا في براءات الاختراع.
+- **التحقق من المصادر:** لا يعرض الموقع رابطًا لأي عمل أو صفحة إلا إذا كان ضمن الصفحات التي أعادها البحث في الإنترنت فعلًا (العنوان نفسه، أو الوثيقة نفسها مثل ورقة arXiv أو DOI أو براءة اختراع أو مستودع GitHub أو فيديو، أو عنوان يطابق صفحة أعادها البحث). وما لا يطابقها يُعلَّم «غير موثّق» ويُخفى رابطه، وتظهر في أعلى النتائج نسبة الأعمال الموثّقة، مع زر «الموثّقة فقط». وإذا كان البحث في الإنترنت معطّلًا تُعلَّم النتائج «لم يُتحقق منها» ولا تُعرض لها روابط. وينطبق ذلك أيضًا على صفحات البحث عن ميزة جديدة، وروابط الموردين، وأدلة استوديو الاستدامة.
 - After the global search, the platform says whether your idea already exists, is close, or does not match, naming the closest work and how much of your idea it covers.
 - It then ranks new features that none of the found works uses, and the FGAR engine checks each one on your own project: extra cost, days, new parts, and whether it stays within budget and deadline.
 - One click adds a feature to the design, the report and the activity log.
 - When the idea already exists, the AI starts by itself to search the web for features that similar projects and products do not offer, shows what it checked and the pages it read, and the engine checks each one before it can be added. "Look for other features" asks again without repeats.
 - The comparison covers only the works that the search found; it is not a full patent search.
+- Source verification: a link to a work or page is shown only when the web search actually returned that page (the same address, the same document such as an arXiv paper, a DOI, a patent, a GitHub repository or a video, or a title found in a returned page). Anything else is marked "Not verified" and its link is hidden; the results show how many works were verified, with a "Verified only" filter. With web search off, results are marked "Not checked" and show no links. The same applies to the pages behind new features, supplier links and the Sustainability Studio's guides.
 
 ## صمود المشروع / Project resilience
 - قبل أن يشتري الطالب القطع، يعطّل محرك FGAR كل قطعة في المشروع واحدة بعد الأخرى، ويبحث لكل تعطّل عن أفضل إصلاح ضمن الميزانية والموعد: بديل من الكتالوج أو تغيير في التصميم.

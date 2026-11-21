@@ -852,6 +852,13 @@ html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
 .rs-dash{display:flex;align-items:center;gap:12px;margin:6px 0 10px}
 .rs-dash p{margin:2px 0 0}
 @media (prefers-reduced-motion:reduce){.rs-bar span{transition:none}}
+/* sources checked against the pages the web search returned */
+.dc-verify{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13.5px;margin:4px 0 10px;color:var(--risk)}
+.dc-verify.ok{color:var(--ok)}
+.dc-verify>svg{width:17px;height:17px;flex:none}
+.dc-verify>span{color:var(--text)}
+.dc-verify .btn{margin-inline-start:auto}
+.chip>svg{width:12px;height:12px;vertical-align:-2px}
 /* resilience tabs and the safety margins */
 .risk-t{color:var(--risk)}
 .rs-tabs button{display:inline-flex;align-items:center;gap:7px}
@@ -1511,7 +1518,11 @@ html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
 
   /* ---------- Claude (Messages API, streamed, with live web search) ---------- */
   function sampleCap() {
-    async function turn(body, signal, onDelta) {
+    /* every page the web search returned or the answer cited: the page checks the links in the answer against them */
+    function collect(found, b) {
+      if (b && b.type === 'web_search_tool_result' && Array.isArray(b.content)) for (const r of b.content) { if (r && r.type === 'web_search_result' && r.url) found.push({ url: String(r.url), title: String(r.title || '') }); }
+    }
+    async function turn(body, signal, onDelta, found) {
       let res;
       try { res = await fetch(API + 'messages', { method: 'POST', headers: headers(KEY), body: JSON.stringify(body), signal }); }
       catch (e) { throw fail(signal && signal.aborted ? 'cancelled' : 'network'); }
@@ -1527,12 +1538,13 @@ html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
           if (b.type === 'text') b.text = b.text || '';
           if (b.type === 'server_tool_use' || b.type === 'tool_use') b._json = '';
           blocks[ev.index] = b;
+          collect(found, b);
         } else if (ev.type === 'content_block_delta') {
           const b = blocks[ev.index], d = ev.delta || {};
           if (!b) return;
           if (d.type === 'text_delta') { b.text += d.text; onDelta(d.text); }
           else if (d.type === 'input_json_delta') b._json += d.partial_json || '';
-          else if (d.type === 'citations_delta' && d.citation) (b.citations = b.citations || []).push(d.citation);
+          else if (d.type === 'citations_delta' && d.citation) { (b.citations = b.citations || []).push(d.citation); if (d.citation.url) found.push({ url: String(d.citation.url), title: String(d.citation.title || '') }); }
         } else if (ev.type === 'content_block_stop') {
           const b = blocks[ev.index];
           if (b && b._json !== undefined) { try { b.input = b._json ? JSON.parse(b._json) : (b.input || {}); } catch (e) { b.input = b.input || {}; } delete b._json; }
@@ -1568,17 +1580,21 @@ html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
         content.push({ type: 'text', text: prompt });
       }
       let messages = [{ role: 'user', content }], text = '';
+      const found = [];
+      const report = () => { if (web && opts.onSources) { try { opts.onSources({ web: true, sources: found.slice(0, 300) }); } catch (e) { /* page callback errors are ignored */ } } };
       const onDelta = d => { text += d; if (opts.onText) { try { opts.onText({ text, delta: d }); } catch (e) { /* page callback errors are ignored */ } } };
       try {
         for (let n = 0; n < 4; n++) {
-          const r = await turn(Object.assign({}, body, { messages }), opts.signal, onDelta);
+          const r = await turn(Object.assign({}, body, { messages }), opts.signal, onDelta, found);
           if (r.stop !== 'pause_turn') break;
           messages = messages.concat([{ role: 'assistant', content: r.blocks }]);
         }
       } catch (e) {
+        report();
         if (opts.signal && opts.signal.aborted) throw fail('cancelled', text);
         e.text = text; throw e;
       }
+      report();
       return text;
     }
     const call = async (input, opts) => ({ text: await stream(input, opts || {}), truncated: false });
@@ -5311,7 +5327,7 @@ rp_h_novelty:['New feature added after discovery: “{f}” (project cost {c}).'
     features.forEach((f, i) => {
       const fresh = f.caps.filter(c => pc.indexOf(c) < 0), key = fresh.length ? fresh : f.caps;
       const c = { id: 'ai' + (i + 1), source: 'ai', key, caps: f.caps, name: f.name, why: f.why, closest: f.closest,
-        checked: f.checked || { en: '', ar: '' }, finding: f.finding || '', sources: f.sources || [], web: !!f.web,
+        checked: f.checked || { en: '', ar: '' }, finding: f.finding || '', sources: f.sources || [], web: !!f.web, dropped: f.dropped || 0, srcChecked: !!f.srcChecked,
         fit: 2, w: 2, reuse: f.caps.length - fresh.length, used: usedBy(key, works, true) };
       c.feas = feasibility(E, project, catalog, opts, c.caps, c.name);
       if (c.feas.status !== 'none') out.push(c);
@@ -5729,6 +5745,131 @@ rp_h_novelty:['New feature added after discovery: “{f}” (project cost {c}).'
   }
 
   return { VERSION, STEP, candidates, choose, summary, plan, scoreSum };
+}));
+
+/* =====================================================================
+   Source verification — is a link that the AI wrote one that its web
+   search actually returned? A pure JavaScript module (no DOM access) used
+   by the browser and by Node.js tests.
+   The connectors hand over every page the web search tool returned and
+   every page the answer cited. A link in the answer is accepted only when
+   it matches one of them:
+     url    the same address (letters' case, "www.", tracking parameters,
+            a trailing slash and the fragment do not matter);
+     page   the same page: the same paper on arXiv or DOI, the same patent
+            on Google Patents, the same GitHub repository, the same YouTube
+            video, or the same host and path;
+     title  the item has no matching link, but its title is found in the
+            title of a returned page (or shares most of its words), and
+            that page becomes its source.
+   Anything else is unverified, and its link is not shown as a source.
+   ===================================================================== */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  else root.CF_VERIFY = api;
+}(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  const VERSION = '1.0.0';
+  const TRACKING = /^(utm_[a-z0-9_]+|fbclid|gclid|dclid|msclkid|mc_cid|mc_eid|_ga|_gl|igshid|si|ref|ref_src|srsltid|spm|share|from|hl|lang|locale)$/i;
+  const STOP_WORDS = ('a an the of for and or in on at to by with from using based via into its their this that is are be as ' +
+    'system systems project projects device devices smart new study paper research approach method design implementation ' +
+    'في من على إلى الى عن مع أو او و ال لل ب ل هذا هذه ذلك التي الذي نظام مشروع جهاز ذكي ذكية دراسة بحث تصميم');
+  let STOP = null;   // built once, normalized like the titles
+  const stopSet = () => STOP || (STOP = new Set(STOP_WORDS.split(/\s+/).map(w => words(w)).filter(Boolean)));
+
+  function parse(u) {
+    if (typeof u !== 'string') return null;
+    u = u.trim();
+    if (!/^https?:\/\/[^\s"'<>]+$/i.test(u)) return null;
+    try { return new URL(u); } catch (e) { return null; }
+  }
+  const cleanHost = h => h.toLowerCase().replace(/\.$/, '').replace(/^(www\d?|m|mobile|amp)\./, '');
+  function cleanPath(p) {
+    let s = p || '/';
+    try { s = decodeURI(s); } catch (e) { /* keep as is */ }
+    s = s.toLowerCase().replace(/\/{2,}/g, '/').replace(/\/(index|default)\.(html?|php|aspx?)$/, '/').replace(/\/+$/, '');
+    return s;
+  }
+  /* the same document under different addresses */
+  function canonical(x, host, path) {
+    let m;
+    if (/(^|\.)arxiv\.org$/.test(host) && (m = path.match(/^\/(?:abs|pdf|html|format)\/([a-z.-]*\/?\d{4}\.\d{4,5}|[a-z.-]+\/\d{7})(?:v\d+)?(?:\.pdf)?/))) return 'arxiv:' + m[1];
+    if (/(^|\.)doi\.org$/.test(host) && (m = path.match(/^\/(10\.\d{4,9}\/.+)$/))) return 'doi:' + m[1];
+    if (host === 'patents.google.com' && (m = path.match(/^\/patent\/([a-z]{2}\d+[a-z]?\d?)/))) return 'patent:' + m[1];
+    if (host === 'github.com' && (m = path.match(/^\/([^/]+)\/([^/]+)/)) && ['search', 'topics', 'orgs', 'features', 'marketplace'].indexOf(m[1]) < 0) return 'gh:' + m[1] + '/' + m[2].replace(/\.git$/, '');
+    /* video ids keep their letters' case */
+    if (host === 'youtube.com' && path === '/watch' && x.searchParams.get('v')) return 'yt:' + x.searchParams.get('v');
+    if (host === 'youtube.com' && (m = x.pathname.match(/^\/(?:shorts|embed|live)\/([\w-]{6,})/i))) return 'yt:' + m[1];
+    if (host === 'youtu.be' && (m = x.pathname.match(/^\/([\w-]{6,})/))) return 'yt:' + m[1];
+    return null;
+  }
+  /* exact: the address without what does not change the page; page: the document it shows */
+  function keys(u) {
+    const x = parse(u);
+    if (!x) return null;
+    const host = cleanHost(x.hostname), path = cleanPath(x.pathname);
+    const q = Array.from(x.searchParams.entries()).filter(([k]) => !TRACKING.test(k)).map(([k, v]) => k.toLowerCase() + '=' + v).sort().join('&');
+    const can = canonical(x, host, path);
+    const exact = host + path + (q ? '?' + q : '');
+    return { exact, page: can || exact, host, root: !path && !q && !can };
+  }
+  /* Arabic words lose the article and the attached prepositions (al-, li-, bi-, wa-, fa-, ka-) so that "لمراقبة" meets "مراقبة" */
+  function stem(w) {
+    if (!/^[ء-ي]/.test(w)) return w;
+    const m = w.match(/^(?:وال|بال|كال|فال|لل|ال)(.{3,})$/) || w.match(/^[وبلفك](.{4,})$/);
+    return m ? m[1] : w;
+  }
+  function words(s) {
+    let t = String(s || '').normalize('NFKD').replace(/[̀-ًͯ-ٰٟ]/g, '').toLowerCase();
+    t = t.replace(/[أإآ]/g, 'ا').replace(/ة/g, 'ه').replace(/ى/g, 'ي').replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
+    return t ? t.split(' ').map(stem).join(' ') : '';
+  }
+  const sig = s => words(s).split(' ').filter(w => w.length > 1 && !stopSet().has(w));
+
+  /* every page the search returned, indexed by address and by document */
+  function index(sources) {
+    const list = [], byExact = new Map(), byPage = new Map();
+    for (const s of Array.isArray(sources) ? sources : []) {
+      const k = s && keys(s.url);
+      if (!k || byExact.has(k.exact)) continue;
+      const e = { url: String(s.url).trim(), title: String(s.title || '').trim().slice(0, 300), k, norm: words(s.title), toks: new Set(sig(s.title)) };
+      list.push(e); byExact.set(k.exact, e);
+      if (k.page && !byPage.has(k.page)) byPage.set(k.page, e);
+    }
+    return { list, byExact, byPage, count: list.length };
+  }
+  /* how well an item's title matches a returned page's title: 2 found inside it, 1 most words shared, 0 no */
+  function titleScore(title, e) {
+    const n = words(title), toks = sig(title);
+    if (toks.length >= 2 && n.length >= 12 && (' ' + e.norm + ' ').indexOf(' ' + n + ' ') >= 0) return 2 + toks.length / 100;
+    if (toks.length < 3 || !e.toks.size) return 0;
+    let shared = 0;
+    for (const w of new Set(toks)) if (e.toks.has(w)) shared++;
+    const jac = shared / (new Set(toks).size + e.toks.size - shared);
+    return shared >= 3 && jac >= 0.6 ? 1 + jac / 10 : 0;
+  }
+  function check(idx, url, title) {
+    const none = { verified: false, url: '', title: '', how: null };
+    if (!idx || !idx.count) return none;
+    const k = keys(url);
+    if (k) {
+      const a = idx.byExact.get(k.exact);
+      if (a) return { verified: true, url: a.url, title: a.title, how: 'url' };
+      const b = k.page && !k.root ? idx.byPage.get(k.page) : null;
+      if (b) return { verified: true, url: b.url, title: b.title, how: 'page' };
+    }
+    if (title) {
+      let best = null, score = 0;
+      for (const e of idx.list) { const s = titleScore(title, e); if (s > score) { score = s; best = e; } }
+      if (best) return { verified: true, url: best.url, title: best.title, how: 'title' };
+    }
+    return none;
+  }
+  function hostOf(u) { const x = parse(u); return x ? cleanHost(x.hostname) : ''; }
+
+  return { VERSION, keys, index, check, titleScore, hostOf, words };
 }));
 </script>
 <script>/* =====================================================================
@@ -7953,21 +8094,24 @@ function tryParseJSON(text) {
   try { return JSON.parse(text.slice(a, b + 1)); } catch (e) { return null; }
 }
 const DENIED = ['not_granted', 'sampling_disabled', 'not_declared', 'capability_disabled', 'capability_removed'];
+/* r.sources: the pages the web search really returned ({ web, sources }), or null when the answer had no web search */
 async function askJSON(prompt, o) {
   const sample = await getCap('sample');
   if (!sample || S.caps.sampleHidden) throw { code: 'unavailable' };
+  let found = null;
   const opts = { modelTier: o.tier || 'default', cache: false };
+  if (window.CF_LOCAL || window.CF_PLATFORM) opts.onSources = x => { found = x && Array.isArray(x.sources) ? x : null; };   // only our own connectors know this option
   if (o.signal) opts.signal = o.signal;
   if (o.onText) opts.onText = o.onText;
   if (o.images && o.images.length) opts.images = o.images;
-  try { return { value: await sample.json(prompt, opts), partial: false }; }
+  try { const value = await sample.json(prompt, opts); return { value, partial: false, sources: found }; }
   catch (e) {
     const code = e && e.code;
     if ((code === 'invalid_json' || code === 'cancelled') && e.text) {
       const v = tryParseJSON(e.text);
-      if (v) return { value: v, partial: code === 'cancelled', code };
+      if (v) return { value: v, partial: code === 'cancelled', code, sources: found };
       const items = salvageItems(e.text);
-      if (items.length) return { value: { items }, partial: true, code };
+      if (items.length) return { value: { items }, partial: true, code, sources: found };
     }
     if (DENIED.indexOf(code) >= 0) S.caps.sampleHidden = true;
     throw e;
@@ -8068,8 +8212,10 @@ async function runDiscovery() {
     const r = await askJSON(prompt, { tier: 'default', signal: st.ctrl ? st.ctrl.signal : null, onText });
     const v = validateDiscovery(r.value);
     if (!v.items.length) throw { code: r.code || 'empty_result' };
+    const chk = dcVerify(v.items, r);
     const secs = Math.round((Date.now() - st.started) / 1000);
-    p.discovery = { ts: Date.now(), query: q.slice(0, 2000), region: st.region, types: st.types.slice(), items: v.items, themes: v.themes, note: v.note, source: liveSearch() ? 'claude-web' : 'claude-knowledge', partial: !!r.partial };
+    p.discovery = { ts: Date.now(), query: q.slice(0, 2000), region: st.region, types: st.types.slice(), items: v.items, themes: v.themes, note: v.note, source: liveSearch() ? 'claude-web' : 'claude-knowledge', partial: !!r.partial,
+      checked: chk.checked, pages: chk.pages, verified: chk.ok };
     p.history.push({ ts: Date.now(), kind: 'discover', n: v.items.length });
     saveProject(p);
     st.phase = r.partial ? 'partial' : 'done';
@@ -8088,6 +8234,23 @@ async function runDiscovery() {
   /* when the idea already exists, Claude starts looking for a feature that sets it apart */
   if (st.phase === 'done') nvAfterDiscovery(p);
 }
+/* a link the answer gives is kept only when the web search returned that page (CF_VERIFY); the rest are marked */
+function srcIndex(r) { const V = window.CF_VERIFY; return r && r.sources && V ? V.index(r.sources.sources) : null; }
+function dcVerify(items, r) {
+  const V = window.CF_VERIFY, idx = srcIndex(r);
+  let ok = 0;
+  for (const it of items) {
+    if (!idx) { it.check = 'none'; it.url = ''; continue; }
+    const c = V.check(idx, it.url, it.title);
+    it.check = c.verified ? 'ok' : 'no'; it.url = c.verified ? c.url : ''; it.how = c.how || ''; it.srcTitle = c.verified ? c.title.slice(0, 200) : '';
+    if (c.verified) ok++;
+  }
+  return { checked: !!idx, pages: idx ? idx.count : 0, ok };
+}
+function dcBadge(it) {
+  if (it.check === 'ok') return `<span class="chip ok" title="${esc(it.how === 'title' ? t('dc_v_how_title') : it.how === 'page' ? t('dc_v_how_page') : it.srcTitle || '')}">${icon('check')} ${t('dc_v_ok')}</span>`;
+  return it.check === 'no' ? chip(t('dc_v_no'), 'risk') : chip(t('dc_v_none'), 'info');
+}
 function dcCard(p, it, i, pc, live) {
   const shared = pc.filter(c => it.capabilities.indexOf(c) >= 0);
   const q = (it.title + ' ' + (it.organization || '')).trim();
@@ -8095,10 +8258,10 @@ function dcCard(p, it, i, pc, live) {
   const meta = [esc(it.organization || ''), it.country ? esc(countryName(it.country)) : '', it.year ? String(it.year) : ''].filter(Boolean).join(S.lang === 'ar' ? '، ' : ', ');
   const sum = it.summary[S.lang] || it.summary.en, rel = it.relation[S.lang] || it.relation.en;
   return `<article class="dc-card"><header><span class="flag" aria-hidden="true">${flagOf(it.country)}</span><div><h3><bdi>${esc(it.title)}</bdi></h3><p class="small muted">${meta}</p></div></header>
-    <p class="tags">${chip(t('dc_t_' + it.type), 'cyan')} ${confChip(it.confidence)}</p>
+    <p class="tags">${chip(t('dc_t_' + it.type), 'cyan')} ${confChip(it.confidence)}${live ? '' : ' ' + dcBadge(it)}</p>
     ${sum ? `<p class="small">${esc(sum)}</p>` : ''}${rel ? `<p class="small"><b>${t('dc_relation')}:</b> ${esc(rel)}</p>` : ''}
     <div class="overlap"><div class="bar"><span style="width:${Math.round(shared.length / Math.max(1, pc.length) * 100)}%"></span></div><small>${t('dc_overlap', { s: num(shared.length, 0), n: num(pc.length, 0) })}${shared.length ? ': ' + listJoin(shared.map(c => esc(tagLabel(c)))) : ''}</small></div>
-    ${it.url ? `<p class="dc-links"><span class="muted">${t('dc_source')}:</span><a href="${esc(it.url)}" target="_blank" rel="noopener noreferrer">${esc(hostOf(it.url))}</a></p>` : ''}<p class="dc-links"><span class="muted">${t('dc_verify')}:</span>${links}</p>
+    ${it.url && it.check === 'ok' && !live ? `<p class="dc-links"><span class="muted">${t('dc_source')}:</span><a href="${esc(it.url)}" target="_blank" rel="noopener noreferrer" title="${esc(it.srcTitle || '')}">${esc(hostOf(it.url))}</a></p>` : ''}${it.check === 'no' && !live ? `<p class="small risk-t">${t('dc_v_no_p')}</p>` : ''}<p class="dc-links"><span class="muted">${t('dc_verify')}:</span>${links}</p>
     ${live ? '' : `<footer><button class="btn small ghost" data-act="dc-start" data-i="${i}">${t('dc_start')}</button></footer>`}</article>`;
 }
 function pageDiscover() {
@@ -8124,10 +8287,13 @@ function pageDiscover() {
     side = `<section class="panel"><h2>${t('dc_countries')}</h2>${countries.map(c => `<div class="cbar"><span>${c === '??' ? '🌐' : flagOf(c)} ${esc(c === '??' ? t('dc_unknown_country') : countryName(c))}</span><div class="bar"><span style="width:${Math.round(byC[c] / maxC * 100)}%"></span></div><b>${num(byC[c], 0)}</b></div>`).join('')}</section>
       <section class="panel"><h2>${t('dc_coverage')}</h2><p class="hint">${t('dc_coverage_p')}</p>${cov.map(([c, n]) => `<div class="cbar"><span>${esc(tagLabel(c))}</span><div class="bar"><span style="width:${Math.round(n / dc.items.length * 100)}%"></span></div><b>${num(n, 0)}</b></div>`).join('')}</section>
       ${dc.themes && dc.themes[S.lang] && dc.themes[S.lang].length ? `<section class="panel"><h2>${t('dc_themes')}</h2><p class="tags">${dc.themes[S.lang].map(x => chip(esc(x), 'info')).join(' ')}</p></section>` : ''}`;
-    results = `<p class="rc-stats">${t('dc_found', { n: num(dc.items.length, 0), c: num(countries.filter(c => c !== '??').length, 0), d: fdate(dc.ts, true) })}</p>
+    const okN = dc.items.filter(it => it.check === 'ok').length, only = !!st.onlyOk && dc.checked && okN > 0;
+    const vsum = dc.checked ? `<p class="dc-verify ok">${icon('check')}<span>${t('dc_v_sum', { a: num(okN, 0), n: num(dc.items.length, 0), p: num(dc.pages || 0, 0) })}</span>${okN && okN < dc.items.length ? `<button class="btn small ghost" data-act="dc-only" aria-pressed="${only}">${t(only ? 'dc_v_all' : 'dc_v_only')}</button>` : ''}</p>`
+      : `<p class="dc-verify">${icon('alert')}<span>${t(dc.checked === false ? 'dc_v_unchecked' : 'dc_v_legacy')}</span></p>`;
+    results = `<p class="rc-stats">${t('dc_found', { n: num(dc.items.length, 0), c: num(countries.filter(c => c !== '??').length, 0), d: fdate(dc.ts, true) })}</p>${vsum}
       ${dc.note && dc.note[S.lang] ? `<p class="hint">${esc(dc.note[S.lang])}</p>` : ''}<p class="note">${t('dc_disclaimer')}</p>
       ${nvPanelHTML(p)}
-      <div class="dc-list">${dc.items.map((it, i) => dcCard(p, it, i, pc)).join('')}</div>`;
+      <div class="dc-list">${dc.items.map((it, i) => only && it.check !== 'ok' ? '' : dcCard(p, it, i, pc)).join('')}</div>`;
   }
   return `<header class="page-head"><div><h1>${t('nav_discover')}</h1><p class="lede">${t('dc_p')}</p></div></header>
     <div class="dc-layout"><div>${form}<div id="dc-status" aria-live="polite">${dcStatusHTML(st)}</div>${st.busy ? `<div id="dc-live" class="dc-list">${liveCardsHTML(p, st.live || [])}</div>` : results}</div><aside>${st.busy ? '' : side}</aside></div>`;
@@ -8136,11 +8302,14 @@ function discoveryReportHTML(p) {
   const dc = p.discovery;
   if (!dc || !dc.items || !dc.items.length) return noveltyReportHTML(p);
   const pc = projectCaps(p);
-  return `<h2>${t('rp_s7')}</h2><p class="rp-meta">${t(dc.source === 'claude-web' ? 'rp_dc_note_live' : 'rp_dc_note', { d: fdate(dc.ts, true) })}</p>
-    <table><thead><tr><th>${t('dc_item')}</th><th>${t('np_country')}</th><th>${t('type')}</th><th>${t('dc_overlap_h')}</th></tr></thead><tbody>${dc.items.map(it => `<tr><td>${esc(it.title)}<br><span class="rp-meta">${esc(it.organization || '')}${it.year ? ', ' + it.year : ''}</span></td><td>${esc(it.country ? countryName(it.country) : '–')}</td><td>${t('dc_t_' + it.type)}</td><td>${num(pc.filter(c => it.capabilities.indexOf(c) >= 0).length, 0)}/${num(pc.length, 0)}</td></tr>`).join('')}</tbody></table>${noveltyReportHTML(p)}`;
+  const okN = dc.items.filter(it => it.check === 'ok').length;
+  const src = it => it.check === 'ok' && it.url ? esc(hostOf(it.url)) : it.check === 'no' ? `<span class="risk">${t('dc_v_no')}</span>` : '–';
+  return `<h2>${t('rp_s7')}</h2><p class="rp-meta">${t(dc.source === 'claude-web' ? 'rp_dc_note_live' : 'rp_dc_note', { d: fdate(dc.ts, true) })}${dc.checked ? ' ' + t('rp_dc_verified', { a: num(okN, 0), n: num(dc.items.length, 0) }) : ''}</p>
+    <table><thead><tr><th>${t('dc_item')}</th><th>${t('np_country')}</th><th>${t('type')}</th><th>${t('dc_overlap_h')}</th><th>${t('dc_source')}</th></tr></thead><tbody>${dc.items.map(it => `<tr><td>${esc(it.title)}<br><span class="rp-meta">${esc(it.organization || '')}${it.year ? ', ' + it.year : ''}</span></td><td>${esc(it.country ? countryName(it.country) : '–')}</td><td>${t('dc_t_' + it.type)}</td><td>${num(pc.filter(c => it.capabilities.indexOf(c) >= 0).length, 0)}/${num(pc.length, 0)}</td><td>${src(it)}</td></tr>`).join('')}</tbody></table>${noveltyReportHTML(p)}`;
 }
 PAGES.discover = pageDiscover;
 IN['dc-q'] = el => { discState().q = el.value; };
+ACT['dc-only'] = () => { const st = discState(); st.onlyOk = !st.onlyOk; render(); };
 ON['dc-region'] = el => { discState().region = el.value; };
 ON['dc-type'] = el => { const st = discState(), ty = el.dataset.v, i = st.types.indexOf(ty); if (el.checked && i < 0) st.types.push(ty); if (!el.checked && i >= 0) st.types.splice(i, 1); };
 ACT['dc-run'] = () => { runDiscovery(); };
@@ -8204,7 +8373,7 @@ function validateParts(res, cap) {
 function partsListHTML(items) {
   if (!items.length) return `<p class="warnbox">${t('aip_none')}</p>`;
   return `<ul class="aip-list">${items.map((it, i) => `<li><input type="checkbox" id="aip-${i}" data-i="${i}" ${it.confidence !== 'low' ? 'checked' : ''}><label for="aip-${i}"><b><bdi>${esc(it.name)}</bdi></b>${it.manufacturer ? ' <span class="muted">' + esc(it.manufacturer) + '</span>' : ''} ${confChip(it.confidence)}
-    <small class="d-block">${t('aip_price', { usd: num(it.usd, 2), omr: omr(it.usd * OMR_PER_USD) })}, ${t('lead_time')}: ${ndays(it.lead)}</small>${it.url ? `<small class="d-block"><a href="${esc(it.url)}" target="_blank" rel="noopener noreferrer">${esc(it.supplier || hostOf(it.url))}</a></small>` : ''}
+    <small class="d-block">${t('aip_price', { usd: num(it.usd, 2), omr: omr(it.usd * OMR_PER_USD) })}, ${t('lead_time')}: ${ndays(it.lead)}</small>${it.url ? `<small class="d-block"><a href="${esc(it.url)}" target="_blank" rel="noopener noreferrer">${esc(it.supplier || hostOf(it.url))}</a> <span class="chip ok">${t('dc_v_ok')}</span></small>` : it.urlCheck === 'no' ? `<small class="d-block muted">${t('aip_url_no')}</small>` : ''}
     <small class="d-block muted">${t('provides')}: ${esc(it.provides.map(tagLabel).join(', '))}${it.requires.length ? '. ' + t('requires') + ': ' + esc(it.requires.map(tagLabel).join(', ')) : ''}</small>
     ${it.note[S.lang] ? `<small class="d-block">${esc(it.note[S.lang])}</small>` : ''}</label></li>`).join('')}</ul>
     <div class="row-btns"><button class="btn primary small" data-act="aip-add">${t('ai_parts_add')}</button></div>`;
@@ -8234,6 +8403,12 @@ ACT['aip-run'] = async el => {
   try {
     const r = await askJSON(prompt, { tier: 'default', onText: ({ text }) => { count = salvageItems(text).length; } });
     st.items = validateParts(r.value, cap);
+    const idx = srcIndex(r);
+    for (const it of st.items) {
+      const c = idx ? window.CF_VERIFY.check(idx, it.url, it.name) : null;
+      it.urlCheck = !idx ? 'none' : c.verified ? 'ok' : it.url ? 'no' : 'none';
+      it.url = c && c.verified ? c.url : '';
+    }
     html = (r.partial && st.items.length ? `<p class="hint">${t('aip_partial')}</p>` : '') + partsListHTML(st.items);
   } catch (e) { html = `<p class="warnbox">${claudeErrText(e && e.code)}</p>`; }
   clearInterval(timer); st.busy = false; el.disabled = false;
@@ -8518,9 +8693,21 @@ ICONS.key = 'M7.5 10.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 1 0 0-7M10 15l10-10M15.5 9.5l
 ACT['claude-key'] = () => { if (window.CF_LOCAL) window.CF_LOCAL.openSettings(); };
 Object.assign(L.S, {
   dc_unavailable_srv: ['Claude features are not set up on this server. Ask the administrator to add a Claude API key.', 'لم تُفعَّل ميزات Claude على هذا الخادم. اطلب من المسؤول إضافة مفتاح Claude API.'],
-  dc_note_live: ['Claude searches the web for each item and links the page it used. Results can still contain mistakes, so open the sources.', 'يبحث Claude في الويب عن كل عنصر ويضع رابط الصفحة التي اعتمد عليها، وقد تبقى في النتائج أخطاء، فافتح المصادر.'],
-  ai_parts_note_live: ['Claude checks current listings on the web and links the page it used. Prices are converted at the official peg of 1 OMR = 2.6008 USD. Confirm price and stock with the supplier, then verify the price in the catalog.', 'يتحقق Claude من العروض الحالية على الويب ويضع رابط الصفحة، وتُحوَّل الأسعار وفق سعر الربط الرسمي 1 ر.ع. = 2.6008 دولار. تأكّد من السعر والتوفر لدى المورّد، ثم وثّق السعر في الكتالوج.'],
-  rp_dc_note_live: ['Found by Claude with live web search on {d}; each item links its source. This is not a novelty or patentability assessment.', 'وجدها Claude ببحث مباشر في الويب بتاريخ {d}، ولكل عنصر رابط مصدره، وهذا ليس تقييمًا للجِدّة أو لقابلية الحصول على براءة.'],
+  dc_note_live: ['Claude searches the web for each item. A link is shown only when the search really returned that page; works it cannot match are marked Not verified. Results can still contain mistakes, so open the sources.', 'يبحث Claude في الويب عن كل عنصر، ولا يُعرض الرابط إلا إذا كانت الصفحة ضمن نتائج البحث فعلًا، ويُعلَّم ما لا يطابقها بأنه غير موثّق. وقد تبقى في النتائج أخطاء، فافتح المصادر.'],
+  dc_v_ok: ['Verified source', 'موثّق بمصدر'], dc_v_no: ['Not verified', 'غير موثّق'], dc_v_none: ['Not checked', 'لم يُتحقق منه'],
+  dc_v_no_p: ['This work did not appear in the pages the search returned, so its link is hidden. Check it yourself before citing it.', 'لم يظهر هذا العمل في الصفحات التي أعادها البحث، فأُخفي رابطه. تحقق منه بنفسك قبل أن تذكره.'],
+  dc_v_how_title: ['Matched by its title to a page the search returned', 'طابق عنوانه صفحة من نتائج البحث'], dc_v_how_page: ['The same document as a page the search returned', 'الوثيقة نفسها التي أعادها البحث'],
+  dc_v_sum: ['Verified against the pages the web search returned: {a} of {n} works. Pages returned: {p}.', 'الأعمال الموثّقة بصفحات أعادها البحث في الإنترنت: {a} من {n}. وعدد الصفحات التي أعادها البحث: {p}.'],
+  dc_v_unchecked: ['These results were not checked with a web search: they come from the model’s memory, so no link is shown. Turn web search on and search again to verify them.', 'لم يُتحقق من هذه النتائج ببحث في الإنترنت، فهي من ذاكرة النموذج ولا تُعرض لها روابط. فعّل البحث في الإنترنت وأعد البحث للتحقق منها.'],
+  dc_v_legacy: ['This search ran before sources were checked, so its links are hidden. Search again to verify each work.', 'أُجري هذا البحث قبل إضافة التحقق من المصادر، فأُخفيت روابطه. أعد البحث للتحقق من كل عمل.'],
+  dc_v_only: ['Verified only', 'الموثّقة فقط'], dc_v_all: ['Show all', 'اعرض الكل'],
+  rp_dc_verified: ['Works verified against the pages the web search returned: {a} of {n}.', 'الأعمال الموثّقة بصفحات أعادها البحث في الإنترنت: {a} من {n}.'],
+  nv_src_ok: ['Pages found by the search', 'صفحات أعادها البحث'], nv_src_dropped: ['Links hidden because the search did not return them: {n}', 'روابط أُخفيت لأن البحث لم يُعِدها: {n}'],
+  aip_url_no: ['The supplier link did not appear in the search results, so it is hidden.', 'لم يظهر رابط المورّد في نتائج البحث، فأُخفي.'],
+  up_find_unverified: ['The guides found did not appear in the pages the search returned, so none is shown. Try the site links above.', 'لم تظهر الأدلة التي وُجدت في الصفحات التي أعادها البحث، فلم يُعرض أي منها. جرّب روابط المواقع في الأعلى.'],
+  up_find_verified: ['Every link here was returned by the web search.', 'كل رابط هنا أعاده البحث في الإنترنت.'],
+  ai_parts_note_live: ['Claude checks current listings on the web; a supplier link is shown only when the search returned that page. Prices are converted at the official peg of 1 OMR = 2.6008 USD. Confirm price and stock with the supplier, then verify the price in the catalog.', 'يتحقق Claude من العروض الحالية على الويب، ولا يُعرض رابط المورّد إلا إذا كانت الصفحة ضمن نتائج البحث، وتُحوَّل الأسعار وفق سعر الربط الرسمي 1 ر.ع. = 2.6008 دولار. تأكّد من السعر والتوفر لدى المورّد، ثم وثّق السعر في الكتالوج.'],
+  rp_dc_note_live: ['Found by Claude with live web search on {d}; a link is given only when the search returned that page. This is not a novelty or patentability assessment.', 'وجدها Claude ببحث مباشر في الويب بتاريخ {d}، ولا يُذكر الرابط إلا إذا كانت الصفحة ضمن نتائج البحث، وهذا ليس تقييمًا للجِدّة أو لقابلية الحصول على براءة.'],
   dc_source: ['Source', 'المصدر'], sign_out: ['Sign out', 'تسجيل الخروج'], srv_ok: ['Server check: valid', 'فحص الخادم: صالح'], srv_bad: ['Server check: invalid', 'فحص الخادم: غير صالح'],
   adm_t_accounts: ['Accounts', 'الحسابات'], acc_loading: ['Loading accounts', 'جارٍ تحميل الحسابات'], acc_email: ['Email', 'البريد الإلكتروني'], acc_last: ['Last sign-in', 'آخر دخول'],
   acc_add: ['Add an account', 'إضافة حساب'], acc_password: ['Temporary password', 'كلمة مرور مؤقتة'], ustatus_pending: ['Waiting for approval', 'بانتظار الموافقة'],
@@ -8553,7 +8740,7 @@ const PLATFORM_TEXT = {
 function applyPlatformText() {
   if (!window.CF_PLATFORM) return;
   Object.assign(L.S, PLATFORM_TEXT);
-  if (liveSearch()) L.S.lp_honest_p = ['Your projects, imported inventory and verified prices are real data. The reference catalog lists real products with indicative prices until someone verifies them, and example projects are labelled as examples. Worldwide discovery uses live web search through Claude, so open each source.', 'مشاريعك والمخزون الذي تستورده والأسعار الموثّقة بيانات حقيقية. ويضم الكتالوج المرجعي منتجات حقيقية بأسعار استرشادية حتى يتم توثيقها، والمشاريع النموذجية موسومة بذلك. ويستخدم الاكتشاف الدولي بحثًا مباشرًا في الويب عبر Claude، فافتح كل مصدر.'];
+  if (liveSearch()) L.S.lp_honest_p = ['Your projects, imported inventory and verified prices are real data. The reference catalog lists real products with indicative prices until someone verifies them, and example projects are labelled as examples. Worldwide discovery uses live web search through Claude, and a link is shown only when the search returned that page, so open each source.', 'مشاريعك والمخزون الذي تستورده والأسعار الموثّقة بيانات حقيقية. ويضم الكتالوج المرجعي منتجات حقيقية بأسعار استرشادية حتى يتم توثيقها، والمشاريع النموذجية موسومة بذلك. ويستخدم الاكتشاف الدولي بحثًا مباشرًا في الويب عبر Claude، ولا يُعرض الرابط إلا إذا كانت الصفحة ضمن نتائج البحث، فافتح كل مصدر.'];
 }
 if (window.CF_PLATFORM_READY) window.CF_PLATFORM_READY.then(applyPlatformText);
 ACT.signout = () => { if (window.CF_PLATFORM) window.CF_PLATFORM.signOut(); else if (window.CF_LOCAL && window.CF_LOCAL.staff) window.CF_LOCAL.staffSignOut(); };
@@ -9339,9 +9526,12 @@ async function upFind(i) {
     const r = await askJSON(upFindPrompt(up.res.item_en || up.item, d), { tier: 'default' });
     const list = (r.value && Array.isArray(r.value.resources) && r.value.resources) || (r.value && r.value.items) || [];
     const s = (x, n) => (typeof x === 'string' ? x.trim().slice(0, n) : '');
-    f.items = list.filter(x => x && /^https?:\/\/\S+$/i.test(String(x.url || '').trim())).slice(0, 5).map(x => ({
+    const idx = srcIndex(r), raw = list.filter(x => x && /^https?:\/\/\S+$/i.test(String(x.url || '').trim()));
+    const kept = raw.map(x => { const c = idx ? window.CF_VERIFY.check(idx, String(x.url).trim(), x.title) : null; return c && c.verified ? Object.assign({}, x, { url: c.url }) : null; }).filter(Boolean);
+    f.dropped = raw.length - kept.length;
+    f.items = kept.slice(0, 5).map(x => ({
       type: ['video', 'guide', 'project'].indexOf(x.type) >= 0 ? x.type : 'guide', title: s(x.title, 160), source: s(x.source, 80), url: String(x.url).trim().slice(0, 500), why_en: s(x.why_en, 200), why_ar: s(x.why_ar, 200) }));
-    f.phase = f.items.length ? 'done' : 'none';
+    f.phase = f.items.length ? 'done' : f.dropped ? 'unverified' : 'none';
   } catch (e) { f.phase = 'error'; f.msg = claudeErrText(e && e.code); }
   f.busy = false;
   render();
@@ -9351,8 +9541,9 @@ function upFindHTML(f) {
   if (f.busy) return `<div class="dc-status busy"><span class="spin" aria-hidden="true"></span><div><b>${t('up_find_busy')}</b></div></div>`;
   if (f.phase === 'error') return `<div class="dc-status err">${icon('alert')}<div><b>${f.msg}</b></div></div>`;
   if (f.phase === 'none') return `<p class="hint">${t('up_find_none')}</p>`;
+  if (f.phase === 'unverified') return `<p class="hint">${t('up_find_unverified')}</p>`;
   if (!f.items) return '';
-  return `<ul class="su-res">${f.items.map(x => `<li>${icon(x.type === 'video' ? 'film' : x.type === 'project' ? 'globe' : 'doc')}<div><a href="${esc(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.title || x.url)}</a><small class="d-block muted">${esc(x.source)}${suBi(x, 'why') ? ' · ' + esc(suBi(x, 'why')) : ''}</small></div></li>`).join('')}</ul><p class="hint">${t('up_check_links')}</p>`;
+  return `<ul class="su-res">${f.items.map(x => `<li>${icon(x.type === 'video' ? 'film' : x.type === 'project' ? 'globe' : 'doc')}<div><a href="${esc(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.title || x.url)}</a><small class="d-block muted">${esc(x.source)}${suBi(x, 'why') ? ' · ' + esc(suBi(x, 'why')) : ''}</small></div></li>`).join('')}</ul><p class="hint">${t('up_find_verified')} ${t('up_check_links')}</p>`;
 }
 function upResultHTML(su, up) {
   const r = up.res, live = liveSearch(), busy = su.design && su.design.busy;
@@ -9694,11 +9885,12 @@ const nvLinks = sources => listJoin(sources.map(s => `<a href="${esc(s.url)}" ta
 /* what Claude compared or searched before proposing a feature, and the pages it read */
 function nvCheckHTML(c) {
   const checked = tx(c.checked);
-  if (!checked && !c.finding && !(c.sources && c.sources.length)) return '';
+  if (!checked && !c.finding && !(c.sources && c.sources.length) && !c.dropped) return '';
   return `<div class="nv-check">${icon(c.web ? 'globe' : 'spark')}<div>
     ${c.finding ? `<p class="small">${chip(t(c.finding === 'rare' ? 'nv_find_rare' : 'nv_find_none'), c.finding === 'rare' ? 'info' : 'ok')}</p>` : ''}
     ${checked ? `<p class="small"><b>${t('nv_checked')}:</b> ${esc(checked)}</p>` : ''}
-    ${c.sources && c.sources.length ? `<p class="small nv-src"><b>${t('nv_sources')}:</b> ${nvLinks(c.sources)}</p>` : ''}</div></div>`;
+    ${c.sources && c.sources.length ? `<p class="small nv-src"><b>${t(c.srcChecked ? 'nv_src_ok' : 'nv_sources')}:</b> ${nvLinks(c.sources)}${c.srcChecked ? ' <span class="chip ok">' + t('dc_v_ok') + '</span>' : ''}</p>` : ''}
+    ${c.dropped ? `<p class="small muted">${t('nv_src_dropped', { n: num(c.dropped, 0) })}</p>` : ''}</div></div>`;
 }
 function nvCardHTML(p, c, best, n) {
   const pc = NV.projectCaps(p), fresh = c.caps.filter(x => pc.indexOf(x) < 0), reused = c.caps.filter(x => pc.indexOf(x) >= 0), f = c.feas;
@@ -9740,7 +9932,7 @@ function nvPanelHTML(p) {
   try { res = nvResult(p); } catch (e) { return ''; }
   const st = nvBox(), v = res.verdict, n = dc.items.length, b = v.best, it = b && dc.items[b.index];
   const head = v.level === 'found' ? 'nv_h_found' : v.level === 'close' ? 'nv_h_close' : 'nv_h_new';
-  const closest = it ? t('nv_closest', { t: '<bdi>' + esc(it.title) + '</bdi>', s: num(b.shared, 0), n: num(b.total, 0), p: pct(b.ratio) }) : '';
+  const closest = it ? t('nv_closest', { t: '<bdi>' + esc(it.title) + '</bdi>', s: num(b.shared, 0), n: num(b.total, 0), p: pct(b.ratio) }) + ' ' + dcBadge(it) : '';
   const list = st.more ? res.list : res.list.slice(0, 4), aiFirst = res.ai.length > 0;
   return `<section class="panel nv-panel lvl-${v.level}" id="nv-panel"><div class="nv-head">${icon(v.level === 'found' ? 'alert' : 'spark')}<div><h2>${t(head)}</h2>${closest ? `<p class="small">${closest}</p>` : ''}</div></div>
     ${p.features && p.features.length ? `<p class="nv-done">${icon('check')}<span>${t('nv_added_list', { x: listJoin(p.features.map(f => '<b>' + esc(tx(f.name)) + '</b>')) })}</span> <a href="#graph">${t('nv_view_graph')}</a></p>` : ''}
@@ -9766,6 +9958,13 @@ async function nvRunAI(p, auto) {
     const r = await askJSON(NV.aiPrompt(p, p.discovery.items, D.TAGS, { avoid }), { tier: 'default', signal: a.ctrl ? a.ctrl.signal : null });
     const seen = new Set(prev.map(f => f.name.en.toLowerCase()));
     const fresh = NV.fromAI(r.value, capIds(), { web }).filter(f => !seen.has(f.name.en.toLowerCase()));
+    const idx = srcIndex(r);
+    for (const f of fresh) {
+      if (!web) continue;
+      const before = f.sources.length;
+      f.sources = idx ? f.sources.map(s => { const c = window.CF_VERIFY.check(idx, s.url, s.title); return c.verified ? { title: s.title || c.title, url: c.url } : null; }).filter(Boolean) : [];
+      f.dropped = before - f.sources.length; f.srcChecked = !!idx;
+    }
     if (!fresh.length) throw { code: r.code === 'cancelled' ? 'cancelled' : 'empty_result' };
     p.discovery.ai = { ts: Date.now(), web, rounds: ((p.discovery.ai && p.discovery.ai.rounds) || 0) + 1, features: fresh.concat(prev).slice(0, 9) };
     p.history.push({ ts: Date.now(), kind: 'novelty-search', n: fresh.length, web });
@@ -10516,6 +10715,8 @@ Object.assign(L.S, {
   vq_novel: ['Has this been done before? How is yours different?', 'هل نُفّذت هذه الفكرة من قبل؟ وبماذا يختلف مشروعك؟'],
   va_novel: ['The closest work found is “{w}”{m}, which covers {s} of your project’s {n} capabilities ({pc}).', 'أقرب عمل وُجد هو «{w}»{m}، ويغطي {s} من قدرات مشروعك الـ {n} ({pc}).'],
   va_novel_lack: ['It lacks: {x}.', 'ولا يتضمن: {x}.'], va_novel_feat: ['You added features none of the found works uses: {x}.', 'وأضفت ميزات لا يستخدمها أي من الأعمال التي وُجدت: {x}.'],
+  va_novel_src: ['Its source, returned by the web search: {h}.', 'ومصدره صفحة أعادها البحث في الإنترنت: {h}.'], va_novel_unv: ['It did not appear in the pages the search returned, so check it before you mention it.', 'ولم يظهر في الصفحات التي أعادها البحث، فتحقق منه قبل أن تذكره.'],
+  va_novel_unchecked: ['It was not checked with a web search, so check it before you mention it.', 'ولم يُتحقق منه ببحث في الإنترنت، فتحقق منه قبل أن تذكره.'],
   va_novel_tip: ['The comparison covers only the works the search found; it is not a patent search.', 'تشمل المقارنة الأعمال التي وجدها البحث فقط، وليست بحثًا في براءات الاختراع.'],
   va_novel_todo: ['Run the global discovery first: it finds similar work worldwide and measures how much of your project each one covers.', 'شغّل الاكتشاف الدولي أولًا، فهو يجد الأعمال المشابهة حول العالم ويقيس ما يغطيه كل منها من مشروعك.'],
   vq_method: ['How did you choose and check your design?', 'كيف اخترت تصميمك وتحققت منه؟'],
@@ -10651,6 +10852,7 @@ function vvQuestions(p, c) {
       let a = `<p>${t('va_novel', { w: '<bdi>' + esc(it.title) + '</bdi>', m: meta ? ' (' + meta + ')' : '', s: num(b.shared, 0), n: num(b.total, 0), pc: pct(b.ratio) })}`;
       if (lack.length) a += ' ' + t('va_novel_lack', { x: listJoin(lack.map(x => esc(tagLabel(x)))) });
       if ((p.features || []).length) a += ' ' + t('va_novel_feat', { x: listJoin(p.features.map(f => esc(tx(f.name)))) });
+      a += ' ' + (it.check === 'ok' && it.url ? t('va_novel_src', { h: esc(hostOf(it.url)) }) : it.check === 'no' ? t('va_novel_unv') : t('va_novel_unchecked'));
       add('novel', 'novelty', t('vq_novel'), a + `</p><p class="muted small">${t('va_novel_tip')}</p>`, ['discovery']);
     }
   } else add('novel', 'novelty', t('vq_novel'), `<p>${t('va_novel_todo')}</p><div class="row-btns"><a class="btn small ghost" href="#discover">${icon('globe')}<span>${t('nav_discover')}</span></a></div>`, ['discovery'], true);
@@ -11073,7 +11275,7 @@ function noAccessHTML(r) {
 const ACT_PERM = {
   'rs-run': 'projects', 'rs-show': 'projects', 'rs-spare-add': 'projects', 'rs-spare-del': 'projects', 'rs-tab': 'projects', 'mg-pick': 'projects', 'mg-reset': 'projects', 'mg-apply': 'projects', 'po-run': 'projects', 'po-all': 'projects', 'vv-f': 'projects', 'vv-open': 'projects', 'vv-mark': 'projects', 'vv-reset': 'projects', 'vv-print': 'projects',
   'load-examples': 'projects', 'remove-examples': 'projects', 'open-example': 'projects', 'idea-start': 'projects', 'pj-dup': 'projects', 'pj-del': 'projects', 'pj-restore': 'projects',
-  'np-llm': 'ai', 'ai-parts': 'ai', 'aip-run': 'ai', 'aip-add': 'ai', 'dc-run': 'discover', 'nv-ai': 'discover', 'su-run': 'sustain', 'up-run': 'sustain', 'up-find': 'sustain', 'sd-make': 'sustain',
+  'np-llm': 'ai', 'ai-parts': 'ai', 'aip-run': 'ai', 'aip-add': 'ai', 'dc-run': 'discover', 'dc-only': 'discover', 'nv-ai': 'discover', 'su-run': 'sustain', 'up-run': 'sustain', 'up-find': 'sustain', 'sd-make': 'sustain',
   'sub-refresh': 'submissions', 'sub-open': ['submissions', 'projects'],
   'ideas-refresh': 'ideas_view', 'idea-save': 'ideas_review', 'idea-del': 'ideas_delete', 'idea-del-ok': 'ideas_delete', 'idp-save': 'student_page',
   'ideas-accounts': 'students', 'demo-student': 'students', 'acc-add': 'students', 'acc-create': 'students', 'acc-reset': 'students', 'acc-reset-ok': 'students',
